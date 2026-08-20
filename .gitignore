@@ -1,0 +1,8 @@
+# Carpetas
+.github/
+docs/
+overrides/
+
+# Archivos
+CLAUDE.md
+mkdocs.yml

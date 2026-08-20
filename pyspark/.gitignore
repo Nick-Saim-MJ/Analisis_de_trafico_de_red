@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# VS Code
+.vscode/
+
+# Entornos virtuales
+.env/
+.venv/
+venv/
+ENV/
+
+# Archivos de datos y resultados
+# artifacts/
+# data/
+
+# Docker
+*.log
+
+# Otros
+.DS_Store
+Thumbs.db

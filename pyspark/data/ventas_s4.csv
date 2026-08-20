@@ -1,0 +1,34 @@
+id_venta,cliente_id,fecha,categoria,producto,monto,canal,region
+1,101,2026-01-01,Lacteos,Leche Entera,120.50,Tienda,Sur
+2,102,2026-01-01,Lacteos,Yogurt,80.00,Web,Sur
+3,103,2026-01-02,Quesos,Queso Fresco,210.00,Tienda,Norte
+4,101,2026-01-02,Lacteos,Leche Deslactosada,140.00,Web,Sur
+5,104,2026-01-02,Mantequilla,Mantequilla Barra,95.00,Tienda,Centro
+6,105,2026-01-03,Quesos,Queso Andino,260.00,Distribuidor,Norte
+7,106,2026-01-03,Lacteos,Yogurt Griego,160.00,Web,Centro
+8,107,2026-01-03,Lacteos,Leche Entera,110.00,Tienda,Sur
+9,108,2026-01-04,Quesos,Queso Paria,300.00,Distribuidor,Sur
+10,109,2026-01-04,Mantequilla,Mantequilla Light,130.00,Web,Centro
+11,101,2026-01-04,Lacteos,Yogurt,75.00,Tienda,Sur
+12,102,2026-01-05,Quesos,Queso Fresco,220.00,Web,Norte
+13,110,2026-01-05,Lacteos,Leche Entera,115.00,Tienda,Centro
+14,111,2026-01-05,Mantequilla,Mantequilla Barra,98.00,Tienda,Sur
+15,112,2026-01-06,Quesos,Queso Andino,280.00,Distribuidor,Norte
+16,103,2026-01-06,Lacteos,Yogurt Griego,170.00,Web,Norte
+17,104,2026-01-06,Lacteos,Leche Deslactosada,145.00,Tienda,Centro
+18,105,2026-01-07,Quesos,Queso Paria,310.00,Distribuidor,Sur
+19,106,2026-01-07,Mantequilla,Mantequilla Light,135.00,Web,Centro
+20,107,2026-01-07,Lacteos,Leche Entera,118.00,Tienda,Sur
+21,108,2026-01-08,Quesos,Queso Fresco,205.00,Web,Sur
+22,109,2026-01-08,Lacteos,Yogurt,82.00,Tienda,Centro
+23,110,2026-01-08,Mantequilla,Mantequilla Barra,99.00,Tienda,Centro
+24,111,2026-01-09,Quesos,Queso Andino,275.00,Distribuidor,Norte
+25,112,2026-01-09,Lacteos,Yogurt Griego,168.00,Web,Norte
+26,101,2026-01-09,Lacteos,Leche Entera,121.00,Tienda,Sur
+27,102,2026-01-10,Quesos,Queso Paria,315.00,Distribuidor,Sur
+28,103,2026-01-10,Mantequilla,Mantequilla Light,132.00,Web,Norte
+29,104,2026-01-10,Lacteos,Yogurt,79.00,Tienda,Centro
+30,105,2026-01-10,Lacteos,Leche Deslactosada,150.00,Web,Norte
+31,105,2026-01-10,Lacteos,Leche Deslactosada,150.00,Web,Norte
+32,,2026-01-11,Quesos,Queso Fresco,230.00,Tienda,Sur
+33,106,2026-01-11,Lacteos,Leche Entera,-50.00,Tienda,Centro
