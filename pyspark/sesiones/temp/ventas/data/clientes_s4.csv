@@ -1,0 +1,14 @@
+cliente_id,cliente,tipo_cliente,segmento
+101,Cliente A,Minorista,Oro
+102,Cliente B,Minorista,Plata
+103,Cliente C,Mayorista,Oro
+104,Cliente D,Minorista,Bronce
+105,Cliente E,Mayorista,Plata
+106,Cliente F,Minorista,Oro
+107,Cliente G,Minorista,Plata
+108,Cliente H,Mayorista,Oro
+109,Cliente I,Minorista,Bronce
+110,Cliente J,Minorista,Plata
+111,Cliente K,Mayorista,Oro
+112,Cliente L,Minorista,Plata
+112,Cliente L,Minorista,Plata

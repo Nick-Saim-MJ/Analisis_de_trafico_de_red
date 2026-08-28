@@ -1,8 +1,18 @@
-# Carpetas
-.github/
-docs/
-overrides/
+# Datasets de origen (grandes, se copian/descargan por fuera, no se versionan)
+pyspark/sesiones/*/data/
 
-# Archivos
-CLAUDE.md
-mkdocs.yml
+# Salidas generadas al correr los notebooks (Parquet/CSV/JSON escritos por cada sesión)
+pyspark/sesiones/*/artifacts/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Trash del contenedor (aparece si se borra un archivo desde dentro de Docker)
+.Trash-0/
+
+# Python
+__pycache__/
+*.pyc
+
+# SO
+.DS_Store

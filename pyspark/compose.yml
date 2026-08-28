@@ -8,10 +8,8 @@ services:
     restart: unless-stopped
     ports:
       - "4488:8888"
-      - "4040:4040"
+      - "4042:4040"
     volumes:
-      - ./notebooks:/opt/notebooks
-      - ./data:/opt/data
-      - ./artifacts:/opt/artifacts
+      - ./sesiones:/opt
     environment:
       - JUPYTER_TOKEN=sintoken

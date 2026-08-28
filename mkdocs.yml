@@ -1,0 +1,43 @@
+site_name: Big Data
+site_url: https://262bigdata.github.io/lambda26/
+repo_url: https://github.com/262bigdata/lambda26
+repo_name: 262bigdata/lambda26
+docs_dir: docs
+
+nav:
+  - Inicio: index.md
+  - Guía de Proyecto Sello:
+      - Guía del proyecto: proyecto-sello/index.md
+      - Brief técnico-analítico (plantilla): proyecto-sello/brief.md
+  - Silabos:
+      - Silabo 2026-1: silabo_bigdata_2026_1.md
+      - Silabo 2026-2: silabo_bigdata_2026_2.md
+  - 1. Arquitecturas Big Data y ETL batch distribuido:
+      - "S1 - Arquitectura Big Data: Lambda y Kappa, batch vs. streaming": sesiones/S01_Arquitectura_Big_Data_Lambda_Kappa.md
+      - "S2 - Fundamentos PySpark: transformaciones, funciones, agrupaciones y evaluación perezosa": sesiones/S02_Fundamentos_PySpark_Transformaciones_Lazy_Evaluation.md
+      - "S3 - Procesamiento y Calidad de Datos: filtrado, duplicados, nulos y particionamiento analítico": sesiones/S03_Procesamiento_Calidad_Datos_Particionamiento.md
+
+theme:
+  name: material
+  custom_dir: overrides
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.top
+    - content.code.copy
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - toc:
+      permalink: true
+
+plugins:
+  - search
