@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pulso de Red | Big Data U1</title>
+    <style>
+        /* =========================================
+           VARIABLES & RESET
+           ========================================= */
+        :root {
+            --bg-dark: #07090f;
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --border-card: rgba(255, 255, 255, 0.08);
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --accent-cyan: #00f0ff;
+            --accent-magenta: #ff0055;
+            --accent-green: #00ff9d;
+            --accent-yellow: #ffcc00;
+            --accent-orange: #ff7b00;
+            --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+            --glow-cyan: 0 0 20px rgba(0, 240, 255, 0.5);
+            --glow-magenta: 0 0 20px rgba(255, 0, 85, 0.5);
+            --glow-green: 0 0 20px rgba(0, 255, 157, 0.5);
+            --glow-yellow: 0 0 20px rgba(255, 204, 0, 0.5);
+            --glow-orange: 0 0 20px rgba(255, 123, 0, 0.5);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background: var(--bg-dark);
+            color: var(--text-main);
+            overflow: hidden;
+        }
+
+        /* =========================================
+           NETWORK BACKGROUND CANVAS
+           ========================================= */
+        #networkCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* =========================================
+           SCROLL CONTAINER & SLIDES
+           ========================================= */
+        .slides-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            position: relative;
+            z-index: 1;
+        }
+
+        .slide {
+            min-height: 100vh;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Background Grid Effect */
+        .slide::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 50px 50px; }
+        }
+
+        .slide-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            width: 100%;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .slide-content.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .slide-content.visible h1,
+        .slide-content.visible h2 {
+            animation: textGlow 2s ease-in-out;
+        }
+
+        @keyframes textGlow {
+            0%, 100% { filter: drop-shadow(0 0 0px transparent); }
+            50% { filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.3)); }
+        }
+
+        /* =========================================
+           TYPOGRAPHY & COMPONENTS
+           ========================================= */
+        .section-tag {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--accent-cyan);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            display: inline-block;
+            padding: 6px 14px;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 20px;
+            background: rgba(0, 240, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-tag::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.2), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff 0%, var(--accent-cyan) 50%, var(--accent-magenta) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 40px rgba(0, 240, 255, 0.3);
+        }
+
+        h2 {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: #fff;
+            position: relative;
+            display: inline-block;
+            line-height: 1.2;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-magenta));
+            border-radius: 2px;
+            animation: slideIn 1s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { width: 0; }
+            to { width: 60px; }
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #fff;
+            line-height: 1.3;
+        }
+
+        p, li {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: var(--text-muted);
+            max-width: 800px;
+        }
+
+        .highlight {
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        .glass-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(0, 240, 255, 0.4);
+            transform: translateY(-8px);
+            box-shadow: 
+                0 10px 40px rgba(0, 240, 255, 0.15),
+                0 0 60px rgba(0, 240, 255, 0.1);
+        }
+
+        .glass-card:hover::before {
+            opacity: 1;
+        }
+
+        /* =========================================
+           NAVIGATION DOTS
+           ========================================= */
+        .nav-dots {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-dot::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: transparent;
+            transition: all 0.3s;
+        }
+
+        .nav-dot:hover {
+            border-color: var(--accent-cyan);
+            transform: scale(1.2);
+        }
+
+        .nav-dot.active {
+            border-color: var(--accent-cyan);
+            box-shadow: var(--glow-cyan);
+        }
+
+        .nav-dot.active::before {
+            background: var(--accent-cyan);
+            width: 6px;
+            height: 6px;
+        }
+
+        .nav-dot::after {
+            content: attr(data-label);
+            position: absolute;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            white-space: nowrap;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid var(--border-card);
+        }
+
+        .nav-dot:hover::after {
+            opacity: 1;
+        }
+
+        /* =========================================
+           SLIDE 0: INTRO
+           ========================================= */
+        #intro {
+            text-align: center;
+        }
+
+        .hero-tagline {
+            font-size: 1.3rem;
+            color: var(--accent-magenta);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            letter-spacing: 0.5px;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.3s forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .pulse-line {
+            width: 100%;
+            max-width: 600px;
+            height: 80px;
+            margin: 2rem auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pulse-line svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .pulse-path {
+            fill: none;
+            stroke: var(--accent-cyan);
+            stroke-width: 3;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawPulse 4s linear infinite;
+            filter: drop-shadow(0 0 10px var(--accent-cyan));
+        }
+
+        @keyframes drawPulse {
+            0% { stroke-dashoffset: 1000; }
+            50% { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: -1000; }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+            width: 100%;
+        }
+
+        .stat-card {
+            text-align: center;
+            opacity: 0;
+            animation: fadeInScale 0.6s ease-out forwards;
+            padding: 1.5rem;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.5s; }
+        .stat-card:nth-child(2) { animation-delay: 0.7s; }
+        .stat-card:nth-child(3) { animation-delay: 0.9s; }
+        .stat-card:nth-child(4) { animation-delay: 1.1s; }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .stat-number {
+            font-family: var(--font-mono);
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            display: block;
+            text-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-magenta));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            display: inline-block;
+            line-height: 1;
+        }
+
+        .stat-number::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+            transition: width 0.4s;
+        }
+
+        .stat-card:hover .stat-number::after {
+            width: 100%;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* =========================================
+           SLIDE 1: PROBLEMA
+           ========================================= */
+        .question-box {
+            margin-top: 2rem;
+            padding: 2.5rem;
+            border-left: 4px solid var(--accent-magenta);
+            background: rgba(255, 0, 85, 0.05);
+            border-radius: 0 16px 16px 0;
+            font-style: italic;
+            font-size: 1.25rem;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+            line-height: 1.8;
+        }
+
+        .question-box::before {
+            content: '"';
+            position: absolute;
+            top: -20px;
+            right: 20px;
+            font-size: 8rem;
+            color: rgba(255, 0, 85, 0.1);
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+
+        /* =========================================
+           SLIDE 2: ARQUITECTURA
+           ========================================= */
+        .arch-container {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 2rem;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .arch-box {
+            text-align: center;
+            opacity: 0;
+            animation: slideInLeft 0.8s ease-out forwards;
+        }
+
+        .arch-box:nth-child(1) { animation-delay: 0.3s; }
+        .arch-box:nth-child(3) { animation-delay: 0.6s; }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .arch-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .arch-divider {
+            width: 2px;
+            height: 150px;
+            background: linear-gradient(to bottom, transparent, var(--accent-cyan), transparent);
+            position: relative;
+            animation: fadeIn 1s ease-out 0.5s forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .arch-divider::after {
+            content: 'VS';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-dark);
+            padding: 12px;
+            color: var(--accent-cyan);
+            font-family: var(--font-mono);
+            font-weight: bold;
+            border: 2px solid var(--accent-cyan);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            box-shadow: var(--glow-cyan);
+            animation: rotate 4s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .arch-description {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(0, 240, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .arch-description::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(0, 240, 255, 0.05), transparent);
+            animation: sweep 3s linear infinite;
+        }
+
+        @keyframes sweep {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* =========================================
+           SLIDE 3: DIMENSIONES
+           ========================================= */
+        .dimensions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .dim-card {
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
+            padding: 2rem;
+        }
+
+        .dim-card:nth-child(1) { animation-delay: 0.3s; }
+        .dim-card:nth-child(2) { animation-delay: 0.5s; }
+        .dim-card:nth-child(3) { animation-delay: 0.7s; }
+        .dim-card:nth-child(4) { animation-delay: 0.9s; }
+
+        .dim-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 2;
+        }
+
+        .badge-cumple { 
+            background: rgba(0, 255, 157, 0.15); 
+            color: var(--accent-green); 
+            border: 1px solid var(--accent-green);
+            box-shadow: var(--glow-green);
+        }
+        
+        .badge-nocumple { 
+            background: rgba(255, 0, 85, 0.15); 
+            color: var(--accent-magenta); 
+            border: 1px solid var(--accent-magenta);
+            box-shadow: var(--glow-magenta);
+        }
+        
+        .badge-engano { 
+            background: rgba(255, 204, 0, 0.15); 
+            color: var(--accent-yellow); 
+            border: 1px solid var(--accent-yellow);
+            box-shadow: var(--glow-yellow);
+        }
+
+        .dim-author {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--accent-cyan);
+            margin-bottom: 1.25rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1.4;
+        }
+
+        .dim-card h3 {
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .dim-metric {
+            font-family: var(--font-mono);
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #fff;
+            margin: 1.25rem 0;
+            padding: 10px 14px;
+            background: rgba(0, 240, 255, 0.1);
+            border-radius: 6px;
+            border-left: 3px solid var(--accent-cyan);
+            display: inline-block;
+        }
+
+        .dim-details {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-top: 1rem;
+        }
+
+        .dim-details strong {
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin: 1rem 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            animation: fillProgress 1.5s ease-out forwards;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: flowProgress 2s infinite;
+        }
+
+        @keyframes fillProgress {
+            from { width: 0; }
+        }
+
+        @keyframes flowProgress {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* =========================================
+           SLIDE 4: CRITERIO PROPIO
+           ========================================= */
+        .criterion-box {
+            margin-top: 2rem;
+            padding: 3rem;
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.08) 0%, rgba(255, 0, 85, 0.08) 100%);
+            border: 2px solid rgba(0, 240, 255, 0.3);
+            border-radius: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            animation: scaleIn 0.8s ease-out 0.3s forwards;
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .criterion-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 240, 255, 0.1), transparent);
+            animation: rotate 6s linear infinite;
+        }
+
+        .criterion-box p {
+            font-size: 1.3rem;
+            color: #fff;
+            line-height: 1.9;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .criterion-highlight {
+            color: var(--accent-cyan);
+            font-weight: 700;
+            font-size: 1.4rem;
+            text-shadow: var(--glow-cyan);
+            position: relative;
+            display: inline-block;
+        }
+
+        .criterion-highlight::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-magenta));
+            transform: scaleX(0);
+            animation: underline 1s ease-out 1s forwards;
+        }
+
+        @keyframes underline {
+            to { transform: scaleX(1); }
+        }
+
+        /* =========================================
+           SLIDE 5: LO QUE NO ESCONDIMOS
+           ========================================= */
+        .issues-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .issue-card {
+            border-left: 3px solid;
+            opacity: 0;
+            animation: fadeInLeft 0.6s ease-out forwards;
+            padding: 2rem;
+        }
+
+        .issue-card:nth-child(1) { animation-delay: 0.3s; }
+        .issue-card:nth-child(2) { animation-delay: 0.5s; }
+        .issue-card:nth-child(3) { animation-delay: 0.7s; }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .issue-calidad { 
+            border-color: var(--accent-orange);
+        }
+        
+        .issue-cobertura { 
+            border-color: var(--accent-yellow); 
+        }
+        
+        .issue-diseno { 
+            border-color: var(--accent-magenta); 
+        }
+
+        .issue-tag {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .issue-calidad .issue-tag { 
+            color: var(--accent-orange);
+            text-shadow: var(--glow-orange);
+        }
+        
+        .issue-cobertura .issue-tag { 
+            color: var(--accent-yellow);
+            text-shadow: var(--glow-yellow);
+        }
+        
+        .issue-diseno .issue-tag { 
+            color: var(--accent-magenta);
+            text-shadow: var(--glow-magenta);
+        }
+
+        .issue-card h3 {
+            margin-bottom: 0.75rem;
+        }
+
+        .issue-card p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        .issue-card code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.9em;
+        }
+
+        .issue-detail {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-left: 2px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            line-height: 1.7;
+        }
+
+        .issue-detail strong {
+            color: var(--text-main);
+        }
+
+        .issue-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+        }
+
+        .issue-stat-bar {
+            flex: 1;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .issue-stat-fill {
+            height: 100%;
+            border-radius: 2px;
+            animation: fillProgress 1.5s ease-out forwards;
+        }
+
+        /* =========================================
+           SLIDE 6: UNIDAD 2 & FOOTER
+           ========================================= */
+        .steps-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .step-item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            opacity: 0;
+            animation: fadeInRight 0.6s ease-out forwards;
+        }
+
+        .step-item:nth-child(1) { animation-delay: 0.3s; }
+        .step-item:nth-child(2) { animation-delay: 0.5s; }
+        .step-item:nth-child(3) { animation-delay: 0.7s; }
+        .step-item:nth-child(4) { animation-delay: 0.9s; }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .step-number {
+            font-family: var(--font-mono);
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--accent-cyan);
+            line-height: 1;
+            opacity: 0.5;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-magenta));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: var(--glow-cyan);
+        }
+
+        .step-text {
+            flex: 1;
+        }
+
+        .step-text h4 {
+            font-size: 1.1rem;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .step-text p {
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .footer-links {
+            margin-top: 3rem;
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 1.2s forwards;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-magenta));
+            color: #fff;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0, 240, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 
+                0 6px 25px rgba(0, 240, 255, 0.5),
+                0 0 40px rgba(255, 0, 85, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-main);
+            border: 2px solid var(--border-card);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            box-shadow: var(--glow-cyan);
+            transform: translateY(-3px);
+        }
+
+        /* =========================================
+           SCROLL INDICATOR
+           ========================================= */
+        .scroll-indicator {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .scroll-indicator span {
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .scroll-arrow {
+            width: 24px;
+            height: 24px;
+            border-right: 3px solid var(--accent-cyan);
+            border-bottom: 3px solid var(--accent-cyan);
+            transform: rotate(45deg);
+            animation: bounce 2s infinite;
+            box-shadow: 0 0 15px var(--accent-cyan);
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: rotate(45deg) translate(0, 0); }
+            40% { transform: rotate(45deg) translate(6px, 6px); }
+            60% { transform: rotate(45deg) translate(4px, 4px); }
+        }
+
+        /* =========================================
+           NETWORK TRAFFIC ANIMATION
+           ========================================= */
+        .data-flow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .packet {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent-cyan);
+            animation: movePacket 8s linear infinite;
+        }
+
+        @keyframes movePacket {
+            0% {
+                transform: translateX(-100px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(calc(100vw + 100px));
+                opacity: 0;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .slide { padding: 2rem 1.5rem; }
+            .arch-container { grid-template-columns: 1fr; }
+            .arch-divider { width: 150px; height: 2px; background: linear-gradient(to right, transparent, var(--accent-cyan), transparent); margin: 0 auto; }
+            .arch-divider::after { display: none; }
+            .stat-number { font-size: 2.2rem; }
+            .dimensions-grid { grid-template-columns: 1fr; }
+            .nav-dots { display: none; }
+            .criterion-box { padding: 2rem; }
+            .issues-grid { grid-template-columns: 1fr; }
+            .dim-card { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Network Canvas Background -->
+    <canvas id="networkCanvas"></canvas>
+
+    <div class="slides-container" id="slidesContainer">
+        
+        <!-- SLIDE 0: INTRO -->
+        <section class="slide" id="intro">
+            <div class="slide-content">
+                <span class="section-tag">00 · Pulso de Red</span>
+                <h1>PULSO DE RED</h1>
+                <p class="subtitle">Producto U1 · Proyecto Sello Big Data · Equipo LLSW3</p>
+                
+                <p class="hero-tagline">El campus genera 397 354 flujos. Nadie los leía.</p>
+                
+                <div class="pulse-line">
+                    <svg viewBox="0 0 600 60" preserveAspectRatio="none">
+                        <path class="pulse-path" d="M0,30 L150,30 L170,10 L190,50 L210,20 L230,40 L250,30 L600,30" />
+                    </svg>
+                </div>
+
+                <p style="margin: 0 auto; text-align: center; max-width: 700px;">Suricata captura cada conexión de la red universitaria — 83 variables por flujo, TCP y UDP, bytes, tiempos, banderas. Esto es lo que encontramos al ponerle un pipeline Big Data real encima.</p>
+
+                <div class="stats-grid">
+                    <div class="glass-card stat-card">
+                        <span class="stat-number" data-target="397354">0</span>
+                        <div class="stat-label">flujos capturados</div>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <span class="stat-number" data-target="83">0</span>
+                        <div class="stat-label">variables / flujo</div>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <span class="stat-number" data-target="4">0</span>
+                        <div class="stat-label">× 4 integrantes · dimensiones</div>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <span class="stat-number" data-target="8">0</span>
+                        <div class="stat-label">modelos MLlib</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 1: EL PROBLEMA -->
+        <section class="slide" id="problema">
+            <div class="slide-content">
+                <span class="section-tag">01 · El Problema</span>
+                <h2>Tráfico invisible,<br>capacidad a ciegas</h2>
+                <p style="margin-bottom: 1.5rem;">TI no tiene forma sistemática de saber cuánto ancho de banda consume el campus, cuánto dura una conexión típica, qué tipo de servicio predomina, o si un flujo se comporta distinto a lo esperado.</p>
+                
+                <div class="question-box glass-card">
+                    <strong style="color: var(--accent-magenta); display: block; margin-bottom: 0.75rem; font-style: normal; font-size: 1.1rem;">Pregunta central:</strong>
+                    ¿Cómo caracterizar volumen, duración, tipo de servicio y dirección dominante del tráfico del campus para anticipar carga y detectar patrones atípicos?
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 2: ARQUITECTURA -->
+        <section class="slide" id="arquitectura">
+            <div class="slide-content">
+                <span class="section-tag">02 · Arquitectura</span>
+                <h2>Lambda: la bifurcación<br>que ves en el pasillo</h2>
+                <p style="margin-bottom: 1.5rem;">La columna <code style="color: var(--accent-cyan); background: rgba(0,240,255,0.1); padding: 3px 8px; border-radius: 4px; font-family: var(--font-mono);">label</code> llega sin asignar (<code style="color: var(--accent-magenta); background: rgba(255,0,85,0.1); padding: 3px 8px; border-radius: 4px; font-family: var(--font-mono);">NeedLabel</code>) — su validación es por lotes, no dato por dato.</p>
+                
+                <div class="arch-container">
+                    <div class="glass-card arch-box">
+                        <div class="arch-icon">📦</div>
+                        <h3>Capa Batch</h3>
+                        <p style="font-size: 0.95rem;">El conducto sólido: la capa batch de este producto.</p>
+                    </div>
+                    <div class="arch-divider"></div>
+                    <div class="glass-card arch-box">
+                        <div class="arch-icon">⚡</div>
+                        <h3>Capa de Velocidad</h3>
+                        <p style="font-size: 0.95rem;">El conducto difuso: la capa de velocidad (Kafka + Structured Streaming) que se enciende en Unidad 2.</p>
+                    </div>
+                </div>
+
+                <div class="arch-description">
+                    <p style="font-size: 1rem; margin: 0;">Cada vez que el criterio de etiquetado se ajusta, hay que recomputar sobre el histórico completo — la razón de fondo por la que el equipo eligió Lambda sobre Kappa.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 3: DIMENSIONES -->
+        <section class="slide" id="dimensiones">
+            <div class="slide-content">
+                <span class="section-tag">03 · Las Cuatro Dimensiones</span>
+                <h2>Resultados vs. Criterio Propio</h2>
+                <p style="margin-bottom: 2rem;">Cada integrante entrenó su modelo sobre el mismo histórico de 397 354 flujos, comparando 3 a 5 configuraciones y quedándose con la de mejor desempeño real.</p>
+                
+                <div class="dimensions-grid">
+                    <!-- Card 1 -->
+                    <div class="glass-card dim-card">
+                        <span class="dim-badge badge-cumple">Cumple</span>
+                        <div class="dim-author">Nick Saim Mayta Jara</div>
+                        <h3>Volumen de tráfico</h3>
+                        <div class="dim-metric">bytes_per_s</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 78%; background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan));"></div>
+                        </div>
+                        <div class="dim-details">
+                            <strong>· regresión</strong><br>
+                            <strong>R² 0.78</strong><br>
+                            <strong>RandomForestRegressor</strong> · RMSE −53%
+                        </div>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="glass-card dim-card">
+                        <span class="dim-badge badge-cumple">Cumple</span>
+                        <div class="dim-author">Jhan Logan Ramos Quispe</div>
+                        <h3>Duración del flujo</h3>
+                        <div class="dim-metric">flow_duration</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 90%; background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan));"></div>
+                        </div>
+                        <div class="dim-details">
+                            <strong>· regresión</strong><br>
+                            <strong>R² 0.90</strong><br>
+                            <strong>RandomForestRegressor</strong> · RMSE −70%
+                        </div>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="glass-card dim-card">
+                        <span class="dim-badge badge-nocumple">No cumple</span>
+                        <div class="dim-author">Henyelrey Garcia Chura</div>
+                        <h3>Tipo de servicio</h3>
+                        <div class="dim-metric">categoria_servicio_ref</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 2.4%; background: linear-gradient(90deg, var(--accent-magenta), var(--accent-orange));"></div>
+                        </div>
+                        <div class="dim-details">
+                            <strong>· clasif.</strong><br>
+                            <strong>99.3%</strong><br>
+                            <strong>RandomForestClassifier</strong> · solo +2.4 pp
+                        </div>
+                    </div>
+                    <!-- Card 4 -->
+                    <div class="glass-card dim-card">
+                        <span class="dim-badge badge-engano">Engañoso</span>
+                        <div class="dim-author">David Romero Nina</div>
+                        <h3>Dirección dominante</h3>
+                        <div class="dim-metric">categoria_direccion</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0.2%; background: linear-gradient(90deg, var(--accent-yellow), var(--accent-orange));"></div>
+                        </div>
+                        <div class="dim-details">
+                            <strong>· clasif.</strong><br>
+                            <strong>99.8%</strong><br>
+                            <strong>RandomForestClassifier</strong> · solo +0.2 pp
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 4: CRITERIO PROPIO -->
+        <section class="slide" id="criterio">
+            <div class="slide-content">
+                <span class="section-tag">04 · Resultados vs. Criterio Propio</span>
+                <h2>Cada dimensión definió<br>su propio umbral de éxito</h2>
+                
+                <div class="criterion-box">
+                    <p>Cada dimensión definió su propio umbral de éxito en la <span class="criterion-highlight">Fase 1 de CRISP-DM</span> — antes de entrenar.</p>
+                    <p style="margin-top: 1.5rem;">Esto es lo que pasó al medir contra ese umbral, <span class="criterion-highlight">no contra un promedio genérico</span>.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 5: LO QUE NO ESCONDIMOS -->
+        <section class="slide" id="problemas">
+            <div class="slide-content">
+                <span class="section-tag">05 · Transparencia</span>
+                <h2>Lo que no escondimos</h2>
+                <p style="margin-bottom: 2rem;">Correrlo contra datos reales encontró tres problemas reales — un pipeline con solo números verdes no se puso a prueba de verdad.</p>
+                
+                <div class="issues-grid">
+                    <div class="glass-card issue-card issue-calidad">
+                        <span class="issue-tag">[ CALIDAD ]</span>
+                        <h3>Deduplicación fallida</h3>
+                        <p>Deduplicación por <code>flow_id</code> eliminó entre <strong style="color:var(--accent-orange)">66.5%–90%</strong> de los registros.</p>
+                        <div class="issue-stat">
+                            <span style="color: var(--accent-orange);">90%</span>
+                            <div class="issue-stat-bar">
+                                <div class="issue-stat-fill" style="width: 90%; background: var(--accent-orange);"></div>
+                            </div>
+                        </div>
+                        <div class="issue-detail">
+                            → dos tercios de las capturas de Suricata llegan <strong>repetidas</strong> al pipeline batch
+                        </div>
+                    </div>
+                    <div class="glass-card issue-card issue-cobertura">
+                        <span class="issue-tag">[ COBERTURA ]</span>
+                        <h3>Catálogo IANA insuficiente</h3>
+                        <p>El catálogo (29 puertos) solo etiqueta el <strong style="color:var(--accent-yellow)">1.7%</strong> de los flujos.</p>
+                        <div class="issue-stat">
+                            <span style="color: var(--accent-yellow);">1.7%</span>
+                            <div class="issue-stat-bar">
+                                <div class="issue-stat-fill" style="width: 1.7%; background: var(--accent-yellow);"></div>
+                            </div>
+                        </div>
+                        <div class="issue-detail">
+                            → <strong>98.3%</strong> cae en <code>otro_desconocido</code> — por eso Henyelrey no llega a +15-20 pp
+                        </div>
+                    </div>
+                    <div class="glass-card issue-card issue-diseno">
+                        <span class="issue-tag">[ DISEÑO ]</span>
+                        <h3>Desbalance en down_up_ratio</h3>
+                        <p>Concentrado en 0 → cuantiles p33 = p66 = 0.0</p>
+                        <div class="issue-stat">
+                            <span style="color: var(--accent-magenta);">99.85%</span>
+                            <div class="issue-stat-bar">
+                                <div class="issue-stat-fill" style="width: 99.85%; background: var(--accent-magenta);"></div>
+                            </div>
+                        </div>
+                        <div class="issue-detail">
+                            → "balanceado" es el <strong>99.85%</strong> de los flujos; "carga_dominante" queda vacía<br>
+                            → el <strong>99.78%</strong> de David es un artefacto del desbalance, no un modelo confiable
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 6: UNIDAD 2 -->
+        <section class="slide" id="unidad2">
+            <div class="slide-content">
+                <span class="section-tag">06 · Siguientes Pasos</span>
+                <h2>De aquí a Unidad 2</h2>
+                
+                <div class="steps-list">
+                    <div class="step-item">
+                        <div class="step-number">01</div>
+                        <div class="step-text">
+                            <h4>Corregir lo que encontramos</h4>
+                            <p>Ampliar el catálogo IANA y rediseñar la categorización de dirección antes de calibrar los modelos U2.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">02</div>
+                        <div class="step-text">
+                            <h4>Auditar la captura</h4>
+                            <p>Investigar con Suricata por qué 66-90% de los flujos llegan duplicados.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">03</div>
+                        <div class="step-text">
+                            <h4>Levantar la capa de velocidad</h4>
+                            <p>Kafka + Spark Structured Streaming sobre el mismo esquema, calibrado con la línea base de esta unidad.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">04</div>
+                        <div class="step-text">
+                            <h4>Un solo tablero</h4>
+                            <p>Los cuatro paneles U2 conviven en un único Grafana de "salud del tráfico del campus".</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-links">
+                    <a href="https://github.com/Nick-Saim-MJ/Analisis_de_trafico_de_red" target="_blank" class="btn btn-primary">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        Repositorio
+                    </a>
+                    <a href="https://Nick-Saim-MJ.github.io/Analisis_de_trafico_de_red/tree/unidad1" target="_blank" class="btn btn-secondary">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        Documentación técnica
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Navigation Dots -->
+    <div class="nav-dots" id="navDots">
+        <div class="nav-dot active" data-slide="intro" data-label="Inicio"></div>
+        <div class="nav-dot" data-slide="problema" data-label="Problema"></div>
+        <div class="nav-dot" data-slide="arquitectura" data-label="Arquitectura"></div>
+        <div class="nav-dot" data-slide="dimensiones" data-label="Dimensiones"></div>
+        <div class="nav-dot" data-slide="criterio" data-label="Criterio"></div>
+        <div class="nav-dot" data-slide="problemas" data-label="Transparencia"></div>
+        <div class="nav-dot" data-slide="unidad2" data-label="Unidad 2"></div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator" id="scrollIndicator">
+        <span>Scroll</span>
+        <div class="scroll-arrow"></div>
+    </div>
+
+    <script>
+        // =========================================
+        // NETWORK TRAFFIC CANVAS ANIMATION
+        // =========================================
+        const canvas = document.getElementById('networkCanvas');
+        const ctx = canvas.getContext('2d');
+        let animationId;
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        class Packet {
+            constructor() {
+                this.reset();
+            }
+            
+            reset() {
+                this.x = -50;
+                this.y = Math.random() * canvas.height;
+                this.speed = 1 + Math.random() * 2;
+                this.size = 2 + Math.random() * 3;
+                this.opacity = 0.3 + Math.random() * 0.4;
+                this.hue = Math.random() > 0.5 ? 180 : 330; // cyan or magenta
+            }
+            
+            update() {
+                this.x += this.speed;
+                if (this.x > canvas.width + 50) {
+                    this.reset();
+                }
+            }
+            
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `hsla(${this.hue}, 100%, 60%, ${this.opacity})`;
+                ctx.fill();
+                
+                // Glow effect
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = `hsla(${this.hue}, 100%, 60%, ${this.opacity})`;
+            }
+        }
+        
+        const packets = Array.from({ length: 30 }, () => new Packet());
+        
+        function animateNetwork() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            packets.forEach(packet => {
+                packet.update();
+                packet.draw();
+            });
+            
+            animationId = requestAnimationFrame(animateNetwork);
+        }
+        
+        animateNetwork();
+        
+        // Stop animation when page is hidden
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                cancelAnimationFrame(animationId);
+            } else {
+                animateNetwork();
+            }
+        });
+
+        // =========================================
+        // INTERSECTION OBSERVER FOR ANIMATIONS
+        // =========================================
+        const observerOptions = {
+            root: document.getElementById('slidesContainer'),
+            threshold: 0.2
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // Trigger counters if it's the intro slide
+                    if (entry.target.closest('#intro')) {
+                        animateCounters();
+                    }
+                    
+                    // Update navigation dots
+                    updateNavDots(entry.target.closest('.slide').id);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.slide-content').forEach(el => {
+            observer.observe(el);
+        });
+
+        // =========================================
+        // NAVIGATION DOTS
+        // =========================================
+        const navDots = document.querySelectorAll('.nav-dot');
+        
+        navDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const slideId = dot.getAttribute('data-slide');
+                document.getElementById(slideId).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        function updateNavDots(activeSlideId) {
+            navDots.forEach(dot => {
+                if (dot.getAttribute('data-slide') === activeSlideId) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        // =========================================
+        // ANIMATED COUNTERS
+        // =========================================
+        let countersAnimated = false;
+        function animateCounters() {
+            if (countersAnimated) return;
+            countersAnimated = true;
+
+            const counters = document.querySelectorAll('.stat-number');
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                const duration = 2000;
+                const increment = target > 1000 ? Math.ceil(target / 100) : 1;
+                const actualStepTime = Math.max(Math.floor(duration / (target / increment)), 20);
+                let current = 0;
+
+                const updateCounter = () => {
+                    current += increment;
+                    if (current >= target) {
+                        counter.textContent = target.toLocaleString();
+                    } else {
+                        counter.textContent = current.toLocaleString();
+                        setTimeout(updateCounter, actualStepTime);
+                    }
+                };
+                
+                setTimeout(updateCounter, 300);
+            });
+        }
+
+        // =========================================
+        // HIDE SCROLL INDICATOR AFTER SCROLL
+        // =========================================
+        const container = document.getElementById('slidesContainer');
+        const indicator = document.getElementById('scrollIndicator');
+        
+        container.addEventListener('scroll', () => {
+            if (container.scrollTop > 100) {
+                indicator.style.opacity = '0';
+                indicator.style.pointerEvents = 'none';
+            } else {
+                indicator.style.opacity = '0.7';
+            }
+        });
+
+        // =========================================
+        // KEYBOARD NAVIGATION (ARROWS)
+        // =========================================
+        document.addEventListener('keydown', (e) => {
+            const slides = document.querySelectorAll('.slide');
+            let currentIndex = Array.from(slides).findIndex(slide => {
+                const rect = slide.getBoundingClientRect();
+                return rect.top >= -50 && rect.top < window.innerHeight / 2;
+            });
+
+            if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+                e.preventDefault();
+                if (currentIndex < slides.length - 1) {
+                    slides[currentIndex + 1].scrollIntoView({ behavior: 'smooth' });
+                }
+            } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+                e.preventDefault();
+                if (currentIndex > 0) {
+                    slides[currentIndex - 1].scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
