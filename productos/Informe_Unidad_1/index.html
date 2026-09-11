@@ -1,0 +1,1139 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://Nick-Saim-MJ.github.io/Analisis_de_trafico_de_red/productos/Informe_Unidad_1/">
+      
+      
+        <link rel="prev" href="../../proyecto-sello/brief/">
+      
+      
+        <link rel="next" href="../Aplicacion_de_CRISPDM_al_Proyecto/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+  
+    <title>Ánalisis de tráfico de red - Informe - Unidad 1</title>
+  
+
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#informe-unidad-1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Ánalisis de tráfico de red" class="md-header__button md-logo" aria-label="Ánalisis de tráfico de red" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Ánalisis de tráfico de red
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Informe - Unidad 1
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Nick-Saim-MJ/Analisis_de_trafico_de_red" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Nick-Saim-MJ/Analisis_de_trafico_de_red
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Ánalisis de tráfico de red" class="md-nav__button md-logo" aria-label="Ánalisis de tráfico de red" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Ánalisis de tráfico de red
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Nick-Saim-MJ/Analisis_de_trafico_de_red" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Nick-Saim-MJ/Analisis_de_trafico_de_red
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Proyecto Ánalisis de tráfico de red
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Proyecto Ánalisis de tráfico de red
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../proyecto-sello/brief/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brief del Proyecto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Producto U1
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    1. Producto U1
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Informe - Unidad 1
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Informe - Unidad 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-resumen-ejecutivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Resumen ejecutivo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-arquitectura-big-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Arquitectura Big Data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-fuente-de-datos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Fuente de datos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-metodologia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Metodología
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-resultados-por-dimension" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Resultados por dimensión
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-calidad-de-datos-y-particionamiento-analitico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Calidad de datos y particionamiento analítico
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-contribucion-por-integrante" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Contribución por integrante
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-limitaciones-y-pendientes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Limitaciones y pendientes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-proximos-pasos-hacia-unidad-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Próximos pasos hacia Unidad 2
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Aplicacion_de_CRISPDM_al_Proyecto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Métodologia CRISPDM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../u1-producto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Producto U1 (S5 - u1-producto.md)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1.1 Contribución por Integrante
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    1.1 Contribución por Integrante
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contribuidores/u1_producto_nick/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Nick
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contribuidores/u1_producto_henyelrey/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Henyelrey
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contribuidores/u1_producto_jhan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Jhan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contribuidores/u1_producto_david/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    David
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-resumen-ejecutivo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Resumen ejecutivo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-arquitectura-big-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Arquitectura Big Data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-fuente-de-datos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Fuente de datos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-metodologia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Metodología
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-resultados-por-dimension" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Resultados por dimensión
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-calidad-de-datos-y-particionamiento-analitico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Calidad de datos y particionamiento analítico
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-contribucion-por-integrante" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Contribución por integrante
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-limitaciones-y-pendientes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Limitaciones y pendientes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-proximos-pasos-hacia-unidad-2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Próximos pasos hacia Unidad 2
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="informe-unidad-1">Informe — Unidad 1<a class="headerlink" href="#informe-unidad-1" title="Permanent link">&para;</a></h1>
+<p><strong>Producto U1:</strong> pipeline batch de ETL distribuido con salidas analíticas en Parquet, listas para BI/ML, sobre el dataset propio de tráfico de red del campus (equipo LLSW3, sección GU).</p>
+<h2 id="1-resumen-ejecutivo">1. Resumen ejecutivo<a class="headerlink" href="#1-resumen-ejecutivo" title="Permanent link">&para;</a></h2>
+<p>El equipo construyó la capa <strong>batch</strong> de una arquitectura <strong>Lambda</strong> para caracterizar el tráfico de red del campus universitario UPeU Juliaca, a partir de un dataset propio de ~400 000 flujos de red (83 columnas, estilo NetFlow/CICFlowMeter) capturado con <strong>Suricata</strong>. Cada integrante entrega un notebook PySpark independiente, aplicando <strong>CRISP-DM</strong> (fases 1 a 5) sobre su propia dimensión de la pregunta central del <a href="../../proyecto-sello/brief/">Brief técnico-analítico</a>:</p>
+<blockquote>
+<p>¿Cómo caracterizar el comportamiento de los flujos de tráfico de red del campus — volumen, duración, tipo de servicio y dirección dominante — para anticipar la carga esperada de la red y detectar patrones que se aparten de lo habitual, apoyando la gestión de capacidad y la vigilancia del equipo de TI?</p>
+</blockquote>
+<p>Los cuatro notebooks comparten el mismo dataset de entrada, el mismo esquema explícito y la misma disciplina de calidad de datos y particionamiento analítico (Parquet), y sus salidas convergen en un único conjunto de indicadores del tráfico del campus — la base sobre la que, en Unidad 2, se despliega la capa de velocidad (Kafka + Spark Structured Streaming).</p>
+<h2 id="2-arquitectura-big-data">2. Arquitectura Big Data<a class="headerlink" href="#2-arquitectura-big-data" title="Permanent link">&para;</a></h2>
+<p><strong>Lambda</strong>, justificada en el brief por la necesidad de reprocesar el histórico completo cada vez que se ajusta el criterio de etiquetado de la columna <code>label</code> (hoy <code>NeedLabel</code> en todos los registros) — una validación diferida por lotes, no dato por dato, que Kappa no resuelve igual de bien.</p>
+<pre class="mermaid"><code>flowchart TB
+    S[Suricata\ncaptura de flujos del campus] --&gt; H[Histórico de flujos\n~400k registros, 83 columnas]
+    S -.U2 - Unidad 2.-&gt; K[Kafka\nflujos en vivo]
+    H --&gt; B["Capa batch (este producto)\n4 notebooks PySpark / CRISP-DM"]
+    B --&gt; P[(Parquet particionado\npor dimensión)]
+    P --&gt; M[Modelos MLlib\nregresión y clasificación]
+    K -.U2 - Unidad 2.-&gt; ST[Spark Structured Streaming]
+    ST -.U2 - Unidad 2.-&gt; G[Grafana\ntablero único]
+    M -.calibra.-&gt; ST</code></pre>
+<h2 id="3-fuente-de-datos">3. Fuente de datos<a class="headerlink" href="#3-fuente-de-datos" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Batch:</strong> histórico de flujos de red del campus (~400 000 registros, 83 columnas), capturado por el pipeline Suricata del equipo. Incluye identificador de flujo, IP/puerto origen y destino, protocolo IP, timestamp, duración, estadísticas de tamaño y tasa de paquetes (fwd/bwd), tiempos entre paquetes (IAT), banderas TCP, periodos activos/inactivos, transferencias en ráfaga, subflujos, ventana TCP inicial y la columna <code>label</code> (pendiente de asignación).</li>
+<li><strong>Batch externa:</strong> catálogo IANA de puertos conocidos (<em>well-known ports</em>), usado por la dimensión de tipo de servicio para derivar una etiqueta de referencia a partir de <code>dst_port</code>.</li>
+<li><strong>Streaming (Unidad 2):</strong> los mismos flujos, publicados por Suricata vía tópicos Kafka a medida que se cierran o actualizan.</li>
+</ul>
+<h2 id="4-metodologia">4. Metodología<a class="headerlink" href="#4-metodologia" title="Permanent link">&para;</a></h2>
+<p>Los cuatro notebooks aplican <strong>CRISP-DM</strong> de forma consistente — ver el detalle completo en <a href="../Aplicacion_de_CRISPDM_al_Proyecto/">Aplicación de CRISP-DM al proyecto</a>. En resumen: comprensión del negocio (pregunta propia + criterio de éxito frente a una línea base ingenua) → comprensión de los datos (EDA sobre el esquema explícito de 83 columnas) → preparación (derivación de la variable de análisis, control de calidad, particionamiento Parquet, selección de features sin fuga de información) → modelado (comparación de 3 configuraciones por dimensión) → evaluación (métricas frente a la línea base y elección del modelo ganador).</p>
+<h2 id="5-resultados-por-dimension">5. Resultados por dimensión<a class="headerlink" href="#5-resultados-por-dimension" title="Permanent link">&para;</a></h2>
+<p>Los cuatro notebooks fueron ejecutados de punta a punta contra el dataset real (<code>TRCU.csv</code>, 397 354 flujos):</p>
+<table>
+<thead>
+<tr>
+<th>Integrante</th>
+<th>Dimensión</th>
+<th>Modelo ganador</th>
+<th>Métrica principal</th>
+<th>vs. línea base</th>
+<th>¿Cumple criterio de éxito?</th>
+<th>Notebook</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nick</td>
+<td>Volumen de tráfico (<code>bytes_per_s</code>)</td>
+<td>RandomForestRegressor</td>
+<td>R²=0.7784, RMSE=16.1M</td>
+<td>RMSE -53%</td>
+<td>Sí (R²&gt;0.5)</td>
+<td><a href="../../pyspark/producto/u1_producto_nick.ipynb">u1_producto_nick.ipynb</a></td>
+</tr>
+<tr>
+<td>Jhan</td>
+<td>Duración del flujo (<code>flow_duration</code>)</td>
+<td>RandomForestRegressor</td>
+<td>R²=0.8986, RMSE=7.39M</td>
+<td>RMSE -70.0%</td>
+<td>Sí (≥20%)</td>
+<td><a href="../../pyspark/producto/u1_producto_jhan.ipynb">u1_producto_jhan.ipynb</a></td>
+</tr>
+<tr>
+<td>Henyelrey</td>
+<td>Tipo de servicio vs. IANA</td>
+<td>RandomForestClassifier</td>
+<td>Accuracy=0.9931, F1=0.9927</td>
+<td>+2.4 pp</td>
+<td><strong>No</strong> (objetivo +15-20 pp)</td>
+<td><a href="../../pyspark/producto/u1_producto_henyelrey.ipynb">u1_producto_henyelrey.ipynb</a></td>
+</tr>
+<tr>
+<td>David</td>
+<td>Dirección dominante (<code>down_up_ratio</code>)</td>
+<td>RandomForestClassifier</td>
+<td>Accuracy=0.9978, F1=0.9974</td>
+<td>+0.20 pp</td>
+<td>Trivialmente sí (&gt;50%), pero ver hallazgo</td>
+<td><a href="../../pyspark/producto/u1_producto_david.ipynb">u1_producto_david.ipynb</a></td>
+</tr>
+</tbody>
+</table>
+<p><code>RandomForestRegressor</code>/<code>RandomForestClassifier</code> ganó las 4 comparaciones frente a <code>LinearRegression</code>/<code>LogisticRegression</code> (con y sin regularización) — señal consistente de que las relaciones entre features de flujo y las 4 variables objetivo son fuertemente no lineales. El detalle de cada dimensión (pregunta de negocio, glosario, EDA, features y hallazgos completos) está documentado en su propia <a href="../../#contenido-del-sitio">página de contribución individual</a>.</p>
+<p><strong>Notebook consolidado:</strong> <a href="../../pyspark/producto/u1_producto_consolidado.ipynb">u1_producto_consolidado.ipynb</a> reúne las 4 dimensiones en un solo documento ejecutable (una sola extracción del dataset, un bloque Fase 3→4→5 por integrante), para leer el proceso CRISP-DM completo del equipo de punta a punta. Ejecutado contra <code>TRCU.csv</code> y verificado bit a bit contra los 4 notebooks individuales — mismos resultados.</p>
+<p><strong>Hallazgos de calidad de datos que afectan la interpretación de resultados:</strong></p>
+<ul>
+<li><strong>Duplicados:</strong> entre 66.5% (Nick) y 90% (Jhan, tras filtrar duraciones &gt; 0) de los flujos capturados se eliminan al deduplicar por <code>flow_id</code> — señal a revisar en la fuente Suricata antes de escalar a Unidad 2.</li>
+<li><strong>Catálogo IANA insuficiente (Henyelrey):</strong> el catálogo simplificado solo etiqueta al 1.7% de los flujos en una categoría de servicio conocida; el 98.3% cae en <code>otro_desconocido</code>, lo que limita el margen real de mejora del modelo pese a su alta accuracy nominal.</li>
+<li><strong>Distribución degenerada de <code>down_up_ratio</code> (David):</strong> el diseño de 3 categorías por cuantiles (33/33/33) colapsa en la práctica a 2, porque <code>down_up_ratio</code> está concentrado en 0 (p33=p66=0.0) — <code>balanceado</code> termina siendo el 99.85% de los flujos y <code>carga_dominante</code> queda vacía. La categorización debe rediseñarse antes de usarse como base de U2.</li>
+</ul>
+<h2 id="6-calidad-de-datos-y-particionamiento-analitico">6. Calidad de datos y particionamiento analítico<a class="headerlink" href="#6-calidad-de-datos-y-particionamiento-analitico" title="Permanent link">&para;</a></h2>
+<p>Los cuatro notebooks aplican el mismo patrón, heredado de S03: deduplicación por <code>flow_id</code>, relleno o descarte de nulos en las columnas clave de cada dimensión, y escritura en <strong>Parquet particionado</strong> (<code>partitionBy</code> sobre <code>protocolo</code>, <code>categoria_servicio_ref</code> o <code>categoria_direccion</code> según el caso), verificado releyendo el Parquet y confirmando <code>PartitionFilters</code> en el plan de ejecución (<code>.explain(True)</code>).</p>
+<h2 id="6-contribucion-por-integrante">6. Contribución por integrante<a class="headerlink" href="#6-contribucion-por-integrante" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Nick:</strong></li>
+</ul>
+<p><strong>Evidencia. Volumen histórico de tráfico:</strong>
+<img alt="Volumen histórico de tráfico:" src="../img/nick/Comprension_de_los_datos.png" />
+<img alt="Volumen histórico de tráfico:" src="../img/nick/EDA.png" />
+<img alt="Volumen histórico de tráfico:" src="img/nick/Preparacion.png" />
+<img alt="Volumen histórico de tráfico:" src="../img/nick/Calidad_de_Datos.png" />
+<img alt="Volumen histórico de tráfico:" src="../img/nick/Ensamblado.png" />
+<img alt="Volumen histórico de tráfico:" src="../img/nick/Modelado.png" />
+<img alt="Volumen histórico de tráfico:" src="../img/nick/Evaluacion.png" />
+<img alt="Volumen histórico de tráfico:" src="../img/nick/git_push.png" />
+<img alt="Volumen histórico de tráfico:" src="../img/nick/repositorio.png" /></p>
+<ul>
+<li><strong>Jhan:</strong></li>
+</ul>
+<p><strong>Evidencia. Duración del flujo de red:</strong>
+<img alt="Duración del flujo de red:" src="../img/jhan/Screenshot_2026-09-10_231701.png" />
+<img alt="Duración del flujo de red:" src="../img/jhan/Screenshot_2026-09-10_231815.png" />
+<img alt="Duración del flujo de red:" src="../img/jhan/Screenshot_2026-09-10_232254.png" />
+<img alt="Duración del flujo de red:" src="../img/jhan/Screenshot_2026-09-10_232429.png" />
+<img alt="Duración del flujo de red:" src="../img/jhan/Screenshot_2026-09-10_232438.png" />
+<img alt="Duración del flujo de red:" src="../img/jhan/Screenshot_2026-09-10_232446.png" />
+<img alt="Duración del flujo de red:" src="../img/jhan/Screenshot_2026-09-10_232453.png" /></p>
+<ul>
+<li><strong>Henyelrey:</strong></li>
+</ul>
+<p><strong>Evidencia. Clasificacion de flujos con spark:</strong>
+<img alt="Clasificacion de flujos con spark:" src="../img/henyelrey/Calidad_de_datos_y_particionamiento_analitico.png" />
+<img alt="Clasificacion de flujos con spark:" src="../img/henyelrey/Exploracion_EDA.png" />
+<img alt="Clasificacion de flujos con spark:" src="../img/henyelrey/Selecci%C3%B3n_de_predictores_y_ensamblado_del_vector_de_features.png" />
+<img alt="Clasificacion de flujos con spark:" src="../img/henyelrey/Transformacion_y_Agregacion.png" />
+<img alt="Clasificacion de flujos con spark:" src="../img/henyelrey/Transormacion_salida.png" />
+<img alt="Clasificacion de flujos con spark:" src="../img/henyelrey/Fase_4_modelado.png" />
+<img alt="Clasificacion de flujos con spark:" src="../img/henyelrey/Fase_5_evaluacion.png" /></p>
+<ul>
+<li><strong>David:</strong>
+<strong>Dirección dominante:</strong>
+<img alt="Dirección dominante:" src="../img/david/EDA.png" />
+<img alt="Dirección dominante:" src="../img/david/PreparacionDeDatos.png" />
+<img alt="Dirección dominante:" src="../img/david/CalidadDeDatos.png" />
+<img alt="Dirección dominante:" src="../img/david/Extracci%C3%B3nConEsquemaExpl%C3%ADcito.png" />
+<img alt="Dirección dominante:" src="img/david/Transormacion_salida.png" />
+<img alt="Dirección dominante:" src="../img/david/Modelado.png" />
+<img alt="Dirección dominante:" src="../img/david/Evaluacion.png" /></li>
+</ul>
+<h2 id="7-limitaciones-y-pendientes">7. Limitaciones y pendientes<a class="headerlink" href="#7-limitaciones-y-pendientes" title="Permanent link">&para;</a></h2>
+<ul>
+<li>La columna <code>label</code> del dataset está sin asignar (<code>NeedLabel</code>) en el corte actual — la validación definitiva de etiquetas de seguridad es batch, no en vivo, y queda fuera del alcance de U1 (ver el brief, sección "fuera de alcance").</li>
+<li>La dimensión de tipo de servicio (Henyelrey) no cumple su criterio de éxito de la Fase 1 tal como está definida: el catálogo IANA simplificado necesita ampliarse para que la clasificación aporte valor más allá de predecir la clase mayoritaria.</li>
+<li>La dimensión de dirección dominante (David) necesita rediseñar su regla de categorización: el supuesto de 3 categorías balanceadas por cuantiles no se sostiene frente a la distribución real de <code>down_up_ratio</code> (fuertemente concentrada en 0).</li>
+<li>La tasa de duplicados en el histórico (66-90% según la dimensión) debe investigarse con el pipeline de captura de Suricata antes de escalar a la ingesta en vivo (Unidad 2), para no arrastrar el mismo problema al streaming.</li>
+<li>La ruta batch de este producto es la base de entrenamiento para las cuatro dimensiones U2 (streaming) declaradas en el brief; el despliegue en Spark Structured Streaming y el tablero Grafana común son contenido de Unidad 2.</li>
+</ul>
+<h2 id="8-proximos-pasos-hacia-unidad-2">8. Próximos pasos hacia Unidad 2<a class="headerlink" href="#8-proximos-pasos-hacia-unidad-2" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Ampliar el catálogo IANA de la dimensión de Henyelrey y rediseñar la categorización de dirección dominante de David, antes de calibrar sus modelos U2 con estas bases.</li>
+<li>Investigar la causa de la alta tasa de duplicados por <code>flow_id</code> en la captura de Suricata.</li>
+<li>Levantar la capa de velocidad (Kafka + Spark Structured Streaming) sobre el mismo esquema de flujos, calibrando cada modelo U2 con el modelo/línea base entrenado en esta unidad.</li>
+<li>Integrar los cuatro paneles U2 en un único tablero Grafana de "salud y comportamiento del tráfico del campus", con alertas por umbral en las dimensiones que lo requieren (volumen, dirección dominante).</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

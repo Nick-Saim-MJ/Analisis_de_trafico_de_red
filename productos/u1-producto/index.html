@@ -1,0 +1,1204 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://Nick-Saim-MJ.github.io/Analisis_de_trafico_de_red/productos/u1-producto/">
+      
+      
+        <link rel="prev" href="../Aplicacion_de_CRISPDM_al_Proyecto/">
+      
+      
+        <link rel="next" href="../../contribuidores/u1_producto_nick/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+  
+    <title>Ánalisis de tráfico de red - Producto U1 (S5 - u1-producto.md)</title>
+  
+
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#u1-productomd-pipeline-batch-de-etl-distribuido-con-salidas-analiticas-en-parquet-listas-para-biml" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Ánalisis de tráfico de red" class="md-header__button md-logo" aria-label="Ánalisis de tráfico de red" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Ánalisis de tráfico de red
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Producto U1 (S5 - u1-producto.md)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Nick-Saim-MJ/Analisis_de_trafico_de_red" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Nick-Saim-MJ/Analisis_de_trafico_de_red
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Ánalisis de tráfico de red" class="md-nav__button md-logo" aria-label="Ánalisis de tráfico de red" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Ánalisis de tráfico de red
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Nick-Saim-MJ/Analisis_de_trafico_de_red" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Nick-Saim-MJ/Analisis_de_trafico_de_red
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Proyecto Ánalisis de tráfico de red
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Proyecto Ánalisis de tráfico de red
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../proyecto-sello/brief/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brief del Proyecto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Producto U1
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    1. Producto U1
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Informe_Unidad_1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Informe - Unidad 1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Aplicacion_de_CRISPDM_al_Proyecto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Métodologia CRISPDM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Producto U1 (S5 - u1-producto.md)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Producto U1 (S5 - u1-producto.md)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-arquitectura-big-data-seleccionada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Arquitectura Big Data seleccionada
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-transformaciones-distribuidas-con-pyspark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Transformaciones distribuidas con PySpark
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-calidad-de-datos-y-particionamiento-analitico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Calidad de datos y particionamiento analítico
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-componente-ml-distribuido" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Componente ML distribuido
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-rubrica-de-evaluacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Rúbrica de evaluación
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-trazabilidad-y-procedencia-de-la-rubrica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Trazabilidad y procedencia de la rúbrica
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1.1 Contribución por Integrante
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    1.1 Contribución por Integrante
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contribuidores/u1_producto_nick/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Nick
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contribuidores/u1_producto_henyelrey/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Henyelrey
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contribuidores/u1_producto_jhan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Jhan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contribuidores/u1_producto_david/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    David
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-arquitectura-big-data-seleccionada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Arquitectura Big Data seleccionada
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-transformaciones-distribuidas-con-pyspark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Transformaciones distribuidas con PySpark
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-calidad-de-datos-y-particionamiento-analitico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Calidad de datos y particionamiento analítico
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-componente-ml-distribuido" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Componente ML distribuido
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-rubrica-de-evaluacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Rúbrica de evaluación
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-trazabilidad-y-procedencia-de-la-rubrica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Trazabilidad y procedencia de la rúbrica
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="u1-productomd-pipeline-batch-de-etl-distribuido-con-salidas-analiticas-en-parquet-listas-para-biml">u1-producto.md — Pipeline batch de ETL distribuido con salidas analíticas en Parquet listas para BI/ML<a class="headerlink" href="#u1-productomd-pipeline-batch-de-etl-distribuido-con-salidas-analiticas-en-parquet-listas-para-biml" title="Permanent link">&para;</a></h1>
+<p>Producto de Unidad 1 del sílabo, evaluado en <strong>S5</strong>, para el equipo <strong>LLSW3</strong> (sección GU), instrumento propio: tráfico de red del campus universitario (~400 000 flujos, 83 columnas, capturado vía Suricata). Este documento sigue la estructura exigida por la guía de evaluación de S5 (4 secciones + rúbrica), con el contenido real construido por el equipo entre S1 y S4 sobre su propio instrumento — no sobre los datasets de ejemplo del docente (H&amp;M, campo eléctrico/magnético).</p>
+<p>La sustentación de S5 es <strong>individual</strong>: cada integrante defiende su propia dimensión U1 (ver <a href="../../proyecto-sello/brief/">Brief técnico-analítico</a>, sección 3, y la <a href="../../#contenido-del-sitio">página de contribución</a> de cada uno). Este documento consolida las cuatro dimensiones a nivel de equipo, tal como lo pide la plantilla.</p>
+<h2 id="1-arquitectura-big-data-seleccionada">1. Arquitectura Big Data seleccionada<a class="headerlink" href="#1-arquitectura-big-data-seleccionada" title="Permanent link">&para;</a></h2>
+<p><strong>Arquitectura: Lambda.</strong></p>
+<pre class="mermaid"><code>flowchart TB
+    S[Suricata\ncaptura de flujos del campus] --&gt; H[Histórico de flujos\n~400k registros, 83 columnas]
+    S -.U2 - Unidad 2.-&gt; K[Kafka\nflujos en vivo]
+    H --&gt; B["Capa batch (este producto)\nPySpark + Spark MLlib"]
+    B --&gt; P[(Parquet particionado\npor dimensión)]
+    P --&gt; M[Modelos MLlib\nregresión y clasificación]
+    K -.U2 - Unidad 2.-&gt; ST[Spark Structured Streaming]
+    ST -.U2 - Unidad 2.-&gt; G[Grafana\ntablero único]
+    M -.calibra.-&gt; ST</code></pre>
+<ul>
+<li><strong>Justificación (S1):</strong> el corpus histórico (~400 000 flujos) requiere reprocesamiento batch para control de calidad, consistencia de features y, sobre todo, para la asignación definitiva de la columna <code>label</code> (hoy <code>NeedLabel</code> en todos los registros), que se valida por lotes cuando el criterio de etiquetado se ajusta — no dato por dato. Kappa no resuelve bien esa recomputación diferida sobre el histórico completo; Lambda separa capa batch (este producto) y capa de velocidad (Kafka, Unidad 2) precisamente para eso.</li>
+<li><strong>Tecnologías propuestas:</strong> PySpark (extracción, transformación, MLlib) sobre Docker/Jupyter para la capa batch; Kafka + Spark Structured Streaming + Grafana para la capa de velocidad en Unidad 2.</li>
+<li><strong>Supuestos:</strong> el esquema de 83 columnas del dataset Suricata es estable entre capturas; el catálogo IANA de puertos usado como referencia externa no cambia con frecuencia; los cuatro integrantes comparten el mismo archivo histórico como fuente batch.</li>
+<li><strong>Riesgos:</strong> la columna <code>label</code> sin asignar limita cualquier análisis de seguridad hasta que se complete el etiquetado por lotes; un cambio en el orden de columnas del CSV real rompería el <code>StructType</code> explícito en silencio (mitigado con el <code>assert</code> contra el header real, ver sección 2); el volumen de ~400 000 filas exige verificar que el particionamiento (sección 3) no genere demasiados archivos pequeños.</li>
+</ul>
+<h2 id="2-transformaciones-distribuidas-con-pyspark">2. Transformaciones distribuidas con PySpark<a class="headerlink" href="#2-transformaciones-distribuidas-con-pyspark" title="Permanent link">&para;</a></h2>
+<p>Los cuatro notebooks parten del <strong>mismo esquema explícito</strong> (<code>StructType</code> con las 83 columnas del dataset) y de la misma disciplina de extracción documentada en S03: con <code>header=True</code> + esquema explícito, Spark asigna los campos <strong>por posición</strong>, no por nombre — si el orden de <code>StructField</code> no coincide con el orden físico del CSV, los valores se corrompen en silencio. Cada notebook valida el header real contra el esquema declarado (<code>assert</code>) antes de continuar.</p>
+<p>Cada integrante deriva y transforma una variable propia de su dimensión, y confirma con <code>.explain(True)</code> el punto en que Spark deja de ser perezoso (lazy evaluation):</p>
+<table>
+<thead>
+<tr>
+<th>Integrante</th>
+<th>Transformación principal (<code>withColumn</code>/<code>join</code>/<code>when</code>)</th>
+<th>Agregación (<code>groupBy</code>/<code>agg</code>)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nick</td>
+<td>Deriva <code>protocolo</code> (TCP/UDP/OTRO) desde <code>ip_prot</code>; filtra <code>bytes_per_s</code> no nulo</td>
+<td><code>bytes_per_s</code> promedio y máximo por protocolo</td>
+</tr>
+<tr>
+<td>Jhan</td>
+<td>Deriva <code>protocolo</code> desde <code>ip_prot</code>; filtra <code>flow_duration</code> no nulo y &gt; 0</td>
+<td>Duración promedio y mediana (<code>percentile_approx</code>) por protocolo</td>
+</tr>
+<tr>
+<td>Henyelrey</td>
+<td><code>join</code> contra catálogo IANA por <code>dst_port</code> → deriva <code>categoria_servicio_ref</code></td>
+<td>Distribución de flujos por categoría de servicio</td>
+</tr>
+<tr>
+<td>David</td>
+<td>Calcula cuantiles (p33/p66) de <code>down_up_ratio</code> → deriva <code>categoria_direccion</code></td>
+<td>Distribución de flujos por categoría de dirección</td>
+</tr>
+</tbody>
+</table>
+<p>El detalle completo de extracción, funciones y evidencia de plan de ejecución de cada dimensión vive en su propio notebook (<code>pyspark/producto/u1_producto_&lt;integrante&gt;.ipynb</code>) y en su página de contribución individual.</p>
+<h2 id="3-calidad-de-datos-y-particionamiento-analitico">3. Calidad de datos y particionamiento analítico<a class="headerlink" href="#3-calidad-de-datos-y-particionamiento-analitico" title="Permanent link">&para;</a></h2>
+<p>Los cuatro notebooks aplican el mismo patrón de control de calidad sobre su propio recorte del histórico:</p>
+<table>
+<thead>
+<tr>
+<th>Integrante</th>
+<th>Duplicados</th>
+<th>Nulos</th>
+<th>Partición Parquet</th>
+<th>Verificación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nick</td>
+<td><code>dropDuplicates(["flow_id"])</code></td>
+<td><code>na.fill</code> en <code>bytes_per_s</code>, <code>pkt_len_mean</code>, <code>iat_mean</code>, <code>active_mean</code>, <code>idle_mean</code></td>
+<td><code>partitionBy("protocolo")</code></td>
+<td>Relectura del Parquet + <code>PartitionFilters</code> en <code>.explain(True)</code> filtrando por <code>protocolo</code></td>
+</tr>
+<tr>
+<td>Jhan</td>
+<td><code>dropDuplicates(["flow_id"])</code></td>
+<td><code>na.fill</code> en <code>flow_duration</code>, <code>iat_mean</code>, <code>fwd_iat_mean</code>, <code>bwd_iat_mean</code>, conteos fwd/bwd</td>
+<td><code>partitionBy("protocolo")</code></td>
+<td>Relectura del Parquet + <code>PartitionFilters</code></td>
+</tr>
+<tr>
+<td>Henyelrey</td>
+<td><code>dropDuplicates(["flow_id"])</code></td>
+<td><code>na.drop(subset=["categoria_servicio_ref"])</code></td>
+<td><code>partitionBy("categoria_servicio_ref")</code></td>
+<td>Relectura del Parquet + <code>PartitionFilters</code> filtrando por <code>web</code></td>
+</tr>
+<tr>
+<td>David</td>
+<td><code>dropDuplicates(["flow_id"])</code></td>
+<td><code>na.drop(subset=["down_up_ratio", "categoria_direccion"])</code></td>
+<td><code>partitionBy("categoria_direccion")</code></td>
+<td>Relectura del Parquet + <code>PartitionFilters</code> filtrando por <code>descarga_dominante</code></td>
+</tr>
+</tbody>
+</table>
+<p>Cada salida se escribe en <code>artifacts/&lt;integrante&gt;/flujos_particionado</code> (Parquet), con el conteo de filas confirmado antes y después de la deduplicación/limpieza, y el plan de ejecución (<code>.explain(True)</code>) usado para confirmar que el filtro por columna de partición evita leer particiones innecesarias.</p>
+<h2 id="4-componente-ml-distribuido">4. Componente ML distribuido<a class="headerlink" href="#4-componente-ml-distribuido" title="Permanent link">&para;</a></h2>
+<p>Los 4 notebooks fueron ejecutados de punta a punta contra el dataset real (<code>TRCU.csv</code>, 397 354 flujos) dentro del laboratorio Docker:</p>
+<table>
+<thead>
+<tr>
+<th>Integrante</th>
+<th>Variable objetivo</th>
+<th>Configuraciones comparadas</th>
+<th>Línea base</th>
+<th>Modelo ganador y métricas</th>
+<th>Modelo guardado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nick</td>
+<td><code>bytes_per_s</code></td>
+<td><code>LinearRegression</code> (base, Ridge, Lasso, Elastic Net) + <code>RandomForestRegressor</code></td>
+<td>Promedio histórico → RMSE=34.2M</td>
+<td><code>RandomForestRegressor</code>: R²=0.7784, RMSE=16.1M (-53%)</td>
+<td><code>artifacts/nick/modelo_volumen</code></td>
+</tr>
+<tr>
+<td>Jhan</td>
+<td><code>flow_duration</code></td>
+<td><code>LinearRegression</code> (base, Elastic Net) + <code>RandomForestRegressor</code></td>
+<td>Mediana histórica → RMSE=24.7M</td>
+<td><code>RandomForestRegressor</code>: R²=0.8986, RMSE=7.39M (-70.0%)</td>
+<td><code>artifacts/jhan/modelo_duracion</code></td>
+</tr>
+<tr>
+<td>Henyelrey</td>
+<td><code>categoria_servicio_ref</code> (vs. IANA)</td>
+<td><code>LogisticRegression</code> (base, Elastic Net) + <code>RandomForestClassifier</code></td>
+<td>Clase mayoritaria → Accuracy=0.9696</td>
+<td><code>RandomForestClassifier</code>: Accuracy=0.9931, F1=0.9927 (+2.4 pp)</td>
+<td><code>artifacts/henyelrey/modelo_servicio</code></td>
+</tr>
+<tr>
+<td>David</td>
+<td><code>categoria_direccion</code> (de <code>down_up_ratio</code>)</td>
+<td><code>LogisticRegression</code> (base, Elastic Net) + <code>RandomForestClassifier</code></td>
+<td>Clase mayoritaria → Accuracy=0.9958</td>
+<td><code>RandomForestClassifier</code>: Accuracy=0.9978, F1=0.9974 (+0.20 pp)</td>
+<td><code>artifacts/david/modelo_direccion</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>RandomForestRegressor</code>/<code>RandomForestClassifier</code> ganó en las 4 dimensiones frente a los modelos lineales/logísticos — la relación entre las features del flujo y las 4 variables objetivo es marcadamente no lineal. Todos usan <code>VectorAssembler</code> para ensamblar el vector de features, excluyendo a propósito columnas que causarían fuga de información (<code>dst_port</code>/<code>src_port</code> en la dimensión de Henyelrey; las columnas de tamaño/bytes en la dimensión de David), y evalúan con <code>RegressionEvaluator</code> (RMSE/R²/MAE) o <code>MulticlassClassificationEvaluator</code> (accuracy/F1/precisión ponderada) frente a la línea base ingenua definida en la Fase 1 de CRISP-DM de cada notebook (ver <a href="../Aplicacion_de_CRISPDM_al_Proyecto/">Aplicación de CRISP-DM al proyecto</a>). El modelo guardado en cada notebook coincide con el de mejor desempeño (selección automática por menor RMSE / mayor F1, no manual).</p>
+<p><strong>Dos hallazgos condicionan la lectura de "cumple/no cumple" el criterio de éxito:</strong> la dimensión de Henyelrey no alcanza el margen de +15-20 pp definido en su Fase 1 porque el catálogo IANA simplificado solo etiqueta al 1.7% de los flujos en una categoría conocida; y la dimensión de David tiene un accuracy nominal muy alto porque el diseño de 3 categorías por cuantiles colapsó a 2 (99.85% de los flujos cae en "balanceado"), no porque el modelo prediga bien la dirección dominante real. Ambos casos están documentados con el detalle completo en sus respectivos notebooks y páginas de contribución.</p>
+<h2 id="5-rubrica-de-evaluacion">5. Rúbrica de evaluación<a class="headerlink" href="#5-rubrica-de-evaluacion" title="Permanent link">&para;</a></h2>
+<p>Tabla 3. Rúbrica de evaluación de la Unidad 1 — cita literal del sílabo de Big Data (el séptimo criterio, Sustentación, es transversal — Competencia General, no CE04). Evidencia del equipo en la columna derecha; la casilla "Calificación obtenida" queda para el docente.</p>
+<table>
+<thead>
+<tr>
+<th>Criterio</th>
+<th>Peso</th>
+<th>CE / Nivel</th>
+<th>A (20 pts)</th>
+<th>B (15 pts)</th>
+<th>C (10 pts)</th>
+<th>D (5 pts)</th>
+<th>Evidencia del equipo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Arquitectura Big Data seleccionada y justificada</td>
+<td>12%</td>
+<td>CE042-N3</td>
+<td>Arquitectura (Lambda o Kappa) elegida con justificación clara frente al caso de negocio del Proyecto Sello.</td>
+<td>Arquitectura elegida, con justificación parcial.</td>
+<td>Arquitectura mencionada, sin justificación clara.</td>
+<td>No presenta una arquitectura elegida.</td>
+<td>Sección 1 de este documento + <a href="../../proyecto-sello/brief/">Brief técnico-analítico</a>, sección 2 (Lambda, justificada por la validación por lotes de <code>label</code>).</td>
+</tr>
+<tr>
+<td>2. Uso correcto de Spark/PySpark para extracción, transformación, agregación y procesamiento distribuido</td>
+<td>16%</td>
+<td>CE042-N3</td>
+<td>Extracción, transformaciones, agregaciones y RDD aplicados correctamente, con evidencia del plan de ejecución.</td>
+<td>La mayoría de estos elementos funciona, con detalles menores.</td>
+<td>Uso parcial o con errores de PySpark.</td>
+<td>No evidencia procesamiento distribuido funcional.</td>
+<td>Sección 2 + los 4 notebooks, cada uno con <code>.explain(True)</code> mostrando el plan antes/después del filtro.</td>
+</tr>
+<tr>
+<td>3. Datos cargados y particionados en formatos analíticos</td>
+<td>16%</td>
+<td>CE042-N3</td>
+<td>Salida Parquet particionada, verificada con lectura de vuelta y <code>PartitionFilters</code> confirmado.</td>
+<td>Salida particionada y verificada, con algún detalle menor.</td>
+<td>Escritura particionada incompleta o sin verificación.</td>
+<td>No escribe salida particionada.</td>
+<td>Sección 3 — Parquet particionado por dimensión, releído y verificado con <code>PartitionFilters</code> en las 4 dimensiones.</td>
+</tr>
+<tr>
+<td>4. Pipeline batch reproducible</td>
+<td>12%</td>
+<td>CE042-N3</td>
+<td>El notebook corre de punta a punta sin intervención manual, sobre el instrumento real de tu propia dimensión.</td>
+<td>El notebook corre con ajustes menores necesarios.</td>
+<td>El notebook corre solo parcialmente.</td>
+<td>El notebook no es reproducible.</td>
+<td>Los 4 notebooks (+ el <a href="../../pyspark/producto/u1_producto_consolidado.ipynb">notebook consolidado</a>) ejecutados de punta a punta contra <code>TRCU.csv</code> real, sin intervención manual — selección y guardado del modelo ganador automáticos.</td>
+</tr>
+<tr>
+<td>5. Primer componente ML distribuido con métricas básicas</td>
+<td>16%</td>
+<td>CE043-N3 (parcial)</td>
+<td>Modelo entrenado, evaluado con al menos tres métricas, comparado contra una configuración alternativa, y el ganador guardado.</td>
+<td>Modelo entrenado y evaluado, con comparación o guardado incompletos.</td>
+<td>Modelo entrenado, sin comparación clara.</td>
+<td>No presenta un modelo entrenado.</td>
+<td>Sección 4 — 8 modelos (3-5 configuraciones × 4 dimensiones), evaluados con 3 métricas cada uno, ganador guardado en <code>artifacts/&lt;integrante&gt;/modelo_*</code>.</td>
+</tr>
+<tr>
+<td>6. Evidencias técnicas y documentación de ejecución</td>
+<td>8%</td>
+<td>CE042-N3 (apoyo)</td>
+<td>Evidencias completas, reproducibles por otra persona, con documentación clara y reloj/usuario visibles.</td>
+<td>Evidencias suficientes, con vacíos menores de documentación.</td>
+<td>Evidencias parciales o poco reproducibles.</td>
+<td>No presenta evidencias ni documentación.</td>
+<td>Notebooks ejecutados + logs de ejecución reales (Docker) documentados en las <a href="../../#contenido-del-sitio">páginas de contribución</a>. <strong>Falta la captura de pantalla con reloj del sistema y usuario/perfil visibles</strong> — ver nota más abajo.</td>
+</tr>
+<tr>
+<td>7. Sustentación</td>
+<td>20%</td>
+<td>CG</td>
+<td>Sustenta con claridad y profesionalismo su aporte individual, respondiendo con precisión las preguntas del jurado.</td>
+<td>Sustenta con solvencia, con detalles menores en claridad, orden o precisión.</td>
+<td>Sustenta con dificultad; claridad, orden o precisión insuficientes.</td>
+<td>No sustenta adecuadamente ni demuestra su aporte individual.</td>
+<td>Pendiente — requiere defensa en vivo, no autoevaluable desde el repositorio.</td>
+</tr>
+</tbody>
+</table>
+<p>Nota final = suma de (Peso × Puntos de la calificación obtenida) / 100 × 20.</p>
+<p>Tabla 4. Subaspectos de la sustentación (Unidad 1) — mismos 6 subaspectos de la sustentación integral del Proyecto Sello, exigibles desde esta primera sustentación:</p>
+<table>
+<thead>
+<tr>
+<th>Subaspecto</th>
+<th>Qué observa en Unidad 1</th>
+<th>Estado en el repositorio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Aporte individual</td>
+<td>Cada integrante demuestra su propia dimensión U1 — no el trabajo del resto del equipo.</td>
+<td>Cubierto: 4 notebooks + 4 páginas de contribución, uno por integrante y dimensión.</td>
+</tr>
+<tr>
+<td>2. Comunicación y orden</td>
+<td>Claridad, estructura, tiempo y lenguaje técnico durante la presentación.</td>
+<td>Pendiente — se evalúa en vivo.</td>
+</tr>
+<tr>
+<td>3. Presentación personal y actitud</td>
+<td>Puntualidad, vestimenta, actitud profesional durante la sustentación.</td>
+<td>Pendiente — se evalúa en vivo.</td>
+</tr>
+<tr>
+<td>4. Repositorio y estándares</td>
+<td>Topics académicos configurados desde S2, organización, commits y reproducibilidad del notebook.</td>
+<td>Cubierto: topics declarados en el brief (sección 1); pendiente confirmar que estén configurados en GitHub.</td>
+</tr>
+<tr>
+<td>5. MkDocs o equivalente</td>
+<td>Documentación de tu dimensión U1 publicada, navegable y alineada con <code>u1-producto.md</code>.</td>
+<td>Cubierto: sitio MkDocs con brief, informe, CRISP-DM, este documento y las 4 páginas de contribución.</td>
+</tr>
+<tr>
+<td>6. Pitch/demo ejecutiva</td>
+<td>Introducción breve con apoyo visual (no reemplaza la demo técnica).</td>
+<td>Cubierto: pitch ejecutivo HTML del equipo (fuera de este repositorio de código, enlazado desde la presentación).</td>
+</tr>
+</tbody>
+</table>
+<h2 id="6-trazabilidad-y-procedencia-de-la-rubrica">6. Trazabilidad y procedencia de la rúbrica<a class="headerlink" href="#6-trazabilidad-y-procedencia-de-la-rubrica" title="Permanent link">&para;</a></h2>
+<p>Los primeros seis criterios son cita literal de los criterios de evaluación del producto de la Unidad I en el sílabo de Big Data; el séptimo (Sustentación) corresponde a la sustentación exigida por el mismo sílabo (sesión 5, actividad 2).</p>
+<p>Con la malla curricular: los criterios 1-4 (arquitectura, PySpark, particionamiento, pipeline reproducible) son la evidencia completa del <strong>Nivel 3 de CE042</strong> ("Construye Dataset"). El criterio 5 (primer componente ML) es la <strong>primera mitad del Nivel 3 de CE043</strong> ("Genera Modelos") — la segunda mitad ("entrena y visualiza un modelo de predicción de series de tiempo") se completa en Unidad 2 (S10). <strong>El Nivel 3 de CE044 ("Analiza y Define Estrategias") todavía no se evidencia aquí</strong> — a propósito: requiere visualizar la predicción junto a KPIs de negocio, contenido de S11 (Unidad 2), y este producto es exclusivamente la ruta batch de Unidad 1. El criterio 7 (Sustentación) es transversal y no forma parte de la definición de ninguna competencia CE04.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
