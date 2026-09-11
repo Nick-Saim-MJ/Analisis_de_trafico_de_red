@@ -8,7 +8,7 @@ RUN apt-get update && \
 ENV JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
 ENV PATH="${JAVA_HOME}/bin:${PATH}"
 
-RUN pip install --no-cache-dir pyspark==4.2.0 notebook==7.6.2 pandas==2.3.3
+RUN pip install --no-cache-dir pyspark==4.2.0 notebook==7.6.2 pandas==2.3.3 pyarrow==18.1.0
 
 WORKDIR /opt
 

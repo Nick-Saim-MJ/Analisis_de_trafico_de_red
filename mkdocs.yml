@@ -1,22 +1,24 @@
-site_name: Big Data
-site_url: https://262bigdata.github.io/lambda26/
-repo_url: https://github.com/262bigdata/lambda26
-repo_name: 262bigdata/lambda26
+site_name: Ánalisis de tráfico de red
+site_url: https://Nick-Saim-MJ.github.io/Analisis_de_trafico_de_red/
+repo_url: https://github.com/Nick-Saim-MJ/Analisis_de_trafico_de_red
+repo_name: Nick-Saim-MJ/Analisis_de_trafico_de_red
 docs_dir: docs
 
 nav:
   - Inicio: index.md
-  - Guía de Proyecto Sello:
-      - Guía del proyecto: proyecto-sello/index.md
-      - Brief técnico-analítico (plantilla): proyecto-sello/brief.md
-  - Silabos:
-      - Silabo 2026-1: silabo_bigdata_2026_1.md
-      - Silabo 2026-2: silabo_bigdata_2026_2.md
-  - 1. Arquitecturas Big Data y ETL batch distribuido:
-      - "S1 - Arquitectura Big Data: Lambda y Kappa, batch vs. streaming": sesiones/S01_Arquitectura_Big_Data_Lambda_Kappa.md
-      - "S2 - Fundamentos PySpark: transformaciones, funciones, agrupaciones y evaluación perezosa": sesiones/S02_Fundamentos_PySpark_Transformaciones_Lazy_Evaluation.md
-      - "S3 - Procesamiento y Calidad de Datos: filtrado, duplicados, nulos y particionamiento analítico": sesiones/S03_Procesamiento_Calidad_Datos_Particionamiento.md
+  - Proyecto Ánalisis de tráfico de red:
+      - Brief del Proyecto: proyecto-sello/brief.md
 
+  - 1. Producto U1:
+      - "Informe - Unidad 1": productos/Informe_Unidad_1.md
+      - "Métodologia CRISPDM": productos/Aplicacion_de_CRISPDM_al_Proyecto.md
+      - "Producto U1 (S5 - u1-producto.md)": productos/u1-producto.md
+
+      - 1.1 Contribución por Integrante:
+          - "Nick": contribuidores/u1_producto_nick.md
+          - "Henyelrey": contribuidores/u1_producto_henyelrey.md
+          - "Jhan": contribuidores/u1_producto_jhan.md
+          - "David": contribuidores/u1_producto_david.md
 theme:
   name: material
   custom_dir: overrides

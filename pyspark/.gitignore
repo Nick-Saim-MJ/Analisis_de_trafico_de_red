@@ -19,10 +19,13 @@ __pycache__/
 venv/
 ENV/
 
-# Datasets reales por sesión: demasiado grandes para git (algunos superan el
-# límite duro de GitHub de 100MB). Se descargan/copian manualmente, ver la
-# guía de cada sesión (S2, S3, ...) — aplica a cualquier sesión futura.
-sesiones/*/data/
+# Dataset real del proyecto (TRCU.csv, ~154MB): supera el límite duro de
+# GitHub de 100MB, no se versiona. Se copia manualmente en data/ antes de
+# levantar el laboratorio.
+data/
+
+# Salidas generadas al correr los notebooks (Parquet por integrante)
+artifacts/
 
 # Docker
 *.log
