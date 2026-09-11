@@ -1,15 +1,17 @@
-name: lambda26-pyspark
+name: trafico-red-pyspark
 
 services:
   pyspark:
-    container_name: lambda26-pyspark
+    container_name: trafico-red-pyspark
     build:
       context: .
     restart: unless-stopped
     ports:
       - "4488:8888"
-      - "4042:4040"
+      - "4045:4042"
     volumes:
-      - ./sesiones:/opt
+      - ./data:/opt/data
+      - ./producto:/opt/producto
+      - ./artifacts:/opt/artifacts
     environment:
       - JUPYTER_TOKEN=sintoken
