@@ -2,7 +2,7 @@
 
 **Dimensión:** Volumen de tráfico por flujo (`bytes_per_s`) — U1 batch, regresión
 **Rol en el equipo:** Arquitectura Lambda y observabilidad general, coordinación técnica
-**Notebook:** [u1_producto_nick.ipynb](../../pyspark/producto/u1_producto_nick.ipynb)
+**Notebook:** [u1_producto_nick.ipynb](https://github.com/Nick-Saim-MJ/Analisis_de_trafico_de_red/blob/main/pyspark/producto/u1_producto_nick.ipynb)
 
 ## Fase 1 — Comprensión del negocio
 

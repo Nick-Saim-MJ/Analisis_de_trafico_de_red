@@ -2,7 +2,7 @@
 
 **Dimensión:** Duración del flujo de red (`flow_duration`) — U1 batch, regresión
 **Rol en el equipo:** Streaming / Kafka
-**Notebook:** [u1_producto_jhan.ipynb](../../pyspark/producto/u1_producto_jhan.ipynb)
+**Notebook:** [u1_producto_jhan.ipynb](https://github.com/Nick-Saim-MJ/Analisis_de_trafico_de_red/blob/main/pyspark/producto/u1_producto_jhan.ipynb)
 
 ## Fase 1 — Comprensión del negocio
 

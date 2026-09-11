@@ -2,7 +2,7 @@
 
 **Dimensión:** Tipo de servicio del flujo vs. catálogo IANA de puertos — U1 batch, clasificación
 **Rol en el equipo:** Batch / Spark y fuentes externas
-**Notebook:** [u1_producto_henyelrey.ipynb](../../pyspark/producto/u1_producto_henyelrey.ipynb)
+**Notebook:** [u1_producto_henyelrey.ipynb](https://github.com/Nick-Saim-MJ/Analisis_de_trafico_de_red/blob/main/pyspark/producto/u1_producto_henyelrey.ipynb)
 
 ## Fase 1 — Comprensión del negocio
 

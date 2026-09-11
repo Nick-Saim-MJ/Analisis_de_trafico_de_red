@@ -42,14 +42,14 @@ Los cuatro notebooks fueron ejecutados de punta a punta contra el dataset real (
 
 | Integrante | Dimensión | Modelo ganador | Métrica principal | vs. línea base | ¿Cumple criterio de éxito? | Notebook |
 |---|---|---|---|---|---|---|
-| Nick | Volumen de tráfico (`bytes_per_s`) | RandomForestRegressor | R²=0.7784, RMSE=16.1M | RMSE -53% | Sí (R²>0.5) | [u1_producto_nick.ipynb](../../pyspark/producto/u1_producto_nick.ipynb) |
-| Jhan | Duración del flujo (`flow_duration`) | RandomForestRegressor | R²=0.8986, RMSE=7.39M | RMSE -70.0% | Sí (≥20%) | [u1_producto_jhan.ipynb](../../pyspark/producto/u1_producto_jhan.ipynb) |
-| Henyelrey | Tipo de servicio vs. IANA | RandomForestClassifier | Accuracy=0.9931, F1=0.9927 | +2.4 pp | **No** (objetivo +15-20 pp) | [u1_producto_henyelrey.ipynb](../../pyspark/producto/u1_producto_henyelrey.ipynb) |
-| David | Dirección dominante (`down_up_ratio`) | RandomForestClassifier | Accuracy=0.9978, F1=0.9974 | +0.20 pp | Trivialmente sí (>50%), pero ver hallazgo | [u1_producto_david.ipynb](../../pyspark/producto/u1_producto_david.ipynb) |
+| Nick | Volumen de tráfico (`bytes_per_s`) | RandomForestRegressor | R²=0.7784, RMSE=16.1M | RMSE -53% | Sí (R²>0.5) | [u1_producto_nick.ipynb](https://github.com/Nick-Saim-MJ/Analisis_de_trafico_de_red/blob/main/pyspark/producto/u1_producto_nick.ipynb) |
+| Jhan | Duración del flujo (`flow_duration`) | RandomForestRegressor | R²=0.8986, RMSE=7.39M | RMSE -70.0% | Sí (≥20%) | [u1_producto_jhan.ipynb](https://github.com/Nick-Saim-MJ/Analisis_de_trafico_de_red/blob/main/pyspark/producto/u1_producto_jhan.ipynb) |
+| Henyelrey | Tipo de servicio vs. IANA | RandomForestClassifier | Accuracy=0.9931, F1=0.9927 | +2.4 pp | **No** (objetivo +15-20 pp) | [u1_producto_henyelrey.ipynb](https://github.com/Nick-Saim-MJ/Analisis_de_trafico_de_red/blob/main/pyspark/producto/u1_producto_henyelrey.ipynb) |
+| David | Dirección dominante (`down_up_ratio`) | RandomForestClassifier | Accuracy=0.9978, F1=0.9974 | +0.20 pp | Trivialmente sí (>50%), pero ver hallazgo | [u1_producto_david.ipynb](https://github.com/Nick-Saim-MJ/Analisis_de_trafico_de_red/blob/main/pyspark/producto/u1_producto_david.ipynb) |
 
 `RandomForestRegressor`/`RandomForestClassifier` ganó las 4 comparaciones frente a `LinearRegression`/`LogisticRegression` (con y sin regularización) — señal consistente de que las relaciones entre features de flujo y las 4 variables objetivo son fuertemente no lineales. El detalle de cada dimensión (pregunta de negocio, glosario, EDA, features y hallazgos completos) está documentado en su propia [página de contribución individual](../index.md#contenido-del-sitio).
 
-**Notebook consolidado:** [u1_producto_consolidado.ipynb](../../pyspark/producto/u1_producto_consolidado.ipynb) reúne las 4 dimensiones en un solo documento ejecutable (una sola extracción del dataset, un bloque Fase 3→4→5 por integrante), para leer el proceso CRISP-DM completo del equipo de punta a punta. Ejecutado contra `TRCU.csv` y verificado bit a bit contra los 4 notebooks individuales — mismos resultados.
+**Notebook consolidado:** [u1_producto_consolidado.ipynb](https://github.com/Nick-Saim-MJ/Analisis_de_trafico_de_red/blob/main/pyspark/producto/u1_producto_consolidado.ipynb) reúne las 4 dimensiones en un solo documento ejecutable (una sola extracción del dataset, un bloque Fase 3→4→5 por integrante), para leer el proceso CRISP-DM completo del equipo de punta a punta. Ejecutado contra `TRCU.csv` y verificado bit a bit contra los 4 notebooks individuales — mismos resultados.
 
 **Hallazgos de calidad de datos que afectan la interpretación de resultados:**
 
@@ -61,7 +61,7 @@ Los cuatro notebooks fueron ejecutados de punta a punta contra el dataset real (
 
 Los cuatro notebooks aplican el mismo patrón, heredado de S03: deduplicación por `flow_id`, relleno o descarte de nulos en las columnas clave de cada dimensión, y escritura en **Parquet particionado** (`partitionBy` sobre `protocolo`, `categoria_servicio_ref` o `categoria_direccion` según el caso), verificado releyendo el Parquet y confirmando `PartitionFilters` en el plan de ejecución (`.explain(True)`).
 
-## 6. Contribución por integrante
+## 7. Contribución por integrante
 
 - **Nick:**
 
@@ -106,12 +106,11 @@ Los cuatro notebooks aplican el mismo patrón, heredado de S03: deduplicación p
 ![Dirección dominante:](img/david/PreparacionDeDatos.png)
 ![Dirección dominante:](img/david/CalidadDeDatos.png)
 ![Dirección dominante:](img/david/ExtracciónConEsquemaExplícito.png)
-![Dirección dominante:](img/david/Transormacion_salida.png)
 ![Dirección dominante:](img/david/Modelado.png)
 ![Dirección dominante:](img/david/Evaluacion.png)
 
 
-## 7. Limitaciones y pendientes
+## 8. Limitaciones y pendientes
 
 - La columna `label` del dataset está sin asignar (`NeedLabel`) en el corte actual — la validación definitiva de etiquetas de seguridad es batch, no en vivo, y queda fuera del alcance de U1 (ver el brief, sección "fuera de alcance").
 - La dimensión de tipo de servicio (Henyelrey) no cumple su criterio de éxito de la Fase 1 tal como está definida: el catálogo IANA simplificado necesita ampliarse para que la clasificación aporte valor más allá de predecir la clase mayoritaria.
@@ -119,7 +118,7 @@ Los cuatro notebooks aplican el mismo patrón, heredado de S03: deduplicación p
 - La tasa de duplicados en el histórico (66-90% según la dimensión) debe investigarse con el pipeline de captura de Suricata antes de escalar a la ingesta en vivo (Unidad 2), para no arrastrar el mismo problema al streaming.
 - La ruta batch de este producto es la base de entrenamiento para las cuatro dimensiones U2 (streaming) declaradas en el brief; el despliegue en Spark Structured Streaming y el tablero Grafana común son contenido de Unidad 2.
 
-## 8. Próximos pasos hacia Unidad 2
+## 9. Próximos pasos hacia Unidad 2
 
 1. Ampliar el catálogo IANA de la dimensión de Henyelrey y rediseñar la categorización de dirección dominante de David, antes de calibrar sus modelos U2 con estas bases.
 2. Investigar la causa de la alta tasa de duplicados por `flow_id` en la captura de Suricata.

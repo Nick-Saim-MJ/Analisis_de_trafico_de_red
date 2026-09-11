@@ -2,7 +2,7 @@
 
 **Dimensión:** Dirección dominante del flujo (`down_up_ratio`) — U1 batch, clasificación (ángulo BI)
 **Rol en el equipo:** BI / ML
-**Notebook:** [u1_producto_david.ipynb](../../pyspark/producto/u1_producto_david.ipynb)
+**Notebook:** [u1_producto_david.ipynb](https://github.com/Nick-Saim-MJ/Analisis_de_trafico_de_red/blob/main/pyspark/producto/u1_producto_david.ipynb)
 
 ## Fase 1 — Comprensión del negocio
 
