@@ -1,0 +1,2822 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://262bigdata.github.io/lambda26/sesiones/S07_Ingesta_Eventos_IoT_Sensores_Tiempo_Real/">
+      
+      
+        <link rel="prev" href="../S06_Ingesta_Eventos_Empresariales_Kafka/">
+      
+      
+        <link rel="next" href="../S12_Evaluacion_Unidad_2/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+  
+    <title>Big Data - S7 - Ingesta de Eventos IoT/Sensores en Tiempo Real</title>
+  
+
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#s7-ingesta-de-eventos-iotsensores-en-tiempo-real" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Big Data" class="md-header__button md-logo" aria-label="Big Data" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Big Data
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              S7 - Ingesta de Eventos IoT/Sensores en Tiempo Real
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/262bigdata/lambda26" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    262bigdata/lambda26
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Big Data" class="md-nav__button md-logo" aria-label="Big Data" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Big Data
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/262bigdata/lambda26" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    262bigdata/lambda26
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guía de Proyecto Sello
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guía de Proyecto Sello
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../proyecto-sello/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guía del proyecto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../proyecto-sello/brief/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brief técnico-analítico (plantilla)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../proyecto-sello/u1-producto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Producto U1 (plantilla-ejemplo)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../proyecto-sello/u2-producto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Producto U2 (plantilla-ejemplo)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../proyecto-sello/u3-producto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Producto U3 / Producto Final (plantilla-ejemplo)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../proyecto-sello/matriz-competencias/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Matriz de competencias (ICACIT)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Silabos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Silabos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../silabo_bigdata_2026_1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Silabo 2026-1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../silabo_bigdata_2026_2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Silabo 2026-2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Arquitecturas Big Data y ETL batch distribuido
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    1. Arquitecturas Big Data y ETL batch distribuido
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S01_Arquitectura_Big_Data_Lambda_Kappa/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S1 - Arquitectura Big Data: Lambda y Kappa, batch vs. streaming
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S02_Fundamentos_PySpark_Transformaciones_Lazy_Evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S2 - Fundamentos PySpark: transformaciones, funciones, agrupaciones y evaluación perezosa
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S03_Procesamiento_Calidad_Datos_Particionamiento/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S3 - Procesamiento y Calidad de Datos: filtrado, duplicados, nulos y particionamiento analítico
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S04_ML_Distribuido_Regresion_Spark_MLlib/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S4 - ML Distribuido con Spark MLlib (Regresión)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S05_Evaluacion_Unidad_1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S5 - Evaluación de la Unidad I
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Sistema Big Data en tiempo real
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    2. Sistema Big Data en tiempo real
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S06_Ingesta_Eventos_Empresariales_Kafka/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S6 - Ingesta de Eventos Empresariales en Tiempo Real
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S7 - Ingesta de Eventos IoT/Sensores en Tiempo Real
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S7 - Ingesta de Eventos IoT/Sensores en Tiempo Real
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-introduccion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Introducción
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Introducción">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-presentacion-de-la-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Presentación de la sesión
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-indice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Índice
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-proposito-de-aprendizaje" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Propósito de aprendizaje
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-producto-de-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 Producto de sesión
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-metodologia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5 Metodología
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-motivacion-de-la-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6 Motivación de la sesión
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.6 Motivación de la sesión">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#161-caso-el-sensor-que-mando-un-dato-imposible" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6.1 Caso: el sensor que mandó un dato imposible
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17-ubicacion-en-el-curso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.7 Ubicación en el curso
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-explica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Explica
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Explica">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-arquitectura-de-la-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Arquitectura de la sesión
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-telemetria-iot-que-cambia-frente-a-un-evento-de-negocio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Telemetría IoT: qué cambia frente a un evento de negocio
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-observabilidad-y-diagnostico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Observabilidad y diagnóstico
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-aplica-actividad-practica-guiada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Aplica: actividad práctica guiada
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Aplica: actividad práctica guiada">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-verificar-que-kafka-sigue-corriendo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Verificar que Kafka sigue corriendo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-crear-uso-atmos-dockerfile-compose-y-dependencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Crear uso-atmos: Dockerfile, compose y dependencias
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-construir-el-productor-de-sensores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Construir el productor de sensores
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-construir-el-consumidor-de-sensores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Construir el consumidor de sensores
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-levantar-y-probar-uso-atmos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 Levantar y probar uso-atmos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-documentar-el-contrato-del-evento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 Documentar el contrato del evento
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-conectar-el-puente-a-un-broker-mqtt-publico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7 Conectar el puente a un broker MQTT público
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#38-simular-un-esp32-real-en-wokwi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.8 Simular un ESP32 real en Wokwi
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-crea-actividad-autonoma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Crea: actividad autónoma
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Crea: actividad autónoma">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-actividad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Actividad
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-proposito" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Propósito
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-indicaciones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Indicaciones
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.3 Indicaciones">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#431-estructura-del-informe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3.1 Estructura del informe
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-criterios-minimos-de-aceptacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Criterios mínimos de aceptación
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-preguntas-de-defensa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Preguntas de defensa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46-rubrica-de-evaluacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6 Rúbrica de evaluación
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-cierre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Cierre
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bibliografia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bibliografía
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S12_Evaluacion_Unidad_2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S12 - Evaluación de la Unidad II
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Integración, DataOps y despliegue del sistema final
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    3. Integración, DataOps y despliegue del sistema final
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S15_Evaluacion_Unidad_3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S15 - Evaluación de la Unidad III
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-introduccion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Introducción
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Introducción">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-presentacion-de-la-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Presentación de la sesión
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-indice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Índice
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-proposito-de-aprendizaje" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Propósito de aprendizaje
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-producto-de-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 Producto de sesión
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-metodologia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5 Metodología
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-motivacion-de-la-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6 Motivación de la sesión
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.6 Motivación de la sesión">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#161-caso-el-sensor-que-mando-un-dato-imposible" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6.1 Caso: el sensor que mandó un dato imposible
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17-ubicacion-en-el-curso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.7 Ubicación en el curso
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-explica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Explica
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Explica">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-arquitectura-de-la-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Arquitectura de la sesión
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-telemetria-iot-que-cambia-frente-a-un-evento-de-negocio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Telemetría IoT: qué cambia frente a un evento de negocio
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-observabilidad-y-diagnostico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Observabilidad y diagnóstico
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-aplica-actividad-practica-guiada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Aplica: actividad práctica guiada
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Aplica: actividad práctica guiada">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-verificar-que-kafka-sigue-corriendo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Verificar que Kafka sigue corriendo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-crear-uso-atmos-dockerfile-compose-y-dependencias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Crear uso-atmos: Dockerfile, compose y dependencias
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-construir-el-productor-de-sensores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Construir el productor de sensores
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-construir-el-consumidor-de-sensores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Construir el consumidor de sensores
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-levantar-y-probar-uso-atmos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 Levantar y probar uso-atmos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-documentar-el-contrato-del-evento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 Documentar el contrato del evento
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-conectar-el-puente-a-un-broker-mqtt-publico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7 Conectar el puente a un broker MQTT público
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#38-simular-un-esp32-real-en-wokwi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.8 Simular un ESP32 real en Wokwi
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-crea-actividad-autonoma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Crea: actividad autónoma
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Crea: actividad autónoma">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-actividad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Actividad
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-proposito" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Propósito
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-indicaciones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Indicaciones
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.3 Indicaciones">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#431-estructura-del-informe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3.1 Estructura del informe
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-criterios-minimos-de-aceptacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Criterios mínimos de aceptación
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-preguntas-de-defensa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Preguntas de defensa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46-rubrica-de-evaluacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6 Rúbrica de evaluación
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-cierre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Cierre
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bibliografia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bibliografía
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="s7-ingesta-de-eventos-iotsensores-en-tiempo-real">S7 - Ingesta de Eventos IoT/Sensores en Tiempo Real<a class="headerlink" href="#s7-ingesta-de-eventos-iotsensores-en-tiempo-real" title="Permanent link">&para;</a></h1>
+<h2 id="1-introduccion">1. Introducción<a class="headerlink" href="#1-introduccion" title="Permanent link">&para;</a></h2>
+<h3 id="11-presentacion-de-la-sesion">1.1 Presentación de la sesión<a class="headerlink" href="#11-presentacion-de-la-sesion" title="Permanent link">&para;</a></h3>
+<p>S6 dejó Kafka operativo con un flujo de eventos empresariales: bajo volumen, esquema estable, un evento cada vez que alguien registra una orden. Esta sesión reutiliza exactamente la misma infraestructura de Kafka — el mismo <code>kafka/compose.yml</code>, el mismo Kafka UI — para un productor de naturaleza distinta: <strong>telemetría de sensores IoT</strong>. Un sensor no espera a que ocurra un evento de negocio para publicar; publica todo el tiempo, a un ritmo fijo, sin que nadie se lo pida. Esa diferencia de frecuencia y volumen es lo que esta sesión pone a prueba, no un concepto nuevo de Kafka.</p>
+<p>El módulo <code>uso-atmos</code> trabaja en dos niveles, igual que S6 separó <code>uso-rapido</code> (Python simple) de <code>uso-microserv</code> (Java "real"). Primero, un simulador en Python publica lecturas de tres sensores atmosféricos ESP32 (temperatura, humedad, presión) directamente en el topic <code>atmos-eventos</code> — rápido de levantar, útil para verificar el patrón productor-consumidor y el particionado por dispositivo sin depender de hardware. Segundo, un ESP32 <strong>real simulado en Wokwi</strong> (firmware Arduino de verdad, sensor DHT22 virtual — temperatura y humedad — más un potenciómetro que hace de sensor de presión, ya que Wokwi no tiene una pieza de presión barométrica nativa) publica sus lecturas por <strong>MQTT</strong> — el protocolo que sí habla un microcontrolador — hacia un puente que las reenvía a ese mismo topic de Kafka, sin cambiar ni el esquema ni el consumer. El sílabo de esta sesión pide "simular eventos de sensores o telemetría"; Wokwi es precisamente ese tipo de simulación — de hardware, no solo de datos — y es la que se acerca más a como un dispositivo real terminaría publicando en Kafka: nunca hablando el protocolo de Kafka directamente, siempre a través de un puente. Esta misma fuente de datos es la que S10 va a consumir para entrenar e inferir un modelo de series de tiempo — todo lo que se construye hoy sigue en pie en esa sesión.</p>
+<h3 id="12-indice">1.2 Índice<a class="headerlink" href="#12-indice" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Diferencias entre un evento de negocio (S6) y telemetría IoT: frecuencia, volumen, esquema.</li>
+<li>Particionado por dispositivo (<code>sensorId</code> como key), con partición real observada en Kafka UI.</li>
+<li>Simulación de sensores ESP32 en Python, con lecturas que varían gradualmente (no aleatorias e independientes).</li>
+<li>Validación de esquema y de rango físico en el consumer.</li>
+<li>Un ESP32 real simulado en Wokwi, publicando por MQTT a través de un puente hacia Kafka.</li>
+</ol>
+<h3 id="13-proposito-de-aprendizaje">1.3 Propósito de aprendizaje<a class="headerlink" href="#13-proposito-de-aprendizaje" title="Permanent link">&para;</a></h3>
+<p>Al concluir la clase, estarás en condiciones de:</p>
+<ul>
+<li><strong>Simular y consumir</strong> eventos de telemetría IoT de alta frecuencia con Apache Kafka, aplicando particionado por dispositivo y validaciones de esquema y de rango físico sobre los datos recibidos, con evidencia verificable de la distribución real de los eventos entre particiones.</li>
+</ul>
+<h3 id="14-producto-de-sesion">1.4 Producto de sesión<a class="headerlink" href="#14-producto-de-sesion" title="Permanent link">&para;</a></h3>
+<p>El módulo <code>uso-atmos</code> funcional en sus dos niveles: un productor Python que simula tres sensores ESP32 (<code>esp32-patio</code>, <code>esp32-invernadero</code>, <code>esp32-laboratorio</code>) publicando lecturas de temperatura, humedad y presión en el topic <code>atmos-eventos</code> (creado con 3 particiones, una por dispositivo); un ESP32 real simulado en Wokwi (DHT22 + potenciómetro) publicando por MQTT hacia un puente que reenvía sus lecturas al mismo topic; y un consumidor único que valida el esquema y el rango físico de cualquiera de los dos orígenes, con el contrato del evento documentado.</p>
+<h3 id="15-metodologia">1.5 Metodología<a class="headerlink" href="#15-metodologia" title="Permanent link">&para;</a></h3>
+<p><strong>Tabla 1. Metodología de la sesión</strong></p>
+<table>
+<thead>
+<tr>
+<th>Actividades a Realizar en el Periodo</th>
+<th>Orientaciones generales (Orientaciones Metodológicas)</th>
+<th>Material de estudio recomendado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Revisión previa individual</td>
+<td>Confirmar que Kafka (S6) sigue corriendo o volver a levantarlo; crear cuenta gratuita en <a href="https://wokwi.com">wokwi.com</a>; revisar el contrato del evento <code>orden.creada</code> de S6 como referencia de formato. Trabajo individual, antes de clase.</td>
+<td>Silabo Unidad II, guía de S6 (sección 2.2), este mismo documento (1.1-1.7).</td>
+</tr>
+<tr>
+<td>Clase presencial</td>
+<td>Construcción guiada de <code>uso-atmos</code>: productor simulador, consumidor validador, particionado por dispositivo en Kafka UI, y el puente MQTT que conecta un ESP32 real simulado en Wokwi con Kafka. Trabajo individual, siguiendo al docente paso a paso; consulta inmediata ante un evento que no se distribuye como se espera, o ante un ESP32 que no logra publicar.</td>
+<td>Pasos 3.1 a 3.8 de esta guía.</td>
+</tr>
+<tr>
+<td>Evaluación formativa</td>
+<td>Revisión en clase de Kafka UI mostrando <code>atmos-eventos</code> con sus 3 particiones y mensajes reales, y de los logs del consumer marcando lecturas válidas, inválidas y fuera de rango. La evidencia se completa y sustenta de forma individual, fuera del aula, según los criterios mínimos de la sección 4.4.</td>
+<td>Indicaciones de entrega (4.3), rúbrica de evaluación (4.6).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="16-motivacion-de-la-sesion">1.6 Motivación de la sesión<a class="headerlink" href="#16-motivacion-de-la-sesion" title="Permanent link">&para;</a></h3>
+<h4 id="161-caso-el-sensor-que-mando-un-dato-imposible">1.6.1 Caso: el sensor que mandó un dato imposible<a class="headerlink" href="#161-caso-el-sensor-que-mando-un-dato-imposible" title="Permanent link">&para;</a></h4>
+<p>Una planta de monitoreo ambiental instala sensores de temperatura en distintos puntos de su instalación, cada uno publicando una lectura por segundo a un sistema central. Meses después de operar sin problemas, un sensor con un cable suelto empieza a enviar lecturas erráticas: unas veces <code>null</code>, otras veces <code>-999</code>, otras veces <code>4500.0</code> grados. El sistema central, escrito asumiendo que "un sensor siempre manda un número de temperatura válido", explota con una excepción no controlada cada vez que llega uno de esos valores — y como los sensores publican una vez por segundo, el proceso se cae varias veces por minuto hasta que alguien lo nota.</p>
+<p>El problema no es el sensor defectuoso — eso va a pasar tarde o temprano con cualquier hardware real. El problema es un consumer que no distingue entre "el dato no tiene la forma esperada" (falta un campo, no es JSON) y "el dato tiene la forma esperada pero el valor no tiene sentido físico" (una temperatura de 4500°C). Los dos son fallas reales y distintas, y ambas necesitan su propio manejo — exactamente lo que construye esta sesión.</p>
+<p><strong>Preguntas de análisis</strong></p>
+<p><strong>Activación de conocimientos previos</strong></p>
+<ol>
+<li>En S6 viste un consumer que no se cae ante un mensaje que no es JSON válido. ¿Alcanza esa misma validación para detectar una temperatura de <code>4500.0</code> grados, si el mensaje sí es JSON válido y tiene todos los campos?</li>
+<li>¿Por qué un sensor que publica una lectura por segundo representa un problema de volumen distinto al de una orden que se crea cada varios minutos?</li>
+</ol>
+<p><strong>Comprensión de particionado por dispositivo</strong></p>
+<ol>
+<li>Si tres sensores publican en el mismo topic <code>atmos-eventos</code> usando su propio <code>sensorId</code> como <code>key</code>, ¿pueden dos sensores distintos terminar en la misma partición? Relaciónalo con 2.2.</li>
+<li>¿Qué se rompe si, en vez de usar <code>sensorId</code> como key, cada evento se publicara sin key (key nula)?</li>
+</ol>
+<h3 id="17-ubicacion-en-el-curso">1.7 Ubicación en el curso<a class="headerlink" href="#17-ubicacion-en-el-curso" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Unidad: U2 - Sistema Big Data en tiempo real: ingesta, streaming, observabilidad y BI/ML.</li>
+<li>Producto del curso: Proyecto Sello: sistema Big Data distribuido end-to-end para procesamiento batch y streaming, analítica/ML, observabilidad y visualización BI para la toma de decisiones.</li>
+<li>Producto de unidad: pipeline en tiempo real con ingesta de eventos empresariales e IoT/sensores, procesamiento streaming con Spark, observabilidad/costos y salidas BI/ML distribuidas.</li>
+<li>Avance del producto en esta sesión: ingesta de telemetría IoT/sensores con Kafka — la fuente de datos que S10 usa para la inferencia de series de tiempo.</li>
+</ul>
+<p><strong>Figura 1. Roadmap del producto de la Unidad II</strong></p>
+<pre class="mermaid"><code>flowchart TB
+    S6["`**S6:** Eventos empresariales (Kafka)`"]
+    S7["`**S7:** Eventos IoT/sensores (Kafka)`"]
+    S8["`**S8:** Spark Structured Streaming`"]
+    S9["`**S9:** Observabilidad`"]
+    S10["`**S10:** BI/ML en streaming`"]
+    S12["`**S12:** Producto U2`"]
+
+    S6 --&gt; S7 --&gt; S8 --&gt; S9 --&gt; S10 --&gt; S12
+
+    classDef today fill:#ffe08a,stroke:#9a6b00,stroke-width:2px,color:#111;
+    class S7 today;</code></pre>
+<h2 id="2-explica">2. Explica<a class="headerlink" href="#2-explica" title="Permanent link">&para;</a></h2>
+<h3 id="21-arquitectura-de-la-sesion">2.1 Arquitectura de la sesión<a class="headerlink" href="#21-arquitectura-de-la-sesion" title="Permanent link">&para;</a></h3>
+<p>Esta sesión trabaja únicamente con estos componentes, dentro de <code>lambda26</code>:</p>
+<ul>
+<li><code>uso-atmos</code> — simulador Python de sensores ESP32 (productor) y su consumidor validador, sobre el mismo <code>kafka/</code> de S6. También aquí vive el puente hacia el broker MQTT público (3.7).</li>
+<li><code>uso-atmos/wokwi</code> — firmware de un ESP32 real simulado en Wokwi (DHT22 + potenciómetro).</li>
+</ul>
+<p>En total, <strong>cuatro dispositivos</strong> publican al mismo topic <code>atmos-eventos</code>, con el mismo contrato de evento: los 3 sensores ESP32 que simula <code>producer_sensores.py</code> en Python (Figura 2) y el ESP32 real simulado en Wokwi (Figura 3), que llega por una ruta distinta — MQTT y un puente — en vez de publicar directo a Kafka.</p>
+<p><strong>Figura 2. Flujo del simulador Python: 3 sensores simulados, particionados por <code>sensorId</code></strong></p>
+<pre class="mermaid"><code>flowchart TB
+    Producer["uso-atmos / PRODUCER&lt;br/&gt;3 sensores ESP32 simulados&lt;br/&gt;sensor.lectura"]
+
+    subgraph KafkaAtmos["BROKER KAFKA (kafka:9092)"]
+        subgraph AtmosTopic["TOPIC: atmos-eventos (3 particiones)"]
+            direction LR
+            P0["Partición 0&lt;br/&gt;key=esp32-laboratorio"]
+            P1["Partición 1&lt;br/&gt;sin sensor asignado&lt;br/&gt;con estos 3 sensorId"]
+            P2["Partición 2&lt;br/&gt;key=esp32-patio&lt;br/&gt;key=esp32-invernadero"]
+        end
+    end
+
+    Consumer["uso-atmos / CONSUMER&lt;br/&gt;group: uso-atmos-group&lt;br/&gt;valida esquema y rango"]
+    Futuro["uso-pyspark&lt;br/&gt;streaming + modelo&lt;br/&gt;entrenado en S4"]
+
+    Producer --&gt;|"publica&lt;br/&gt;key=sensorId"| AtmosTopic
+    AtmosTopic --&gt;|"lee"| Consumer
+    Consumer -.-&gt;|"S10: inferencia ML&lt;br/&gt;sobre series de tiempo&lt;br/&gt;(futuro)"| Futuro</code></pre>
+<p>El particionado por <code>key</code> garantiza <strong>orden</strong>, no reparto parejo: los tres <code>sensorId</code> de esta simulación no caen uno por partición — <code>esp32-patio</code> y <code>esp32-invernadero</code> hashean a la misma partición (2), mientras que <code>esp32-laboratorio</code> cae solo en la partición 0, y la partición 1 queda sin uso con este conjunto exacto de 3 llaves. Cada <code>sensorId</code> sí conserva su propio orden interno entre lecturas (Kafka nunca reordena los eventos de una misma key dentro de una partición) — solo no reparte el volumen total en partes iguales entre particiones. Con más sensores o con otra elección de <code>key</code>, la distribución cambiaría; esto se verifica con datos reales en 3.5, no se memoriza como una regla fija.</p>
+<p><strong>Figura 3. Flujo del dispositivo real simulado: ESP32 (Wokwi) → broker MQTT público → puente → mismo Kafka y consumer de la Figura 2</strong></p>
+<pre class="mermaid"><code>flowchart TB
+    subgraph WokwiModule["Simulación en el navegador (Wokwi, WebAssembly) — no localhost"]
+        ESP32["ESP32 + DHT22 + potenciómetro&lt;br/&gt;firmware Arduino real"]
+    end
+
+    subgraph Broker["test.mosquitto.org (broker público, sin cuenta)"]
+        Topic["topic:&lt;br/&gt;lambda26/atmos/&lt;br/&gt;equipo01/lecturas"]
+    end
+
+    subgraph UsoAtmosMqtt["uso-atmos"]
+        Bridge["BRIDGE&lt;br/&gt;bridge_mqtt_kafka.py&lt;br/&gt;suscrito al mismo topic"]
+    end
+
+    subgraph KafkaAtmos["BROKER KAFKA (kafka:9092) — el mismo de la Figura 2"]
+        AtmosTopic["TOPIC: atmos-eventos&lt;br/&gt;(3 particiones)"]
+    end
+
+    Consumer["uso-atmos / CONSUMER&lt;br/&gt;group: uso-atmos-group&lt;br/&gt;valida esquema y rango"]
+    Futuro["uso-pyspark&lt;br/&gt;streaming + modelo&lt;br/&gt;entrenado en S4"]
+
+    ESP32 --&gt;|"MQTT&lt;br/&gt;publica JSON"| Topic
+    Topic --&gt;|"suscripción"| Bridge
+    Bridge --&gt;|"publica&lt;br/&gt;key=sensorId&lt;br/&gt;sin validar ni transformar"| AtmosTopic
+    AtmosTopic --&gt;|"lee"| Consumer
+    Consumer -.-&gt;|"S10: inferencia ML&lt;br/&gt;sobre series de tiempo&lt;br/&gt;(futuro)"| Futuro</code></pre>
+<p>Ni el ESP32 (simulado en tu navegador vía Wokwi) ni el bridge (corriendo en tu máquina) exponen nada a internet — los dos solo abren conexiones <strong>salientes</strong> hacia el mismo broker público, que ya está en internet. No hace falta Mosquitto propio, ni túnel, ni tarjeta de crédito, ni cuenta de ningún tipo: es exactamente el mismo patrón productor→broker→consumidor de toda la sesión, con la única diferencia de que este broker no es tuyo — es compartido por cualquiera en internet, por eso el topic incluye un identificador de equipo (<code>equipo01</code>), para no mezclar tus mensajes con los de otro grupo del curso que use el mismo broker al mismo tiempo.</p>
+<p>El puente no valida nada — reenvía el payload de MQTT a Kafka tal cual llegó. La validación de esquema y de rango físico sigue viviendo en un solo lugar (<code>consumer_sensores.py</code>, 3.4): para el consumer, no hay diferencia entre un evento que vino del simulador Python (Figura 2) o de un ESP32 real simulado (Figura 3) — ambos terminan en el mismo topic, con el mismo contrato.</p>
+<h3 id="22-telemetria-iot-que-cambia-frente-a-un-evento-de-negocio">2.2 Telemetría IoT: qué cambia frente a un evento de negocio<a class="headerlink" href="#22-telemetria-iot-que-cambia-frente-a-un-evento-de-negocio" title="Permanent link">&para;</a></h3>
+<p><strong>Tabla 2. Conceptos de esta sesión</strong></p>
+<table>
+<thead>
+<tr>
+<th>Concepto</th>
+<th>Qué es</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>telemetría</code></td>
+<td>Flujo continuo de mediciones que un dispositivo publica por su cuenta, a un ritmo propio — a diferencia de un evento de negocio (S6), que solo se publica cuando alguien realiza una acción concreta (crear una orden).</td>
+</tr>
+<tr>
+<td><code>frecuencia de publicación</code></td>
+<td>Cada cuánto tiempo un productor publica un nuevo evento. En <code>uso-atmos</code> la controla <code>SENSOR_INTERVAL_MS</code>; en un evento de negocio la controla la actividad de los usuarios, no un temporizador.</td>
+</tr>
+<tr>
+<td><code>volumen de eventos</code></td>
+<td>Cantidad de eventos que llegan a un topic por unidad de tiempo. Escala con la frecuencia y con la cantidad de dispositivos (<code>SENSOR_IDS</code>) — un sensor adicional multiplica el volumen sin cambiar el esquema del evento.</td>
+</tr>
+<tr>
+<td><code>esquema evolutivo</code></td>
+<td>Un esquema de telemetría IoT tiende a cambiar más seguido que uno de negocio: se agregan sensores nuevos, se suman variables (por ejemplo, calidad del aire), o cambia la unidad de una medición. El consumer necesita validar el esquema que sí espera sin asumir que nunca va a cambiar.</td>
+</tr>
+<tr>
+<td><code>validación de rango físico</code></td>
+<td>Verificar que un valor, además de tener el tipo de dato correcto, tenga sentido físico (una temperatura de <code>4500.0</code> es un número válido, pero no una lectura real) — distinta de la validación de esquema (S6, 2.2), que solo confirma que el campo existe.</td>
+</tr>
+<tr>
+<td><code>MQTT</code></td>
+<td>Protocolo de mensajería liviano, diseñado para hardware con poca memoria y red inestable — el que sí habla un microcontrolador real, a diferencia de Kafka (pensado para brokers de servidor, no para firmware).</td>
+</tr>
+<tr>
+<td><code>puente (bridge)</code></td>
+<td>Servicio que traduce entre dos sistemas de mensajería que no se hablan directamente — aquí, entre MQTT (lo que publica el ESP32) y Kafka (lo que consume el resto del pipeline). No es parte de Kafka ni de MQTT: es la pieza que los conecta.</td>
+</tr>
+</tbody>
+</table>
+<p>Esta sesión reutiliza sin cambios el resto de conceptos de Kafka de S6 (<code>topic</code>, <code>producer</code>, <code>consumer</code>, <code>broker</code>, <code>partition</code>, <code>offset</code>, <code>consumer group</code>, <code>key</code>) — ninguna herramienta ni concepto nuevo de Kafka aparece hoy; lo que cambia es el productor y la naturaleza del dato.</p>
+<p><strong>Error frecuente</strong>: validar que un evento tenga la forma correcta (JSON válido, todos los campos presentes) y asumir que eso ya garantiza que los datos "tienen sentido" — un sensor puede enviar JSON perfectamente válido con <code>"temperatura": 4500.0</code>, y ese valor va a pasar cualquier validación de esquema sin problema. La validación de rango (2.2, Tabla 2) es un paso aparte, sobre el valor, no sobre la forma del mensaje.</p>
+<h3 id="23-observabilidad-y-diagnostico">2.3 Observabilidad y diagnóstico<a class="headerlink" href="#23-observabilidad-y-diagnostico" title="Permanent link">&para;</a></h3>
+<p>Revisar Kafka UI (topic <code>atmos-eventos</code>, sus 3 particiones, mensajes por partición y <em>lag</em> del consumer group <code>uso-atmos-group</code>) y los logs de <code>uso-atmos</code> (líneas <code>component=producer</code> con <code>partition</code>/<code>sensorId</code> reales, y <code>component=consumer</code> con <code>status</code> en <code>consumed</code>, <code>invalid</code> o <code>alerta</code>, según el resultado de cada validación).</p>
+<h2 id="3-aplica-actividad-practica-guiada">3. Aplica: actividad práctica guiada<a class="headerlink" href="#3-aplica-actividad-practica-guiada" title="Permanent link">&para;</a></h2>
+<p>Tiempo: 3h.</p>
+<p><strong>Actividad:</strong> construcción guiada del módulo <code>uso-atmos</code> en sus dos niveles — el simulador Python y el ESP32 real simulado en Wokwi conectado por MQTT — sobre la misma infraestructura de Kafka construida en S6 (Producto de la sesión en 1.4).</p>
+<p><strong>Propósito de la actividad:</strong> dejar un productor de alto volumen funcionando con particionado por dispositivo verificado, un consumidor que distingue entre un evento malformado y un evento válido pero fuera de rango físico, y ese mismo consumidor recibiendo datos de un ESP32 real simulado a través de un puente MQTT.</p>
+<p><strong>Orientaciones metodológicas:</strong> en el laboratorio, el docente guía la construcción paso a paso frente a la clase; los estudiantes replican cada paso en su propia laptop, verificando el resultado en Kafka UI antes de avanzar al siguiente.</p>
+<p><strong>Actividades para realizar:</strong></p>
+<ul>
+<li><strong>3.1</strong> Verificar que Kafka (S6) sigue corriendo.</li>
+<li><strong>3.2</strong> Crear <code>uso-atmos</code>: Dockerfile, compose y dependencias.</li>
+<li><strong>3.3</strong> Construir el productor de sensores.</li>
+<li><strong>3.4</strong> Construir el consumidor de sensores.</li>
+<li><strong>3.5</strong> Levantar y probar <code>uso-atmos</code>.</li>
+<li><strong>3.6</strong> Documentar el contrato del evento.</li>
+<li><strong>3.7</strong> Conectar el puente a un broker MQTT público.</li>
+<li><strong>3.8</strong> Simular un ESP32 real en Wokwi y verificar sus lecturas de punta a punta.</li>
+</ul>
+<h3 id="31-verificar-que-kafka-sigue-corriendo">3.1 Verificar que Kafka sigue corriendo<a class="headerlink" href="#31-verificar-que-kafka-sigue-corriendo" title="Permanent link">&para;</a></h3>
+<p><strong>Producto del paso:</strong> confirmación de que el stack de Kafka de S6 sigue disponible, sin volver a construirlo desde cero.</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">kafka</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">yml</span> <span class="nb">ps</span>
+</code></pre></div>
+<p>Debes tener disponibles <code>lambda26-kafka</code>, <code>lambda26-kafka-ui</code> y <code>lambda26-kafka-exporter</code>. Si no aparecen, vuelve a levantarlos (mismo comando de S6, 3.1):</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">kafka</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">yml</span> <span class="n">up</span> <span class="n">-d</span>
+</code></pre></div>
+<h3 id="32-crear-uso-atmos-dockerfile-compose-y-dependencias">3.2 Crear <code>uso-atmos</code>: Dockerfile, compose y dependencias<a class="headerlink" href="#32-crear-uso-atmos-dockerfile-compose-y-dependencias" title="Permanent link">&para;</a></h3>
+<p><strong>Producto del paso:</strong> carpeta <code>uso-atmos/</code> con su propio contenedor Python, conectado a la red de Kafka.</p>
+<p><strong><code>uso-atmos/Dockerfile</code>:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="s">python:3.11-slim</span>
+
+<span class="k">ENV</span><span class="w"> </span><span class="nv">PYTHONUNBUFFERED</span><span class="o">=</span><span class="m">1</span>
+
+<span class="k">WORKDIR</span><span class="w"> </span><span class="s">/app</span>
+
+<span class="k">COPY</span><span class="w"> </span>app/requirements.txt<span class="w"> </span>.
+<span class="k">RUN</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--no-cache-dir<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+
+<span class="k">CMD</span><span class="w"> </span><span class="p">[</span><span class="s2">"sleep"</span><span class="p">,</span><span class="w"> </span><span class="s2">"infinity"</span><span class="p">]</span>
+</code></pre></div>
+<p><code>PYTHONUNBUFFERED=1</code> evita que Python retenga la salida en un buffer interno antes de imprimirla — sin esto, si alguna vez ves los logs con <code>docker compose logs -f</code> en vez de una terminal interactiva, los mensajes pueden tardar en aparecer o llegar todos de golpe.</p>
+<p><strong><code>uso-atmos/app/requirements.txt</code>:</strong></p>
+<div class="highlight"><pre><span></span><code>kafka-python==2.0.2
+</code></pre></div>
+<p><strong><code>uso-atmos/compose.yml</code>:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lambda26-uso-atmos</span>
+
+<span class="nt">services</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">uso-atmos</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">build</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.</span>
+<span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lambda26-uso-atmos</span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./app:/app</span>
+<span class="w">    </span><span class="nt">working_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/app</span>
+<span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sleep infinity</span>
+<span class="w">    </span><span class="nt">networks</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lambda26-kafka-net</span>
+
+<span class="nt">networks</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">lambda26-kafka-net</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">external</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lambda26-kafka-net</span>
+</code></pre></div>
+<p>Mismo patrón que <code>uso-rapido/ec-eventos-py</code> (S6): un contenedor liviano que se queda dormido (<code>sleep infinity</code>) y se usa para ejecutar el productor y el consumidor a mano, cada uno en su propia terminal.</p>
+<h3 id="33-construir-el-productor-de-sensores">3.3 Construir el productor de sensores<a class="headerlink" href="#33-construir-el-productor-de-sensores" title="Permanent link">&para;</a></h3>
+<p><strong>Producto del paso:</strong> <code>producer_sensores.py</code> simulando 3 sensores ESP32 con lecturas que varían gradualmente.</p>
+<p>Crea el topic <code>atmos-eventos</code> con <strong>3 particiones</strong> — una por sensor simulado, a diferencia de <code>orden-eventos</code>/<code>pago-eventos</code> en S6, que usaron 1 sola partición porque el volumen era bajo:</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">kafka</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">yml</span> <span class="n">exec</span> <span class="n">kafka</span> <span class="n">bash</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>/opt/kafka/bin/kafka-topics.sh<span class="w"> </span>--create<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--topic<span class="w"> </span>atmos-eventos<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--bootstrap-server<span class="w"> </span>kafka:9092<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--partitions<span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--replication-factor<span class="w"> </span><span class="m">1</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nb">exit</span>
+</code></pre></div>
+<p><strong><code>uso-atmos/app/producer_sensores.py</code>:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">kafka</span><span class="w"> </span><span class="kn">import</span> <span class="n">KafkaProducer</span>
+
+
+<span class="n">TOPIC_ATMOS</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"KAFKA_TOPIC_ATMOS"</span><span class="p">,</span> <span class="s2">"atmos-eventos"</span><span class="p">)</span>
+<span class="n">BOOTSTRAP_SERVERS</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"KAFKA_BOOTSTRAP_SERVERS"</span><span class="p">,</span> <span class="s2">"kafka:9092"</span><span class="p">)</span>
+<span class="n">INTERVAL_MS</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"SENSOR_INTERVAL_MS"</span><span class="p">,</span> <span class="s2">"3000"</span><span class="p">))</span>
+<span class="n">SENSOR_IDS</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span>
+    <span class="s2">"SENSOR_IDS"</span><span class="p">,</span> <span class="s2">"esp32-patio,esp32-invernadero,esp32-laboratorio"</span>
+<span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">)</span>
+
+<span class="n">RANGOS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"temperatura"</span><span class="p">:</span> <span class="p">(</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">40.0</span><span class="p">),</span>
+    <span class="s2">"humedad"</span><span class="p">:</span> <span class="p">(</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">95.0</span><span class="p">),</span>
+    <span class="s2">"presion"</span><span class="p">:</span> <span class="p">(</span><span class="mf">995.0</span><span class="p">,</span> <span class="mf">1025.0</span><span class="p">),</span>
+<span class="p">}</span>
+<span class="n">PASO_MAXIMO</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"temperatura"</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
+    <span class="s2">"humedad"</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="s2">"presion"</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">producer</span> <span class="o">=</span> <span class="n">KafkaProducer</span><span class="p">(</span>
+    <span class="n">bootstrap_servers</span><span class="o">=</span><span class="n">BOOTSTRAP_SERVERS</span><span class="p">,</span>
+    <span class="n">key_serializer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">key</span><span class="p">:</span> <span class="n">key</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">),</span>
+    <span class="n">value_serializer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">value</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span>
+    <span class="s2">"service"</span><span class="p">:</span> <span class="s2">"uso-atmos"</span><span class="p">,</span>
+    <span class="s2">"component"</span><span class="p">:</span> <span class="s2">"producer"</span><span class="p">,</span>
+    <span class="s2">"bootstrapServers"</span><span class="p">:</span> <span class="n">BOOTSTRAP_SERVERS</span><span class="p">,</span>
+    <span class="s2">"sensorIds"</span><span class="p">:</span> <span class="n">SENSOR_IDS</span><span class="p">,</span>
+    <span class="s2">"intervalMs"</span><span class="p">:</span> <span class="n">INTERVAL_MS</span><span class="p">,</span>
+    <span class="s2">"status"</span><span class="p">:</span> <span class="s2">"connected"</span><span class="p">,</span>
+<span class="p">}))</span>
+
+<span class="c1"># Estado inicial de cada sensor — un ESP32 real no salta de golpe entre</span>
+<span class="c1"># lecturas; cada ronda avanza un poco desde el valor anterior (caminata</span>
+<span class="c1"># aleatoria acotada), no un número independiente y sin relación con el previo.</span>
+<span class="n">estado</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">sensor_id</span><span class="p">:</span> <span class="p">{</span>
+        <span class="n">variable</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">*</span><span class="n">rango</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">variable</span><span class="p">,</span> <span class="n">rango</span> <span class="ow">in</span> <span class="n">RANGOS</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="p">}</span>
+    <span class="k">for</span> <span class="n">sensor_id</span> <span class="ow">in</span> <span class="n">SENSOR_IDS</span>
+<span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">siguiente_valor</span><span class="p">(</span><span class="n">valor_actual</span><span class="p">,</span> <span class="n">variable</span><span class="p">):</span>
+    <span class="n">minimo</span><span class="p">,</span> <span class="n">maximo</span> <span class="o">=</span> <span class="n">RANGOS</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span>
+    <span class="n">paso</span> <span class="o">=</span> <span class="n">PASO_MAXIMO</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span>
+    <span class="n">nuevo</span> <span class="o">=</span> <span class="n">valor_actual</span> <span class="o">+</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="n">paso</span><span class="p">,</span> <span class="n">paso</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">nuevo</span><span class="p">,</span> <span class="n">minimo</span><span class="p">),</span> <span class="n">maximo</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">sensor_id</span> <span class="ow">in</span> <span class="n">SENSOR_IDS</span><span class="p">:</span>
+        <span class="n">lectura</span> <span class="o">=</span> <span class="n">estado</span><span class="p">[</span><span class="n">sensor_id</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">RANGOS</span><span class="p">:</span>
+            <span class="n">lectura</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="n">siguiente_valor</span><span class="p">(</span><span class="n">lectura</span><span class="p">[</span><span class="n">variable</span><span class="p">],</span> <span class="n">variable</span><span class="p">)</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"tipoEvento"</span><span class="p">:</span> <span class="s2">"sensor.lectura"</span><span class="p">,</span>
+            <span class="s2">"sensorId"</span><span class="p">:</span> <span class="n">sensor_id</span><span class="p">,</span>
+            <span class="s2">"temperatura"</span><span class="p">:</span> <span class="n">lectura</span><span class="p">[</span><span class="s2">"temperatura"</span><span class="p">],</span>
+            <span class="s2">"humedad"</span><span class="p">:</span> <span class="n">lectura</span><span class="p">[</span><span class="s2">"humedad"</span><span class="p">],</span>
+            <span class="s2">"presion"</span><span class="p">:</span> <span class="n">lectura</span><span class="p">[</span><span class="s2">"presion"</span><span class="p">],</span>
+            <span class="s2">"origen"</span><span class="p">:</span> <span class="s2">"uso-atmos"</span><span class="p">,</span>
+            <span class="s2">"timestamp"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">),</span>
+        <span class="p">}</span>
+
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">producer</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">TOPIC_ATMOS</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">sensor_id</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+        <span class="n">log</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"service"</span><span class="p">:</span> <span class="s2">"uso-atmos"</span><span class="p">,</span>
+            <span class="s2">"component"</span><span class="p">:</span> <span class="s2">"producer"</span><span class="p">,</span>
+            <span class="s2">"topic"</span><span class="p">:</span> <span class="n">metadata</span><span class="o">.</span><span class="n">topic</span><span class="p">,</span>
+            <span class="s2">"partition"</span><span class="p">:</span> <span class="n">metadata</span><span class="o">.</span><span class="n">partition</span><span class="p">,</span>
+            <span class="s2">"offset"</span><span class="p">:</span> <span class="n">metadata</span><span class="o">.</span><span class="n">offset</span><span class="p">,</span>
+            <span class="s2">"eventType"</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s2">"tipoEvento"</span><span class="p">],</span>
+            <span class="s2">"sensorId"</span><span class="p">:</span> <span class="n">sensor_id</span><span class="p">,</span>
+            <span class="s2">"timestamp"</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s2">"timestamp"</span><span class="p">],</span>
+            <span class="s2">"status"</span><span class="p">:</span> <span class="s2">"published"</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">log</span><span class="p">))</span>
+
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">INTERVAL_MS</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)</span>
+</code></pre></div>
+<p>A diferencia del productor de S6 (<code>producer_ordenes.py</code>, valores aleatorios independientes en cada mensaje), este productor mantiene un <strong>estado</strong> por sensor (<code>estado</code>) y lo hace avanzar de a poco (<code>siguiente_valor</code>, una caminata aleatoria acotada al rango físico de <code>RANGOS</code>) — así la temperatura de <code>esp32-patio</code> no salta de 20°C a 38°C entre una lectura y la siguiente, como no lo haría un sensor real. La <code>key</code> del mensaje es el propio <code>sensorId</code>, no un campo dentro del payload — eso es lo que permite el particionado por dispositivo de 2.1.</p>
+<h3 id="34-construir-el-consumidor-de-sensores">3.4 Construir el consumidor de sensores<a class="headerlink" href="#34-construir-el-consumidor-de-sensores" title="Permanent link">&para;</a></h3>
+<p><strong>Producto del paso:</strong> <code>consumer_sensores.py</code> que valida esquema y rango físico, sin caerse ante ninguno de los dos tipos de dato inválido del caso 1.6.1.</p>
+<p><strong><code>uso-atmos/app/consumer_sensores.py</code>:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">kafka</span><span class="w"> </span><span class="kn">import</span> <span class="n">KafkaConsumer</span>
+
+
+<span class="n">TOPIC_ATMOS</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"KAFKA_TOPIC_ATMOS"</span><span class="p">,</span> <span class="s2">"atmos-eventos"</span><span class="p">)</span>
+<span class="n">GROUP_ID</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"KAFKA_GROUP_ID"</span><span class="p">,</span> <span class="s2">"uso-atmos-group"</span><span class="p">)</span>
+<span class="n">BOOTSTRAP_SERVERS</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"KAFKA_BOOTSTRAP_SERVERS"</span><span class="p">,</span> <span class="s2">"kafka:9092"</span><span class="p">)</span>
+
+<span class="c1"># Rango físicamente plausible para un sensor real — más ancho que el rango</span>
+<span class="c1"># simulado del producer (RANGOS en producer_sensores.py), que ya clampea sus</span>
+<span class="c1"># propios valores. Una lectura fuera de este rango indica un sensor en mal</span>
+<span class="c1"># estado o un dato corrupto, no una variación climática normal.</span>
+<span class="n">RANGO_FISICO</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"temperatura"</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">60.0</span><span class="p">),</span>
+    <span class="s2">"humedad"</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">),</span>
+    <span class="s2">"presion"</span><span class="p">:</span> <span class="p">(</span><span class="mf">900.0</span><span class="p">,</span> <span class="mf">1100.0</span><span class="p">),</span>
+<span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">fuera_de_rango</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">variable</span><span class="p">,</span> <span class="p">(</span><span class="n">minimo</span><span class="p">,</span> <span class="n">maximo</span><span class="p">)</span> <span class="ow">in</span> <span class="n">RANGO_FISICO</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">valor</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">variable</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">valor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="n">minimo</span> <span class="o">&lt;=</span> <span class="n">valor</span> <span class="o">&lt;=</span> <span class="n">maximo</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">deserialize_message</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">"payload"</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">text</span><span class="p">),</span>
+            <span class="s2">"raw"</span><span class="p">:</span> <span class="n">text</span><span class="p">,</span>
+            <span class="s2">"isJson"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s2">"decodeError"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">"payload"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">"raw"</span><span class="p">:</span> <span class="n">text</span><span class="p">,</span>
+            <span class="s2">"isJson"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">"decodeError"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="p">),</span>
+        <span class="p">}</span>
+
+
+<span class="n">consumer</span> <span class="o">=</span> <span class="n">KafkaConsumer</span><span class="p">(</span>
+    <span class="n">TOPIC_ATMOS</span><span class="p">,</span>
+    <span class="n">bootstrap_servers</span><span class="o">=</span><span class="n">BOOTSTRAP_SERVERS</span><span class="p">,</span>
+    <span class="n">auto_offset_reset</span><span class="o">=</span><span class="s2">"earliest"</span><span class="p">,</span>
+    <span class="n">enable_auto_commit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">group_id</span><span class="o">=</span><span class="n">GROUP_ID</span><span class="p">,</span>
+    <span class="n">value_deserializer</span><span class="o">=</span><span class="n">deserialize_message</span><span class="p">,</span>
+    <span class="n">key_deserializer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">key</span><span class="p">:</span> <span class="n">key</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">)</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span>
+    <span class="s2">"service"</span><span class="p">:</span> <span class="s2">"uso-atmos"</span><span class="p">,</span>
+    <span class="s2">"component"</span><span class="p">:</span> <span class="s2">"consumer"</span><span class="p">,</span>
+    <span class="s2">"topic"</span><span class="p">:</span> <span class="n">TOPIC_ATMOS</span><span class="p">,</span>
+    <span class="s2">"groupId"</span><span class="p">:</span> <span class="n">GROUP_ID</span><span class="p">,</span>
+    <span class="s2">"bootstrapServers"</span><span class="p">:</span> <span class="n">BOOTSTRAP_SERVERS</span><span class="p">,</span>
+    <span class="s2">"status"</span><span class="p">:</span> <span class="s2">"listening"</span><span class="p">,</span>
+<span class="p">}))</span>
+
+<span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">consumer</span><span class="p">:</span>
+    <span class="n">decoded</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">value</span>
+    <span class="n">event</span> <span class="o">=</span> <span class="n">decoded</span><span class="p">[</span><span class="s2">"payload"</span><span class="p">]</span> <span class="k">if</span> <span class="n">decoded</span><span class="p">[</span><span class="s2">"isJson"</span><span class="p">]</span> <span class="k">else</span> <span class="p">{}</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"timestamp"</span><span class="p">)</span>
+    <span class="n">processed_at</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)</span>
+    <span class="n">latency_ms</span> <span class="o">=</span> <span class="n">processed_at</span> <span class="o">-</span> <span class="n">timestamp</span> <span class="k">if</span> <span class="n">timestamp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="n">is_valid</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">decoded</span><span class="p">[</span><span class="s2">"isJson"</span><span class="p">]</span>
+        <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tipoEvento"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"sensorId"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"temperatura"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"humedad"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"presion"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="ow">and</span> <span class="n">timestamp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="p">)</span>
+    <span class="n">alerta</span> <span class="o">=</span> <span class="n">is_valid</span> <span class="ow">and</span> <span class="n">fuera_de_rango</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+
+    <span class="n">log</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"service"</span><span class="p">:</span> <span class="s2">"uso-atmos"</span><span class="p">,</span>
+        <span class="s2">"component"</span><span class="p">:</span> <span class="s2">"consumer"</span><span class="p">,</span>
+        <span class="s2">"topic"</span><span class="p">:</span> <span class="n">msg</span><span class="o">.</span><span class="n">topic</span><span class="p">,</span>
+        <span class="s2">"partition"</span><span class="p">:</span> <span class="n">msg</span><span class="o">.</span><span class="n">partition</span><span class="p">,</span>
+        <span class="s2">"offset"</span><span class="p">:</span> <span class="n">msg</span><span class="o">.</span><span class="n">offset</span><span class="p">,</span>
+        <span class="s2">"key"</span><span class="p">:</span> <span class="n">msg</span><span class="o">.</span><span class="n">key</span><span class="p">,</span>
+        <span class="s2">"groupId"</span><span class="p">:</span> <span class="n">GROUP_ID</span><span class="p">,</span>
+        <span class="s2">"eventType"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tipoEvento"</span><span class="p">),</span>
+        <span class="s2">"sensorId"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"sensorId"</span><span class="p">),</span>
+        <span class="s2">"temperatura"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"temperatura"</span><span class="p">),</span>
+        <span class="s2">"humedad"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"humedad"</span><span class="p">),</span>
+        <span class="s2">"presion"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"presion"</span><span class="p">),</span>
+        <span class="s2">"timestamp"</span><span class="p">:</span> <span class="n">timestamp</span><span class="p">,</span>
+        <span class="s2">"isValid"</span><span class="p">:</span> <span class="n">is_valid</span><span class="p">,</span>
+        <span class="s2">"fueraDeRango"</span><span class="p">:</span> <span class="n">alerta</span><span class="p">,</span>
+        <span class="s2">"processedAt"</span><span class="p">:</span> <span class="n">processed_at</span><span class="p">,</span>
+        <span class="s2">"latencyMs"</span><span class="p">:</span> <span class="n">latency_ms</span><span class="p">,</span>
+        <span class="s2">"rawPayload"</span><span class="p">:</span> <span class="n">decoded</span><span class="p">[</span><span class="s2">"raw"</span><span class="p">],</span>
+        <span class="s2">"isJson"</span><span class="p">:</span> <span class="n">decoded</span><span class="p">[</span><span class="s2">"isJson"</span><span class="p">],</span>
+        <span class="s2">"decodeError"</span><span class="p">:</span> <span class="n">decoded</span><span class="p">[</span><span class="s2">"decodeError"</span><span class="p">],</span>
+        <span class="s2">"status"</span><span class="p">:</span> <span class="s2">"alerta"</span> <span class="k">if</span> <span class="n">alerta</span> <span class="k">else</span> <span class="p">(</span><span class="s2">"consumed"</span> <span class="k">if</span> <span class="n">is_valid</span> <span class="k">else</span> <span class="s2">"invalid"</span><span class="p">),</span>
+    <span class="p">}</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">log</span><span class="p">))</span>
+</code></pre></div>
+<p><code>is_valid</code> es la misma validación de esquema de S6 (JSON válido, todos los campos requeridos presentes). <code>fuera_de_rango</code> es un chequeo aparte, que solo corre <strong>después</strong> de confirmar que el esquema es válido — un evento sin <code>temperatura</code> es <code>invalid</code> (falla de esquema), mientras que uno con <code>"temperatura": 4500.0</code> es <code>alerta</code> (esquema correcto, valor físicamente imposible). El <code>status</code> final del log distingue los tres casos: <code>consumed</code>, <code>invalid</code> o <code>alerta</code>.</p>
+<h3 id="35-levantar-y-probar-uso-atmos">3.5 Levantar y probar <code>uso-atmos</code><a class="headerlink" href="#35-levantar-y-probar-uso-atmos" title="Permanent link">&para;</a></h3>
+<p><strong>Producto del paso:</strong> flujo completo verificado — sensores publicando, particionado real observado en Kafka UI, y los tres estados del consumer (<code>consumed</code>, <code>invalid</code>, <code>alerta</code>) provocados a propósito.</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">uso-atmos</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">yml</span> <span class="n">up</span> <span class="n">-d</span> <span class="p">-</span><span class="n">-build</span>
+</code></pre></div>
+<p>Contenedor esperado:</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">uso-atmos</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">yml</span> <span class="nb">ps</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>lambda26-uso-atmos
+</code></pre></div>
+<p>Entra al contenedor y ejecuta el consumer primero (queda escuchando):</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">uso-atmos</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">yml</span> <span class="n">exec</span> <span class="n">uso-atmos</span> <span class="n">python</span> <span class="p">/</span><span class="n">app</span><span class="p">/</span><span class="n">consumer_sensores</span><span class="p">.</span><span class="n">py</span>
+</code></pre></div>
+<p>En otra terminal, ejecuta el producer:</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">uso-atmos</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">yml</span> <span class="n">exec</span> <span class="n">uso-atmos</span> <span class="n">python</span> <span class="p">/</span><span class="n">app</span><span class="p">/</span><span class="n">producer_sensores</span><span class="p">.</span><span class="n">py</span>
+</code></pre></div>
+<p>Verifica en la consola del producer una línea por sensor y por ronda:</p>
+<div class="highlight"><pre><span></span><code>{"service": "uso-atmos", "component": "producer", "topic": "atmos-eventos", "partition": 2, "offset": 0, "eventType": "sensor.lectura", "sensorId": "esp32-patio", "timestamp": 1789697567664, "status": "published"}
+</code></pre></div>
+<p>Anota la <code>partition</code> que aparece junto a cada <code>sensorId</code> durante un par de rondas. Con los 3 <code>sensorId</code> de esta guía, la distribución real observada es: <code>esp32-patio</code> y <code>esp32-invernadero</code> caen en la <strong>misma</strong> partición (2), y <code>esp32-laboratorio</code> cae solo en la partición 0 — la partición 1 queda sin uso. Esto no es un error: confirma lo explicado en 2.1, que el particionado por <code>key</code> garantiza orden por dispositivo, no un reparto parejo entre particiones.</p>
+<p>Verifica en la consola del consumer que cada lectura aparece con <code>status: "consumed"</code> y su <code>latencyMs</code>:</p>
+<div class="highlight"><pre><span></span><code>{"service": "uso-atmos", "component": "consumer", "topic": "atmos-eventos", "partition": 2, "offset": 0, "key": "esp32-patio", "groupId": "uso-atmos-group", "eventType": "sensor.lectura", "sensorId": "esp32-patio", "temperatura": 21.3, "humedad": 46.8, "presion": 1007.3, "timestamp": 1789697567664, "isValid": true, "fueraDeRango": false, "processedAt": 1789697568100, "latencyMs": 436, "status": "consumed"}
+</code></pre></div>
+<p>Abre Kafka UI y verifica el topic:</p>
+<div class="highlight"><pre><span></span><code>http://localhost:48085
+</code></pre></div>
+<ul>
+<li><code>atmos-eventos</code> tiene <strong>3 particiones</strong>, con mensajes distribuidos de forma desigual entre ellas (2.1).</li>
+<li>El consumer group <code>uso-atmos-group</code> aparece consumiendo las 3 particiones, con <em>lag</em> cercano a <code>0</code>.</li>
+</ul>
+<p><strong>Error frecuente</strong>: un mensaje malformado. Sin detener el consumer, publica texto plano desde Kafka UI (o desde consola, 3.2 de S6) al topic <code>atmos-eventos</code>. El consumer no se cae — lo marca <code>status: "invalid"</code> con <code>rawPayload</code>/<code>decodeError</code> (mismo patrón de S6, 3.4).</p>
+<p>Ahora provoca el segundo caso del 1.6.1 — un evento con la forma correcta pero un valor imposible. Sin detener el consumer, publica este mensaje desde Kafka UI (o desde consola):</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">"tipoEvento"</span><span class="p">:</span><span class="s2">"sensor.lectura"</span><span class="p">,</span><span class="nt">"sensorId"</span><span class="p">:</span><span class="s2">"esp32-patio"</span><span class="p">,</span><span class="nt">"temperatura"</span><span class="p">:</span><span class="mf">4500.0</span><span class="p">,</span><span class="nt">"humedad"</span><span class="p">:</span><span class="mf">50.0</span><span class="p">,</span><span class="nt">"presion"</span><span class="p">:</span><span class="mf">1010.0</span><span class="p">,</span><span class="nt">"origen"</span><span class="p">:</span><span class="s2">"uso-atmos"</span><span class="p">,</span><span class="nt">"timestamp"</span><span class="p">:</span><span class="mi">1789700000000</span><span class="p">}</span>
+</code></pre></div>
+<p>Verifica en la consola del consumer que este mensaje sí es JSON válido y tiene todos los campos (<code>isValid: true</code>), pero queda marcado aparte:</p>
+<div class="highlight"><pre><span></span><code>{"service": "uso-atmos", "component": "consumer", ..., "temperatura": 4500.0, "isValid": true, "fueraDeRango": true, ..., "status": "alerta"}
+</code></pre></div>
+<h3 id="36-documentar-el-contrato-del-evento">3.6 Documentar el contrato del evento<a class="headerlink" href="#36-documentar-el-contrato-del-evento" title="Permanent link">&para;</a></h3>
+<p><strong>Producto del paso:</strong> contrato de <code>sensor.lectura</code> documentado, mismo formato que S6.</p>
+<p><strong>Tabla 3. Contrato del evento <code>sensor.lectura</code></strong></p>
+<p>Topic:</p>
+<div class="highlight"><pre><span></span><code>atmos-eventos
+</code></pre></div>
+<p>Particiones: 3 (una por sensor simulado, ver 2.1 y 3.3).</p>
+<p>Productores:</p>
+<ul>
+<li><code>uso-atmos</code> (simulador Python, 3.3).</li>
+<li>ESP32 real simulado en Wokwi, vía el puente MQTT-Kafka (3.7-3.8) — mismo esquema, <code>origen: "wokwi"</code> en vez de <code>"uso-atmos"</code>.</li>
+</ul>
+<p>Consumidor:</p>
+<ul>
+<li><code>uso-atmos</code> (en esta sesión). S10 agrega un segundo consumidor: el streaming de <code>uso-pyspark</code> que entrena/aplica el modelo de series de tiempo.</li>
+</ul>
+<p>Payload:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"tipoEvento"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sensor.lectura"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"sensorId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"esp32-patio"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"temperatura"</span><span class="p">:</span><span class="w"> </span><span class="mf">21.3</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"humedad"</span><span class="p">:</span><span class="w"> </span><span class="mf">46.8</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"presion"</span><span class="p">:</span><span class="w"> </span><span class="mf">1007.3</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"origen"</span><span class="p">:</span><span class="w"> </span><span class="s2">"uso-atmos"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="mi">1789697567664</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Campos:</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tipoEvento</code></td>
+<td>string</td>
+<td>Nombre del evento publicado.</td>
+</tr>
+<tr>
+<td><code>sensorId</code></td>
+<td>string</td>
+<td>Identificador del dispositivo — también es la <code>key</code> de Kafka.</td>
+</tr>
+<tr>
+<td><code>temperatura</code></td>
+<td>number</td>
+<td>Temperatura en grados Celsius.</td>
+</tr>
+<tr>
+<td><code>humedad</code></td>
+<td>number</td>
+<td>Humedad relativa, en porcentaje.</td>
+</tr>
+<tr>
+<td><code>presion</code></td>
+<td>number</td>
+<td>Presión atmosférica, en hPa.</td>
+</tr>
+<tr>
+<td><code>origen</code></td>
+<td>string</td>
+<td>Quién publicó el evento: <code>"uso-atmos"</code> (simulador Python) o <code>"wokwi"</code> (ESP32 real simulado).</td>
+</tr>
+<tr>
+<td><code>timestamp</code></td>
+<td>number</td>
+<td>Fecha/hora en milisegundos epoch.</td>
+</tr>
+</tbody>
+</table>
+<p>Key recomendada:</p>
+<div class="highlight"><pre><span></span><code>sensorId
+</code></pre></div>
+<p><strong>Tabla 4. Configuración de <code>uso-atmos</code> (variables de entorno)</strong></p>
+<table>
+<thead>
+<tr>
+<th>Variable de entorno</th>
+<th>Valor por defecto</th>
+<th>Aplica a</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>KAFKA_BOOTSTRAP_SERVERS</code></td>
+<td><code>kafka:9092</code></td>
+<td>producer, consumer y bridge</td>
+</tr>
+<tr>
+<td><code>KAFKA_TOPIC_ATMOS</code></td>
+<td><code>atmos-eventos</code></td>
+<td>producer, consumer y bridge</td>
+</tr>
+<tr>
+<td><code>SENSOR_INTERVAL_MS</code></td>
+<td><code>3000</code></td>
+<td>producer — pausa entre rondas de lectura</td>
+</tr>
+<tr>
+<td><code>SENSOR_IDS</code></td>
+<td><code>esp32-patio,esp32-invernadero,esp32-laboratorio</code></td>
+<td>producer — lista separada por comas</td>
+</tr>
+<tr>
+<td><code>KAFKA_GROUP_ID</code></td>
+<td><code>uso-atmos-group</code></td>
+<td>consumer</td>
+</tr>
+<tr>
+<td><code>MQTT_HOST</code></td>
+<td><code>test.mosquitto.org</code></td>
+<td>bridge</td>
+</tr>
+<tr>
+<td><code>MQTT_PORT</code></td>
+<td><code>1883</code></td>
+<td>bridge</td>
+</tr>
+<tr>
+<td><code>MQTT_USERNAME</code></td>
+<td><em>(vacío, no hace falta en el broker público)</em></td>
+<td>bridge</td>
+</tr>
+<tr>
+<td><code>MQTT_PASSWORD</code></td>
+<td><em>(vacío, no hace falta en el broker público)</em></td>
+<td>bridge</td>
+</tr>
+<tr>
+<td><code>MQTT_TOPIC</code></td>
+<td><code>lambda26/atmos/equipo01/lecturas</code></td>
+<td>bridge</td>
+</tr>
+</tbody>
+</table>
+<h3 id="37-conectar-el-puente-a-un-broker-mqtt-publico">3.7 Conectar el puente a un broker MQTT público<a class="headerlink" href="#37-conectar-el-puente-a-un-broker-mqtt-publico" title="Permanent link">&para;</a></h3>
+<p><strong>Producto del paso:</strong> el puente suscrito a un broker MQTT que ya está en internet, sin infraestructura propia — sin Mosquitto, sin túnel, sin tarjeta de crédito.</p>
+<p>Un ESP32 simulado en Wokwi corre por completo en tu navegador (la CPU del ESP32 se emula en WebAssembly, del lado del cliente, no en un servidor de Wokwi) — pero sigue sin poder llegar a tu <code>localhost</code>: la red WiFi simulada (<code>Wokwi-GUEST</code>) solo sale a internet real a través del gateway de Wokwi, nunca hacia tu propia máquina. La alternativa a exponer tu propio broker con un túnel (ngrok exige tarjeta de crédito verificada para túneles TCP incluso en cuenta gratis) es no exponer nada tuyo: que el ESP32 y el puente se conecten los dos, cada uno por su cuenta, a un broker que <strong>ya es público</strong> — <code>test.mosquitto.org</code>, sin necesidad de cuenta ni credenciales.</p>
+<p><code>test.mosquitto.org</code> es compartido por cualquiera en internet — cualquiera puede publicar o suscribirse a cualquier topic. Para no mezclar tus mensajes con los de otro equipo del curso que use el mismo broker al mismo tiempo, el topic incluye un identificador de equipo:</p>
+<div class="highlight"><pre><span></span><code>lambda26/atmos/equipo01/lecturas
+</code></pre></div>
+<p>Cambia <code>equipo01</code> por tu propio identificador, tanto acá como en el firmware (3.8).</p>
+<p><strong><code>uso-atmos/app/bridge_mqtt_kafka.py</code>:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">uuid</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">paho.mqtt.client</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mqtt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">kafka</span><span class="w"> </span><span class="kn">import</span> <span class="n">KafkaProducer</span>
+
+
+<span class="c1"># test.mosquitto.org es un broker PÚBLICO — cualquiera en internet puede</span>
+<span class="c1"># publicar o suscribirse a cualquier topic. "equipo01" evita que tus mensajes</span>
+<span class="c1"># se mezclen con los de otro equipo del curso; cámbialo por tu propio ID.</span>
+<span class="n">MQTT_HOST</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"MQTT_HOST"</span><span class="p">,</span> <span class="s2">"test.mosquitto.org"</span><span class="p">)</span>
+<span class="n">MQTT_PORT</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"MQTT_PORT"</span><span class="p">,</span> <span class="s2">"1883"</span><span class="p">))</span>
+<span class="n">MQTT_USERNAME</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"MQTT_USERNAME"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+<span class="n">MQTT_PASSWORD</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"MQTT_PASSWORD"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+<span class="n">MQTT_TOPIC</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"MQTT_TOPIC"</span><span class="p">,</span> <span class="s2">"lambda26/atmos/equipo01/lecturas"</span><span class="p">)</span>
+
+<span class="n">KAFKA_BOOTSTRAP_SERVERS</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"KAFKA_BOOTSTRAP_SERVERS"</span><span class="p">,</span> <span class="s2">"kafka:9092"</span><span class="p">)</span>
+<span class="n">KAFKA_TOPIC_ATMOS</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"KAFKA_TOPIC_ATMOS"</span><span class="p">,</span> <span class="s2">"atmos-eventos"</span><span class="p">)</span>
+
+<span class="c1"># El puente no valida ni transforma el payload — lo reenvía tal cual llegó</span>
+<span class="c1"># por MQTT. Esquema, rango físico y JSON malformado se validan en un solo</span>
+<span class="c1"># lugar (consumer_sensores.py), sin duplicar esa lógica aquí.</span>
+<span class="n">producer</span> <span class="o">=</span> <span class="n">KafkaProducer</span><span class="p">(</span>
+    <span class="n">bootstrap_servers</span><span class="o">=</span><span class="n">KAFKA_BOOTSTRAP_SERVERS</span><span class="p">,</span>
+    <span class="n">key_serializer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">key</span><span class="p">:</span> <span class="n">key</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">),</span>
+    <span class="n">value_serializer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">value</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">on_connect</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">userdata</span><span class="p">,</span> <span class="n">flags</span><span class="p">,</span> <span class="n">reason_code</span><span class="p">,</span> <span class="n">properties</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span>
+        <span class="s2">"service"</span><span class="p">:</span> <span class="s2">"uso-atmos"</span><span class="p">,</span>
+        <span class="s2">"component"</span><span class="p">:</span> <span class="s2">"bridge"</span><span class="p">,</span>
+        <span class="s2">"mqttHost"</span><span class="p">:</span> <span class="n">MQTT_HOST</span><span class="p">,</span>
+        <span class="s2">"mqttTopic"</span><span class="p">:</span> <span class="n">MQTT_TOPIC</span><span class="p">,</span>
+        <span class="s2">"status"</span><span class="p">:</span> <span class="s2">"connected"</span> <span class="k">if</span> <span class="n">reason_code</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">"connect_failed:</span><span class="si">{</span><span class="n">reason_code</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+    <span class="p">}))</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">MQTT_TOPIC</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">on_message</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">userdata</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+    <span class="n">raw</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">payload</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">event</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">raw</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">))</span>
+        <span class="n">sensor_id</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"sensorId"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">"desconocido"</span>
+    <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
+        <span class="n">sensor_id</span> <span class="o">=</span> <span class="s2">"desconocido"</span>
+
+    <span class="n">metadata</span> <span class="o">=</span> <span class="n">producer</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">KAFKA_TOPIC_ATMOS</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">sensor_id</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">raw</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+    <span class="n">log</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"service"</span><span class="p">:</span> <span class="s2">"uso-atmos"</span><span class="p">,</span>
+        <span class="s2">"component"</span><span class="p">:</span> <span class="s2">"bridge"</span><span class="p">,</span>
+        <span class="s2">"mqttTopic"</span><span class="p">:</span> <span class="n">msg</span><span class="o">.</span><span class="n">topic</span><span class="p">,</span>
+        <span class="s2">"kafkaTopic"</span><span class="p">:</span> <span class="n">metadata</span><span class="o">.</span><span class="n">topic</span><span class="p">,</span>
+        <span class="s2">"partition"</span><span class="p">:</span> <span class="n">metadata</span><span class="o">.</span><span class="n">partition</span><span class="p">,</span>
+        <span class="s2">"offset"</span><span class="p">:</span> <span class="n">metadata</span><span class="o">.</span><span class="n">offset</span><span class="p">,</span>
+        <span class="s2">"sensorId"</span><span class="p">:</span> <span class="n">sensor_id</span><span class="p">,</span>
+        <span class="s2">"status"</span><span class="p">:</span> <span class="s2">"forwarded"</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">log</span><span class="p">))</span>
+
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">mqtt</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">mqtt</span><span class="o">.</span><span class="n">CallbackAPIVersion</span><span class="o">.</span><span class="n">VERSION2</span><span class="p">,</span> <span class="n">client_id</span><span class="o">=</span><span class="sa">f</span><span class="s2">"uso-atmos-bridge-</span><span class="si">{</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span><span class="p">[:</span><span class="mi">8</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">MQTT_USERNAME</span> <span class="ow">and</span> <span class="n">MQTT_PASSWORD</span><span class="p">:</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">username_pw_set</span><span class="p">(</span><span class="n">MQTT_USERNAME</span><span class="p">,</span> <span class="n">MQTT_PASSWORD</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">on_connect</span> <span class="o">=</span> <span class="n">on_connect</span>
+<span class="n">client</span><span class="o">.</span><span class="n">on_message</span> <span class="o">=</span> <span class="n">on_message</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span>
+    <span class="s2">"service"</span><span class="p">:</span> <span class="s2">"uso-atmos"</span><span class="p">,</span>
+    <span class="s2">"component"</span><span class="p">:</span> <span class="s2">"bridge"</span><span class="p">,</span>
+    <span class="s2">"mqttHost"</span><span class="p">:</span> <span class="n">MQTT_HOST</span><span class="p">,</span>
+    <span class="s2">"mqttPort"</span><span class="p">:</span> <span class="n">MQTT_PORT</span><span class="p">,</span>
+    <span class="s2">"kafkaBootstrapServers"</span><span class="p">:</span> <span class="n">KAFKA_BOOTSTRAP_SERVERS</span><span class="p">,</span>
+    <span class="s2">"status"</span><span class="p">:</span> <span class="s2">"starting"</span><span class="p">,</span>
+<span class="p">}))</span>
+
+<span class="n">client</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">MQTT_HOST</span><span class="p">,</span> <span class="n">MQTT_PORT</span><span class="p">,</span> <span class="n">keepalive</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+<span class="n">client</span><span class="o">.</span><span class="n">loop_forever</span><span class="p">()</span>
+</code></pre></div>
+<p>El <code>client_id</code> incluye un sufijo aleatorio (<code>uuid.uuid4().hex[:8]</code>) por la misma razón que el topic incluye <code>equipo01</code>: en un broker público, si dos personas usan el mismo <code>client_id</code>, el broker desconecta a la primera cuando la segunda se conecta — MQTT exige que cada <code>client_id</code> sea único por broker.</p>
+<p>Levanta el contenedor (ya no necesita Mosquitto):</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">uso-atmos</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">yml</span> <span class="n">up</span> <span class="n">-d</span> <span class="p">-</span><span class="n">-build</span>
+</code></pre></div>
+<p>Ejecútalo:</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">uso-atmos</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">yml</span> <span class="n">exec</span> <span class="n">uso-atmos</span> <span class="n">python</span> <span class="p">/</span><span class="n">app</span><span class="p">/</span><span class="n">bridge_mqtt_kafka</span><span class="p">.</span><span class="n">py</span>
+</code></pre></div>
+<p>Debes ver <code>status: "connected"</code>. Prueba el puente sin depender todavía de Wokwi, publicando un mensaje de prueba desde otra terminal. Escribe el JSON a un archivo en vez de pasarlo directo como argumento — PowerShell maltrata las comillas dobles al pasarlas a un ejecutable externo como <code>docker.exe</code>, y el mensaje puede llegar a Kafka sin comillas, sin que nada avise ningún error:</p>
+<div class="highlight"><pre><span></span><code><span class="s1">'{"tipoEvento":"sensor.lectura","sensorId":"esp32-wokwi-equipo01","temperatura":23.4,"humedad":55.2,"presion":1012.8,"origen":"wokwi","timestamp":1789700900000}'</span> <span class="p">|</span> <span class="nb">Set-Content</span> <span class="n">-Encoding</span> <span class="n">ascii</span> <span class="n">-NoNewline</span> <span class="n">mensaje-prueba</span><span class="p">.</span><span class="n">json</span>
+
+<span class="n">docker</span> <span class="n">run</span> <span class="p">-</span><span class="n">-rm</span> <span class="n">-v</span> <span class="s2">"${PWD}\mensaje-prueba.json:/tmp/mensaje-prueba.json"</span> <span class="n">eclipse-mosquitto</span><span class="p">:</span><span class="n">2</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">18</span> <span class="n">mosquitto_pub</span> <span class="n">-h</span> <span class="n">test</span><span class="p">.</span><span class="n">mosquitto</span><span class="p">.</span><span class="n">org</span> <span class="n">-p</span> <span class="n">1883</span> <span class="n">-t</span> <span class="n">lambda26</span><span class="p">/</span><span class="n">atmos</span><span class="p">/</span><span class="n">equipo01</span><span class="p">/</span><span class="n">lecturas</span> <span class="o">-f</span> <span class="p">/</span><span class="n">tmp</span><span class="p">/</span><span class="n">mensaje-prueba</span><span class="p">.</span><span class="n">json</span>
+</code></pre></div>
+<p>En la consola del bridge debe aparecer <code>status: "forwarded"</code>, y en la del <code>consumer_sensores.py</code> (3.4, si lo tienes corriendo), <code>status: "consumed"</code> — el consumer no distingue si el mensaje vino de este comando de prueba o de un ESP32 real.</p>
+<p><strong>Error frecuente</strong>: en Kafka UI aparece un mensaje con <code>key: "desconocido"</code> y el valor sin comillas (<code>{tipoEvento:sensor.lectura,...}</code> en vez de <code>{"tipoEvento":"sensor.lectura",...}</code>). No es un bug del bridge ni del consumer — es la prueba de que el JSON ya llegó roto por MQTT, típicamente porque se publicó con <code>-m "..."</code> directo en PowerShell en vez del método de archivo (<code>-f</code>) de arriba. El bridge reenvía el payload tal cual, sin corregirlo (2.1: "sin validar ni transformar") — por eso el dato malformado también queda malformado en Kafka.</p>
+<h3 id="38-simular-un-esp32-real-en-wokwi">3.8 Simular un ESP32 real en Wokwi<a class="headerlink" href="#38-simular-un-esp32-real-en-wokwi" title="Permanent link">&para;</a></h3>
+<p><strong>Producto del paso:</strong> un ESP32 real simulado (firmware Arduino, sensor DHT22 virtual — temperatura y humedad) publicando lecturas de punta a punta hasta Kafka. La presión se simula con un <strong>potenciómetro</strong> (gíralo en vivo durante la simulación para cambiar el valor) — Wokwi no tiene ninguna pieza de sensor de presión barométrica nativa (los <code>chip-bmp280</code> que aparecen en proyectos de otras personas son <em>Custom Chips</em> con archivos propios, no piezas disponibles por defecto).</p>
+<ol>
+<li>Entra directo a <a href="https://wokwi.com/projects/new/esp32">wokwi.com/projects/new/esp32</a> — te lleva a un proyecto en blanco con el ESP32 genérico y el sketch de ejemplo (<code>Hello, ESP32!</code>). Si en cambio entras a <code>wokwi.com/esp32</code> y navegas a mano, <strong>cuidado</strong>: la sección "Featured projects" (arriba) son proyectos de ejemplo de otras personas, no plantillas en blanco — la plantilla correcta está más abajo, en "Starter Templates", y ahí elige la tarjeta que dice solo <strong>"ESP32"</strong> (no S2/S3/C3/C6/H2: son otro chip, con otros pines por defecto, y <code>diagram.json</code>/<code>sketch.ino</code> no calzan igual).</li>
+<li>Reemplaza el <code>sketch.ino</code> generado por el de <code>uso-atmos/wokwi/sketch.ino</code>.</li>
+<li>Reemplaza el <code>diagram.json</code> generado por el de <code>uso-atmos/wokwi/diagram.json</code> (agrega el DHT22 en el pin <code>4</code> y el potenciómetro en el pin <code>34</code> — sin el prefijo <code>D</code> que usan otras placas de Wokwi; esta plantilla (<code>board-esp32-devkit-c-v4</code>) nombra los GPIO con el número pelado).</li>
+<li>Click en la pestaña <strong>"Library Manager"</strong> (al lado de <code>diagram.json</code>) y agrega, una por una, las 3 librerías de <code>uso-atmos/wokwi/libraries.txt</code>: búscalas por nombre y agrega la que coincida exactamente (<code>PubSubClient</code> es la de <strong>Nick O'Leary</strong>). No basta con que el archivo <code>libraries.txt</code> exista en el proyecto — cada librería se agrega manualmente desde esta pestaña, o la compilación falla con <code>fatal error: ....h: No such file or directory</code> aunque el código esté bien. Verifica en "Installed Libraries" que las 3 aparezcan antes de compilar.</li>
+<li>En <code>sketch.ino</code>, cambia <code>equipo01</code> (en <code>MQTT_TOPIC</code> y en <code>SENSOR_ID</code>) por tu propio identificador de equipo — el mismo que usaste en 3.7.</li>
+<li>Click en <strong>Start Simulation</strong>.</li>
+</ol>
+<p>En el Monitor Serial de Wokwi deberías ver la conexión a la red simulada <code>Wokwi-GUEST</code> (sin contraseña, con salida real a internet), la sincronización de reloj por NTP, la conexión MQTT, y una línea <code>Publicado: {...}</code> cada 5 segundos. Si no ves texto en el Monitor Serial aunque la simulación esté corriendo, revisa la esquina inferior derecha del panel de Simulation — a veces ese panel queda colapsado detrás de un pequeño ícono de flecha (<code>⌄</code>).</p>
+<p>Tanto el DHT22 como el potenciómetro se pueden ajustar en vivo mientras la simulación corre: click sobre el DHT22 abre un panel "Editing DHT22" con sliders de <strong>Temperature</strong> y <strong>Humidity</strong>; arrastrar el potenciómetro cambia la lectura de presión simulada (<code>leerPresion()</code> en <code>sketch.ino</code>). Sirve para probar casos de borde — valores fuera de rango físico — y ver cómo los rechaza <code>consumer_sensores.py</code>, sin tocar una línea de código.</p>
+<p><strong>Figura 4. Circuito simulado en Wokwi (ESP32 + DHT22 + potenciómetro) con el panel "Editing DHT22"</strong></p>
+<p><img alt="Circuito simulado en Wokwi con ESP32, DHT22 y potenciómetro, y el panel Editing DHT22 con sliders de temperatura y humedad" src="../img/s07-3.8-wokwi-circuito-dht22-potenciometro.png" /></p>
+<p>El <code>diagram.json</code> real, ya cableado: DHT22 (<code>VCC</code>→<code>3V3</code>, <code>GND</code>→<code>GND</code>, <code>SDA</code>→pin <code>4</code>) y potenciómetro (<code>VCC</code>→<code>3V3</code>, <code>GND</code>→<code>GND</code>, <code>SIG</code>→pin <code>34</code>), ambos alimentados por el ESP32 (<code>board-esp32-devkit-c-v4</code>).</p>
+<p>Verifica de punta a punta: el log del bridge (3.7) debe mostrar <code>status: "forwarded"</code> por cada lectura del ESP32 simulado, y <code>consumer_sensores.py</code> (3.4) debe procesarla con <code>status: "consumed"</code> — mismo esquema, misma validación de rango, sin ningún cambio de código respecto al simulador Python. En dos terminales separadas, con la simulación de Wokwi corriendo:</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">uso-atmos</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">yml</span> <span class="n">exec</span> <span class="n">uso-atmos</span> <span class="n">python</span> <span class="p">/</span><span class="n">app</span><span class="p">/</span><span class="n">consumer_sensores</span><span class="p">.</span><span class="n">py</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">compose</span> <span class="o">-f</span> <span class="n">uso-atmos</span><span class="p">/</span><span class="n">compose</span><span class="p">.</span><span class="n">yml</span> <span class="n">exec</span> <span class="n">uso-atmos</span> <span class="n">python</span> <span class="p">/</span><span class="n">app</span><span class="p">/</span><span class="n">bridge_mqtt_kafka</span><span class="p">.</span><span class="n">py</span>
+</code></pre></div>
+<p><strong>Figura 5. Verificación de punta a punta: consumer (arriba, <code>status: "consumed"</code>) y bridge (abajo, <code>status: "forwarded"</code>) recibiendo las lecturas reales del ESP32 simulado</strong></p>
+<p><img alt="Terminales del consumer y el bridge mostrando las lecturas del ESP32 simulado llegando de punta a punta hasta Kafka" src="../img/s07-3.8-consumer-bridge-punta-a-punta.png" /></p>
+<p>Cada lectura del ESP32 (<code>sensorId: esp32-wokwi-equipo01</code>) pasa primero por el bridge (<code>status: "forwarded"</code>, con el <code>offset</code> de Kafka asignado) y luego por el consumer (<code>status: "consumed"</code>, con <code>isValid: true</code> y <code>fueraDeRango: false</code>) — la misma cadena que ya se probó con el mensaje de prueba manual (3.7), ahora con datos reales del dispositivo simulado.</p>
+<p><strong>Error frecuente</strong>: las lecturas dejan de llegar (el consumer y el bridge quedan sin mensajes nuevos) sin ningún error visible en el Monitor Serial. Como la CPU del ESP32 se emula en el navegador, Wokwi <strong>pausa la simulación entera</strong> (WiFi y MQTT incluidos) en cuanto la pestaña deja de estar activa — al minimizar la ventana, cambiar de pestaña o bloquear la pantalla. Es una limitación conocida y sin solución del lado de Wokwi (no de tu firmware ni de tu cuenta): mantén la pestaña de Wokwi visible y en primer plano mientras dure la prueba de punta a punta.</p>
+<p><strong>Error frecuente</strong>: <code>fatal error: ....h: No such file or directory</code> — alguna librería del paso 4 no quedó realmente agregada (revisa "Installed Libraries" en el Library Manager). <strong>Error frecuente</strong>: una pieza aparece como un recuadro verde que dice "Missing chip Breakout" en vez de dibujarse — esa pieza no existe de verdad en el catálogo de Wokwi (le pasó a <code>wokwi-bmp280</code> y a otros nombres inventados de BMP280); usa solo piezas confirmadas como las de esta guía. <strong>Error frecuente</strong>: el Monitor Serial también puede quedar tapado por el panel "Editing DHT22" si lo dejaste abierto — ciérralo con la <code>X</code> de su esquina superior derecha.</p>
+<h2 id="4-crea-actividad-autonoma">4. Crea: actividad autónoma<a class="headerlink" href="#4-crea-actividad-autonoma" title="Permanent link">&para;</a></h2>
+<p>Tiempo: 3h fuera del aula.</p>
+<h3 id="41-actividad">4.1 Actividad<a class="headerlink" href="#41-actividad" title="Permanent link">&para;</a></h3>
+<p>Aplicación del patrón de ingesta IoT de esta sesión al <strong>Proyecto Sello</strong>, con un sensor <strong>real</strong> — no simulado en Wokwi.</p>
+<p>Completa y evidencia estas tareas:</p>
+<ol>
+<li>Sobre el problema de datos de tu propio Proyecto Sello (brief técnico-analítico de S2), identifica qué variable física necesita medir tu sistema (temperatura, humedad, distancia, luz, vibración, u otra según tu dominio) y consigue un sensor <strong>real</strong> que la mida — un ESP32/Arduino con un sensor físico de verdad conectado, el sensor propio de tu celular publicado por MQTT, o cualquier otra fuente de datos física real. No vale un componente simulado en Wokwi.</li>
+<li>Diseña el contrato de evento <strong>propio de tu Proyecto Sello</strong> (no <code>sensor.lectura</code> de <code>atmos-eventos</code>), con el mismo criterio de 3.6: campos, tipos y unidades explícitos.</li>
+<li>Construye tu propio productor o puente que publique las lecturas reales de tu sensor hacia un topic de Kafka propio de tu Proyecto Sello, replicando el patrón dispositivo→MQTT→puente→Kafka de 3.7-3.8 (o dispositivo→Kafka directo, si tu sensor sí puede correr un cliente Kafka).</li>
+<li>Construye el consumer correspondiente, separando validación de esquema y de rango físico (2.2) igual que <code>consumer_sensores.py</code>, pero sobre tu propio contrato.</li>
+<li>Verifica de punta a punta con datos <strong>reales</strong> (no simulados) y evidencia la distribución de particiones en Kafka UI.</li>
+</ol>
+<h3 id="42-proposito">4.2 Propósito<a class="headerlink" href="#42-proposito" title="Permanent link">&para;</a></h3>
+<p>Que cada estudiante demuestre, con hardware o datos reales de su propio Proyecto Sello — sin depender de un simulador como Wokwi —, que puede replicar el patrón completo de ingesta IoT (dispositivo → MQTT/Kafka → puente → validación de esquema y rango) sobre su propia fuente de datos, dejando lista la ingesta real que su Proyecto Sello va a necesitar en las unidades siguientes.</p>
+<h3 id="43-indicaciones">4.3 Indicaciones<a class="headerlink" href="#43-indicaciones" title="Permanent link">&para;</a></h3>
+<p>Entrega un PDF:</p>
+<div class="highlight"><pre><span></span><code>S07_Equipo##_ApellidoNombre.pdf
+</code></pre></div>
+<h4 id="431-estructura-del-informe">4.3.1 Estructura del informe<a class="headerlink" href="#431-estructura-del-informe" title="Permanent link">&para;</a></h4>
+<p><strong>Datos del estudiante</strong></p>
+<ul>
+<li>Nombre:</li>
+<li>Equipo:</li>
+<li>Sesión: S07 - Ingesta de Eventos IoT/Sensores en Tiempo Real</li>
+<li>Rol o aporte realizado:</li>
+<li>Link de GitHub:</li>
+</ul>
+<p><strong>Evidencia técnica</strong></p>
+<ol>
+<li>Sensor físico real conectado y funcionando (foto o video corto del hardware real — no de una simulación en Wokwi).</li>
+<li>Kafka UI con el topic propio del Proyecto Sello y su distribución de particiones.</li>
+<li>Logs de tu productor/puente y de tu consumer, con lecturas reales (no simuladas) llegando de punta a punta.</li>
+<li>Contrato de evento propio del Proyecto Sello, documentado (4.1, punto 2).</li>
+<li>Evidencia de al menos una validación de rango físico provocada sobre un valor real fuera de rango.</li>
+</ol>
+<p><strong>Reflexión técnica breve</strong></p>
+<div class="highlight"><pre><span></span><code>¿Qué tuviste que resolver para pasar de un sensor simulado en Wokwi a uno
+real que tu Proyecto Sello va a usar de verdad, y por qué el mismo patrón
+dispositivo -&gt; MQTT/Kafka -&gt; puente -&gt; validación siguió funcionando sin
+cambios de fondo?
+</code></pre></div>
+<h3 id="44-criterios-minimos-de-aceptacion">4.4 Criterios mínimos de aceptación<a class="headerlink" href="#44-criterios-minimos-de-aceptacion" title="Permanent link">&para;</a></h3>
+<ul>
+<li>El archivo respeta el nombre solicitado.</li>
+<li>Sensor real conectado y publicando datos reales — no un componente simulado en Wokwi.</li>
+<li>Contrato de evento propio del Proyecto Sello, documentado.</li>
+<li>Productor/puente y consumer propios, con separación de validación de esquema y de rango físico.</li>
+<li>Evidencia de al menos una alerta de rango provocada sobre un valor real.</li>
+<li>Reflexión técnica breve incluida.</li>
+</ul>
+<h3 id="45-preguntas-de-defensa">4.5 Preguntas de defensa<a class="headerlink" href="#45-preguntas-de-defensa" title="Permanent link">&para;</a></h3>
+<ol>
+<li>¿Por qué tu sensor real no puede publicar directamente en Kafka, y qué rol cumple tu propio puente MQTT-Kafka?</li>
+<li>¿Qué diferencia hay, en tu consumer, entre un evento <code>invalid</code> (falla de esquema) y uno con una alerta de rango físico?</li>
+<li>¿En qué te basaste para definir el rango físico plausible de tu sensor real, y qué pasaría si lo dejaras sin validar?</li>
+<li>¿Qué cambiaría en tu contrato de evento si tu Proyecto Sello agrega un segundo sensor real de otra naturaleza?</li>
+<li>¿Por qué esta sesión simuló primero el dispositivo en Wokwi antes de pedirte conectar el sensor real de tu Proyecto Sello?</li>
+</ol>
+<h3 id="46-rubrica-de-evaluacion">4.6 Rúbrica de evaluación<a class="headerlink" href="#46-rubrica-de-evaluacion" title="Permanent link">&para;</a></h3>
+<p><strong>Tabla 5. Rúbrica de evaluación</strong></p>
+<table>
+<thead>
+<tr>
+<th>Criterio</th>
+<th style="text-align: right;">Peso (%)</th>
+<th>A (20 pts)</th>
+<th>B (15 pts)</th>
+<th>C (10 pts)</th>
+<th>D (5 pts)</th>
+<th style="text-align: right;">Nivel obtenido</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Sensor real conectado</td>
+<td style="text-align: right;">25</td>
+<td>Sensor físico real funcionando y evidenciado con claridad (no simulado).</td>
+<td>Sensor real funcionando, evidencia parcial.</td>
+<td>Sensor real conectado con fallas o evidencia insuficiente.</td>
+<td>No conecta un sensor real.</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr>
+<td>2. Contrato de evento propio</td>
+<td style="text-align: right;">25</td>
+<td>Contrato propio del Proyecto Sello bien definido y documentado.</td>
+<td>Contrato definido, documentación incompleta.</td>
+<td>Contrato incompleto o poco claro.</td>
+<td>No define un contrato propio.</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr>
+<td>3. Productor/puente y consumer propios</td>
+<td style="text-align: right;">25</td>
+<td>Implementados y funcionando de punta a punta con datos reales.</td>
+<td>Implementados, con al menos un tramo simulado o incompleto.</td>
+<td>Implementación parcial.</td>
+<td>No implementa productor/puente ni consumer propios.</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr>
+<td>4. Validación de rango y reflexión</td>
+<td style="text-align: right;">25</td>
+<td>Alerta de rango provocada y evidenciada con claridad; reflexión sólida sobre real vs. simulado.</td>
+<td>Evidencia parcial de la alerta o reflexión genérica.</td>
+<td>Uno de los dos ausente.</td>
+<td>No presenta ninguno de los dos.</td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+<p>Nota final = suma de (<code>Peso</code> / 100 × <code>Puntos del nivel obtenido</code>) = ____ / 20.</p>
+<h2 id="5-cierre">5. Cierre<a class="headerlink" href="#5-cierre" title="Permanent link">&para;</a></h2>
+<p>Tiempo: 10 min.</p>
+<p><strong>Resumen breve:</strong> hoy el mismo Kafka de S6 recibió un productor de naturaleza distinta — alta frecuencia, mayor volumen, particionado real por dispositivo — y el consumer aprendió a distinguir un dato con la forma incorrecta de un dato con la forma correcta pero un valor imposible. Además, un ESP32 real simulado en Wokwi llegó hasta ese mismo topic a través de un puente MQTT-Kafka, sin que el consumer necesitara enterarse de la diferencia.</p>
+<p><strong>Dinámica participativa:</strong> cada estudiante comparte en qué partición cayó <code>esp32-laboratorio</code> en su propia ejecución de 3.5 — ¿coincidió con la partición 0 de esta guía, o el hash dio un resultado distinto en su máquina?</p>
+<p><strong>Metacognición:</strong> ¿en qué momento de hoy hubieras validado solo el esquema de un evento, sin pensar en validar también el rango de sus valores — y qué símbolo concreto del caso 1.6.1 se te habría pasado por alto?</p>
+<p><strong>Proyección:</strong> S8 conecta Spark Structured Streaming como un segundo consumidor de estos mismos topics (<code>orden-eventos</code>, <code>pago-eventos</code>, <code>atmos-eventos</code>), aplicando ventanas y watermarking sobre el volumen que hoy se generó. S10 va un paso más allá: entrena e infiere un modelo de series de tiempo directamente sobre <code>atmos-eventos</code>.</p>
+<h2 id="bibliografia">Bibliografía<a class="headerlink" href="#bibliografia" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Apache Software Foundation. (2024). <em>Apache Kafka Documentation</em>. https://kafka.apache.org/documentation/</li>
+<li>Kreps, J., Narkhede, N., &amp; Rao, J. (2011). <em>Kafka: A Distributed Messaging System for Log Processing</em>. LinkedIn.</li>
+<li>Confluent. (2024). <em>Kafka Python Client Documentation</em>. https://kafka-python.readthedocs.io/</li>
+<li>OASIS. (2019). <em>MQTT Version 5.0 Specification</em>. https://docs.oasis-open.org/mqtt/mqtt/v5.0/mqtt-v5.0.html</li>
+<li>Eclipse Foundation. (2024). <em>Eclipse Mosquitto Documentation</em>. https://mosquitto.org/documentation/</li>
+<li>Wokwi. (2024). <em>Wokwi Documentation</em>. https://docs.wokwi.com/</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

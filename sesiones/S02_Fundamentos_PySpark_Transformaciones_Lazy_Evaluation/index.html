@@ -1,0 +1,3174 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://262bigdata.github.io/lambda26/sesiones/S02_Fundamentos_PySpark_Transformaciones_Lazy_Evaluation/">
+      
+      
+        <link rel="prev" href="../S01_Arquitectura_Big_Data_Lambda_Kappa/">
+      
+      
+        <link rel="next" href="../S03_Procesamiento_Calidad_Datos_Particionamiento/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+  
+    <title>Big Data - S2 - Fundamentos PySpark: transformaciones, funciones, agrupaciones y evaluación perezosa</title>
+  
+
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#s2-fundamentos-pyspark-transformaciones-funciones-agrupaciones-y-evaluacion-perezosa" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Big Data" class="md-header__button md-logo" aria-label="Big Data" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Big Data
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              S2 - Fundamentos PySpark: transformaciones, funciones, agrupaciones y evaluación perezosa
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/262bigdata/lambda26" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    262bigdata/lambda26
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Big Data" class="md-nav__button md-logo" aria-label="Big Data" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Big Data
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/262bigdata/lambda26" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    262bigdata/lambda26
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guía de Proyecto Sello
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guía de Proyecto Sello
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../proyecto-sello/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guía del proyecto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../proyecto-sello/brief/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brief técnico-analítico (plantilla)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../proyecto-sello/u1-producto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Producto U1 (plantilla-ejemplo)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../proyecto-sello/u2-producto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Producto U2 (plantilla-ejemplo)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../proyecto-sello/u3-producto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Producto U3 / Producto Final (plantilla-ejemplo)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../proyecto-sello/matriz-competencias/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Matriz de competencias (ICACIT)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Silabos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Silabos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../silabo_bigdata_2026_1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Silabo 2026-1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../silabo_bigdata_2026_2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Silabo 2026-2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Arquitecturas Big Data y ETL batch distribuido
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    1. Arquitecturas Big Data y ETL batch distribuido
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S01_Arquitectura_Big_Data_Lambda_Kappa/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S1 - Arquitectura Big Data: Lambda y Kappa, batch vs. streaming
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S2 - Fundamentos PySpark: transformaciones, funciones, agrupaciones y evaluación perezosa
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S2 - Fundamentos PySpark: transformaciones, funciones, agrupaciones y evaluación perezosa
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-introduccion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Introducción
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Introducción">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-presentacion-de-la-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Presentación de la sesión
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-indice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Índice
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-proposito-de-aprendizaje" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Propósito de aprendizaje
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-producto-de-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 Producto de sesión
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-metodologia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5 Metodología
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-motivacion-de-la-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6 Motivación de la sesión
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.6 Motivación de la sesión">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#161-caso-los-235-tb-que-expedia-no-necesitaba-leer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6.1 Caso: los 23.5 TB que Expedia no necesitaba leer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17-ubicacion-en-el-curso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.7 Ubicación en el curso
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-explica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Explica
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Explica">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-arquitectura-de-la-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Arquitectura de la sesión
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-introduccion-a-pyspark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Introducción a PySpark
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-configuracion-de-la-sparksession" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Configuración de la SparkSession
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-extraccion-y-estructura-de-un-dataframe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Extracción y estructura de un DataFrame
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-transformaciones-acciones-y-evaluacion-perezosa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Transformaciones, acciones y evaluación perezosa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-funciones-de-pysparksqlfunctions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 Funciones de pyspark.sql.functions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#27-agrupaciones-y-agregaciones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7 Agrupaciones y agregaciones
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#28-rdd-el-modelo-debajo-de-los-dataframes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.8 RDD: el modelo debajo de los DataFrames
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-aplica-actividad-practica-guiada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Aplica: actividad práctica guiada
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Aplica: actividad práctica guiada">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-descargar-el-dataset-hm-y-reanudar-el-entorno-lambda26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Descargar el dataset H&amp;M y reanudar el entorno lambda26
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-crear-el-notebook-y-la-sparksession" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Crear el notebook y la SparkSession
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-cargar-y-explorar-articlescsv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Cargar y explorar articles.csv
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-cargar-customerscsv-con-esquema-explicito-y-explorar-columnas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Cargar customers.csv con esquema explícito y explorar columnas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-aplicar-transformaciones-y-verificar-la-evaluacion-perezosa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 Aplicar transformaciones y verificar la evaluación perezosa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-analizar-el-plan-de-ejecucion-con-explain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 Analizar el plan de ejecución con explain()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-aplicar-funciones-y-crear-columnas-con-withcolumn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7 Aplicar funciones y crear columnas con withColumn()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#38-cargar-transactionsparquet-y-aplicar-funciones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.8 Cargar transactions.parquet y aplicar funciones
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#39-aplicar-agrupaciones-y-agregaciones-transactionsparquet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.9 Aplicar agrupaciones y agregaciones (transactions.parquet)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#310-convertir-a-rdd-y-procesar-texto-detail_desc-de-articlescsv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.10 Convertir a RDD y procesar texto (detail_desc de articles.csv)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#311-documentar-hallazgos-y-responder-preguntas-de-reflexion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.11 Documentar hallazgos y responder preguntas de reflexión
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-crea-actividad-autonoma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Crea: actividad autónoma
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Crea: actividad autónoma">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-actividad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Actividad
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-proposito" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Propósito
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-indicaciones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Indicaciones
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.3 Indicaciones">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#431-estructura-del-informe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3.1 Estructura del informe
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-criterios-minimos-de-aceptacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Criterios mínimos de aceptación
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-preguntas-de-defensa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Preguntas de defensa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46-rubrica-de-evaluacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6 Rúbrica de evaluación
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-cierre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Cierre
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bibliografia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bibliografía
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S03_Procesamiento_Calidad_Datos_Particionamiento/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S3 - Procesamiento y Calidad de Datos: filtrado, duplicados, nulos y particionamiento analítico
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S04_ML_Distribuido_Regresion_Spark_MLlib/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S4 - ML Distribuido con Spark MLlib (Regresión)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S05_Evaluacion_Unidad_1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S5 - Evaluación de la Unidad I
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Sistema Big Data en tiempo real
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    2. Sistema Big Data en tiempo real
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S06_Ingesta_Eventos_Empresariales_Kafka/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S6 - Ingesta de Eventos Empresariales en Tiempo Real
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S07_Ingesta_Eventos_IoT_Sensores_Tiempo_Real/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S7 - Ingesta de Eventos IoT/Sensores en Tiempo Real
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S12_Evaluacion_Unidad_2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S12 - Evaluación de la Unidad II
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Integración, DataOps y despliegue del sistema final
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    3. Integración, DataOps y despliegue del sistema final
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S15_Evaluacion_Unidad_3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S15 - Evaluación de la Unidad III
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-introduccion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Introducción
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Introducción">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-presentacion-de-la-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Presentación de la sesión
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-indice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Índice
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-proposito-de-aprendizaje" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Propósito de aprendizaje
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-producto-de-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 Producto de sesión
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-metodologia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5 Metodología
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-motivacion-de-la-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6 Motivación de la sesión
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.6 Motivación de la sesión">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#161-caso-los-235-tb-que-expedia-no-necesitaba-leer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6.1 Caso: los 23.5 TB que Expedia no necesitaba leer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17-ubicacion-en-el-curso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.7 Ubicación en el curso
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-explica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Explica
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Explica">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-arquitectura-de-la-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Arquitectura de la sesión
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-introduccion-a-pyspark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Introducción a PySpark
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-configuracion-de-la-sparksession" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Configuración de la SparkSession
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-extraccion-y-estructura-de-un-dataframe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Extracción y estructura de un DataFrame
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-transformaciones-acciones-y-evaluacion-perezosa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Transformaciones, acciones y evaluación perezosa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-funciones-de-pysparksqlfunctions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 Funciones de pyspark.sql.functions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#27-agrupaciones-y-agregaciones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7 Agrupaciones y agregaciones
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#28-rdd-el-modelo-debajo-de-los-dataframes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.8 RDD: el modelo debajo de los DataFrames
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-aplica-actividad-practica-guiada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Aplica: actividad práctica guiada
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Aplica: actividad práctica guiada">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-descargar-el-dataset-hm-y-reanudar-el-entorno-lambda26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Descargar el dataset H&amp;M y reanudar el entorno lambda26
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-crear-el-notebook-y-la-sparksession" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Crear el notebook y la SparkSession
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-cargar-y-explorar-articlescsv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Cargar y explorar articles.csv
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-cargar-customerscsv-con-esquema-explicito-y-explorar-columnas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Cargar customers.csv con esquema explícito y explorar columnas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-aplicar-transformaciones-y-verificar-la-evaluacion-perezosa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 Aplicar transformaciones y verificar la evaluación perezosa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-analizar-el-plan-de-ejecucion-con-explain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 Analizar el plan de ejecución con explain()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-aplicar-funciones-y-crear-columnas-con-withcolumn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7 Aplicar funciones y crear columnas con withColumn()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#38-cargar-transactionsparquet-y-aplicar-funciones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.8 Cargar transactions.parquet y aplicar funciones
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#39-aplicar-agrupaciones-y-agregaciones-transactionsparquet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.9 Aplicar agrupaciones y agregaciones (transactions.parquet)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#310-convertir-a-rdd-y-procesar-texto-detail_desc-de-articlescsv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.10 Convertir a RDD y procesar texto (detail_desc de articles.csv)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#311-documentar-hallazgos-y-responder-preguntas-de-reflexion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.11 Documentar hallazgos y responder preguntas de reflexión
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-crea-actividad-autonoma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Crea: actividad autónoma
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Crea: actividad autónoma">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-actividad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Actividad
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-proposito" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Propósito
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-indicaciones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Indicaciones
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.3 Indicaciones">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#431-estructura-del-informe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3.1 Estructura del informe
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-criterios-minimos-de-aceptacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Criterios mínimos de aceptación
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-preguntas-de-defensa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Preguntas de defensa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46-rubrica-de-evaluacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6 Rúbrica de evaluación
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-cierre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Cierre
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bibliografia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bibliografía
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="s2-fundamentos-pyspark-transformaciones-funciones-agrupaciones-y-evaluacion-perezosa">S2 - Fundamentos PySpark: transformaciones, funciones, agrupaciones y evaluación perezosa<a class="headerlink" href="#s2-fundamentos-pyspark-transformaciones-funciones-agrupaciones-y-evaluacion-perezosa" title="Permanent link">&para;</a></h1>
+<p><em>Por: Angel Sullon Macalupu @asullom - 2026</em></p>
+<h2 id="1-introduccion">1. Introducción<a class="headerlink" href="#1-introduccion" title="Permanent link">&para;</a></h2>
+<p>Tiempo: 20 min.</p>
+<h3 id="11-presentacion-de-la-sesion">1.1 Presentación de la sesión<a class="headerlink" href="#11-presentacion-de-la-sesion" title="Permanent link">&para;</a></h3>
+<p>En S1 se decidió la arquitectura Big Data (Lambda o Kappa) del Proyecto Sello y se verificó que el entorno <code>lambda26</code> (<code>uso-pyspark</code>) funciona de punta a punta. Esta sesión entra a fondo en la primera etapa real del pipeline batch: extracción, transformaciones, funciones, agrupaciones/agregaciones y el modelo RDD, todo bajo el concepto que explica por qué Spark procesa datos a esa escala sin colapsar — la evaluación perezosa (<em>lazy evaluation</em>). El porqué se desarrolla en 1.6, a partir de cómo Spark SQL optimiza tu código antes de ejecutarlo; esta sesión no llega todavía a particionar ni guardar en formatos analíticos (eso es S3).</p>
+<h3 id="12-indice">1.2 Índice<a class="headerlink" href="#12-indice" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Introducción a PySpark: qué es, objetos fundamentales y <code>SparkSession</code>.</li>
+<li>DataFrames: extracción, estructura y escritura de resultados (CSV/Parquet, particiones).</li>
+<li>Transformaciones, acciones, evaluación perezosa y análisis del plan de ejecución (<code>explain()</code>).</li>
+<li>Funciones de <code>pyspark.sql.functions</code>.</li>
+<li>Agrupaciones, agregaciones y funciones ventana.</li>
+<li>RDD: el modelo debajo de los DataFrames.</li>
+</ol>
+<h3 id="13-proposito-de-aprendizaje">1.3 Propósito de aprendizaje<a class="headerlink" href="#13-proposito-de-aprendizaje" title="Permanent link">&para;</a></h3>
+<p>Al concluir la clase, estarás en condiciones de:</p>
+<ul>
+<li><strong>Ejecutar</strong> transformaciones distribuidas con PySpark sobre DataFrames y RDD, <strong>identificar</strong> el momento exacto en que Spark ejecuta realmente el cálculo, y <strong>aplicar</strong> funciones, agrupaciones y agregaciones para resumir datos a escala.</li>
+</ul>
+<h3 id="14-producto-de-sesion">1.4 Producto de sesión<a class="headerlink" href="#14-producto-de-sesion" title="Permanent link">&para;</a></h3>
+<p>Notebook <code>02_fundamentos_practica.ipynb</code> con transformaciones y funciones documentadas, agrupaciones/agregaciones aplicadas, procesamiento RDD y evidencia del plan de ejecución (<code>explain()</code>).</p>
+<h3 id="15-metodologia">1.5 Metodología<a class="headerlink" href="#15-metodologia" title="Permanent link">&para;</a></h3>
+<p><strong>Tabla 1. Metodología de la sesión</strong></p>
+<table>
+<thead>
+<tr>
+<th>Actividades a Realizar en el Periodo</th>
+<th>Orientaciones generales (Orientaciones Metodológicas)</th>
+<th>Material de estudio recomendado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Revisión previa individual</td>
+<td>Repasar el notebook de verificación de S1 (entorno <code>lambda26</code> ya debe estar funcionando, no la imagen oficial <code>jupyter/pyspark-notebook</code>), leer el caso de Catalyst Optimizer (ver 1.6) y <strong>descargar el dataset H&amp;M de Kaggle antes de clase</strong> (ver 3.1) — pesa 625 MB, más de 1.3 millones de registros, no conviene descargarlo durante la sesión presencial.</td>
+<td>Guía S1 (notebook de verificación), guía S2 — secciones 1.6 y 3.1.</td>
+</tr>
+<tr>
+<td>Clase presencial</td>
+<td>Construcción guiada del notebook <code>02_fundamentos_practica.ipynb</code>: extracción, transformaciones, evaluación perezosa, funciones, agrupaciones/agregaciones y RDD, sobre el dataset real H&amp;M. Trabajo individual, siguiendo al docente paso a paso; consulta inmediata ante dudas.</td>
+<td>Pasos 3.1 a 3.11 de esta guía.</td>
+</tr>
+<tr>
+<td>Evaluación formativa</td>
+<td>Revisión en clase de las transformaciones documentadas y la evidencia del plan de ejecución. La evidencia se completa y sustenta de forma individual, fuera del aula, según los criterios mínimos de la sección 4.4.</td>
+<td>Indicaciones de entrega (4.3), rúbrica de evaluación (4.6).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="16-motivacion-de-la-sesion">1.6 Motivación de la sesión<a class="headerlink" href="#16-motivacion-de-la-sesion" title="Permanent link">&para;</a></h3>
+<h4 id="161-caso-los-235-tb-que-expedia-no-necesitaba-leer">1.6.1 Caso: los 23.5 TB que Expedia no necesitaba leer<a class="headerlink" href="#161-caso-los-235-tb-que-expedia-no-necesitaba-leer" title="Permanent link">&para;</a></h4>
+<p>Expedia Group —una de las plataformas de reservas de viaje más grandes del mundo— empezó a notar un patrón preocupante en sus pipelines de datos con Spark: consultas que funcionaban bien al principio se volvían dramáticamente más lentas a medida que crecía el volumen de datos, y trabajos que debían terminar en minutos terminaban corriendo por horas, inflando también el costo de infraestructura. Analizando los planes de ejecución con una herramienta propia (que expone la misma metadata que tú vas a ver con <code>explain()</code> en esta sesión: planes físicos, filtros aplicados, métricas de shuffle), encontraron un caso concreto: un job que escaneaba la tabla <code>lodging_content_vrbo_room_type_profile_history</code> completa —<strong>23.5 TB</strong>— con los arreglos <code>partition_filters</code> y <code>pushed_filters</code> del plan físico <strong>vacíos</strong>. La consulta no le dio a Catalyst ningún filtro que empujar hacia la lectura, así que Spark leyó la tabla entera antes de filtrar nada.</p>
+<p>La causa no era un bug de Spark — era cómo estaba escrita la consulta: sin un predicado de partición explícito, no hay nada que Catalyst pueda empujar. El equipo agregó los predicados correctos, y el mismo job pasó de <strong>~20 minutos a 1 minuto</strong> (95% más rápido); aplicando el mismo diagnóstico a otros workloads, reportaron reducciones de 40-95% en tiempo de ejecución y 50-90% en costo de cómputo.</p>
+<p>Fuente: <a href="https://www.zenml.io/llmops-database/llm-powered-spark-sql-plan-analysis-for-performance-optimization">Expedia: LLM-Powered Spark SQL Plan Analysis for Performance Optimization</a>.</p>
+<p>Un <code>PushedFilters</code> vacío en tu propio <code>explain()</code> (Tabla 5) es la misma señal de alerta que Expedia encontró en una tabla de 23.5 TB — por eso esta sesión no se queda en aprender la sintaxis de <code>select()</code>/<code>filter()</code>/<code>groupBy()</code>, sino en entender qué hace Spark con esas transformaciones antes de ejecutarlas. Recién cuando llamas a una acción (<code>show()</code>, <code>count()</code>, <code>collect()</code>), el motor <strong>Catalyst</strong> de Spark SQL toma tu plan y lo optimiza en cuatro fases: <em>Analysis</em> (resuelve nombres y tipos), <em>Logical optimization</em> (aplica reglas como <em>predicate pushdown</em>, <em>column pruning</em> y reordenamiento de joins — el paso que le faltó a la consulta de Expedia), <em>Physical planning</em> (elige la estrategia física) y <em>Code generation</em> (compila a bytecode). Catalyst se diseñó explícitamente para que el equipo de Spark pudiera agregar nuevas reglas de optimización con facilidad, y para que desarrolladores externos lo extendieran — pero esas reglas solo actúan sobre lo que tu código les da la oportunidad de optimizar.</p>
+<p><strong>Figura 1. De la transformación a la ejecución: las 4 fases de Catalyst</strong></p>
+<pre class="mermaid"><code>flowchart TB
+    Code["Código PySpark&lt;br/&gt;df.select().filter()"] --&gt;|"transformación:&lt;br/&gt;solo construye plan"| Plan["Plan lógico&lt;br/&gt;(sin ejecutar)"]
+    Plan --&gt;|"acción: show(), count(), collect()"| A["Analysis&lt;br/&gt;resuelve nombres y tipos"]
+    A --&gt; B["Logical optimization&lt;br/&gt;predicate pushdown,&lt;br/&gt;column pruning, join reordering"]
+    B --&gt; C["Physical planning&lt;br/&gt;elige estrategia física"]
+    C --&gt; D["Code generation&lt;br/&gt;compila a bytecode Java"]
+    D --&gt; Exec["Ejecución distribuida&lt;br/&gt;sobre los workers"]
+
+    classDef today fill:#ffe08a,stroke:#9a6b00,stroke-width:2px,color:#111;
+    class Plan today;</code></pre>
+<p><em>Nota.</em> Adaptado de <em>What is a Catalyst Optimizer?</em>, por Databricks, 2024, Databricks Blog (<a href="https://www.databricks.com/blog/what-is-catalyst-optimizer">https://www.databricks.com/blog/what-is-catalyst-optimizer</a>).</p>
+<p><strong>Preguntas de análisis</strong></p>
+<p><strong>Activación de conocimientos previos</strong></p>
+<ol>
+<li>Antes de leer la causa, ¿qué esperarías que pasara si una consulta sobre una tabla de 23.5 TB no tiene ningún filtro? ¿Por qué Spark no "sabe" evitarlo por sí solo?</li>
+<li>¿Qué diferencia hay entre que Spark filtre <strong>después</strong> de leer toda la tabla, y que filtre <strong>antes</strong> (durante la lectura, empujando el filtro al propio lector)?</li>
+</ol>
+<p><strong>Comprensión de evaluación perezosa</strong></p>
+<ol>
+<li>Según el caso, ¿qué le faltó exactamente a la consulta de Expedia para que Catalyst pudiera aplicar <em>predicate pushdown</em>? Relaciónalo con las 4 fases del plan.</li>
+<li>¿Por qué revisar <code>explain()</code> — y no solo confiar en que "Spark es rápido" — es una práctica que un equipo de datos real necesita, según lo que le pasó a Expedia?</li>
+</ol>
+<h3 id="17-ubicacion-en-el-curso">1.7 Ubicación en el curso<a class="headerlink" href="#17-ubicacion-en-el-curso" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Unidad: U1 - Arquitecturas Big Data y ETL batch distribuido.</li>
+<li>Producto del curso: Proyecto Sello: sistema Big Data distribuido end-to-end para procesamiento batch y streaming, analítica/ML, observabilidad y visualización BI para la toma de decisiones.</li>
+<li>Producto de unidad: pipeline batch de ETL distribuido con salidas analíticas en Parquet listas para BI/ML.</li>
+<li>Avance del producto en esta sesión: transformaciones distribuidas documentadas sobre datos del Proyecto Sello, con evidencia del plan de ejecución.</li>
+</ul>
+<p>Roadmap del producto de unidad:</p>
+<p><strong>Figura 2. Roadmap del producto de la unidad U1</strong></p>
+<pre class="mermaid"><code>flowchart TB
+    Arquitectura["Arquitectura Big Data&lt;br/&gt;Lambda o Kappa&lt;br/&gt;S1"]
+    PySpark["Fundamentos PySpark&lt;br/&gt;HOY"]
+    HDFS["Formatos analíticos y calidad&lt;br/&gt;S3"]
+    ML["ML distribuido&lt;br/&gt;S4"]
+    Evaluacion["Evaluación U1&lt;br/&gt;S5"]
+
+    Arquitectura --&gt; PySpark --&gt; HDFS --&gt; ML --&gt; Evaluacion
+
+    classDef today fill:#ffe08a,stroke:#9a6b00,stroke-width:2px,color:#111;
+    class PySpark today;</code></pre>
+<p>Hoy se construye la base técnica que usa el resto de la unidad: sin dominar transformaciones, funciones, agrupaciones y evaluación perezosa, S3 (carga particionada y calidad de datos) y S4 (ML distribuido) no tienen sobre qué apoyarse. La evaluación U1 valida el pipeline batch completo construido sobre esta base.</p>
+<h2 id="2-explica">2. Explica<a class="headerlink" href="#2-explica" title="Permanent link">&para;</a></h2>
+<p>Tiempo: 25 min.</p>
+<h3 id="21-arquitectura-de-la-sesion">2.1 Arquitectura de la sesión<a class="headerlink" href="#21-arquitectura-de-la-sesion" title="Permanent link">&para;</a></h3>
+<p><strong>Figura 3. Arquitectura de la sesión: extracción, DataFrame, RDD y evaluación perezosa sobre <code>uso-pyspark</code></strong></p>
+<pre class="mermaid"><code>flowchart LR
+    subgraph BP["Batch Pipeline"]
+        subgraph BP1["uso-pyspark&lt;br/&gt;batch, interactivo"]
+            direction LR
+            E["Extracción&lt;br/&gt;spark.read.csv() / .parquet()&lt;br/&gt;header + esquema"] --&gt; DF["DataFrame&lt;br/&gt;select() / filter() / withColumn()&lt;br/&gt;funciones de pyspark.sql.functions"]
+            DF --&gt; GA["Agrupación / Agregación&lt;br/&gt;groupBy().agg()"]
+            DF --&gt; R["RDD&lt;br/&gt;df.rdd -&gt; map() / flatMap() / reduceByKey()"]
+            GA --&gt; Acc["Acción&lt;br/&gt;show() / count() / collect()"]
+            R --&gt; Acc
+            Acc --&gt; UI["Spark UI + explain()&lt;br/&gt;plan de ejecución"]
+        end
+    end</code></pre>
+<p>A diferencia de S1, donde solo verificabas que el ciclo completo funcionara de punta a punta con un caso mínimo, hoy trabajas a fondo dentro de la etapa de transformación: extracción con control de esquema, transformaciones y funciones sobre DataFrame, agrupaciones/agregaciones, y el modelo RDD que corre por debajo. La visualización sigue siendo <code>show()</code> + Spark UI; la persistencia en formatos analíticos particionados (Parquet) recién se construye en S3 — hoy el resultado vive solo en memoria distribuida, dentro de la sesión de Spark.</p>
+<h3 id="22-introduccion-a-pyspark">2.2 Introducción a PySpark<a class="headerlink" href="#22-introduccion-a-pyspark" title="Permanent link">&para;</a></h3>
+<p>Apache Spark es un <em>framework</em> de procesamiento de datos distribuido, de código abierto, diseñado para procesar grandes volúmenes de datos (Big Data) de forma rápida, en clústeres (Hadoop, Kubernetes, etc.), con soporte para varios lenguajes (Python, Scala, Java, R) y capacidad de mantener datos en memoria — hasta 100 veces más rápido que Hadoop MapReduce en cargas de trabajo iterativas (ver 2.8, sobre por qué). Tres características lo definen:</p>
+<ul>
+<li><strong>Motor unificado</strong>: un mismo motor soporta SQL, streaming, machine learning (MLlib, retomado en S4) y grafos (GraphX).</li>
+<li><strong>Tolerancia a fallos</strong>: recuperación automática ante errores de nodos, heredada del propio RDD (ver 2.8).</li>
+<li><strong>Evaluación perezosa</strong> (<em>lazy evaluation</em>): optimiza el plan completo antes de ejecutarlo — el concepto central de esta sesión, desarrollado a fondo en 2.5.</li>
+</ul>
+<p><strong>PySpark</strong> es la API de Python para Apache Spark: permite escribir Spark con sintaxis de Python, combinando la facilidad de Python con el procesamiento distribuido de Spark, e integrarte con librerías del ecosistema Python (NumPy, Pandas, scikit-learn) — la razón por la que este curso usa PySpark y no Scala directamente.</p>
+<p><strong>Objetos fundamentales de PySpark</strong></p>
+<p>Si vienes de Pandas, hay una diferencia estructural desde el principio. En Pandas, las Series y los DataFrames tienen índices (implícitos o explícitos) que permiten acceso rápido a filas y alineación automática de datos entre operaciones. En PySpark, un DataFrame no tiene ese concepto:</p>
+<p><strong>Tabla 2. Pandas vs. PySpark: índices</strong></p>
+<table>
+<thead>
+<tr>
+<th>Pandas</th>
+<th>PySpark</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cada fila tiene un índice (implícito o explícito); acceso directo con <code>loc</code>/<code>iloc</code>.</td>
+<td>No hay índice automático: un DataFrame es una colección distribuida de filas sin "etiqueta de fila".</td>
+</tr>
+<tr>
+<td>Operaciones entre Series se alinean automáticamente por índice (<code>s1 + s2</code>).</td>
+<td>Las filas se particionan entre nodos del clúster — mantener un índice secuencial (como en Pandas) de forma distribuida no sería eficiente.</td>
+</tr>
+</tbody>
+</table>
+<p>Dos objetos sostienen esa diferencia:</p>
+<ul>
+<li><strong>Columna</strong> (<code>pyspark.sql.Column</code>): una estructura distribuida que representa un campo del DataFrame — es lo que manipulas con <code>col()</code>, <code>when()</code>, <code>.cast()</code> (ver 2.6).</li>
+<li><strong>DataFrame</strong>: una colección distribuida de datos organizados en filas y columnas (similar a una tabla SQL), optimizada para procesamiento paralelo en un clúster. Tres características lo definen: es <strong>distribuido</strong> (los datos se particionan en múltiples nodos), tiene <strong>esquema definido</strong> (cada columna tiene nombre y tipo — ver 2.4 sobre <code>StructType</code>) y sus operaciones son <strong>lazy</strong> (las transformaciones como <code>filter()</code>/<code>groupBy()</code> no se ejecutan hasta que llamas a una acción — el tema central de 2.5).</li>
+</ul>
+<h3 id="23-configuracion-de-la-sparksession">2.3 Configuración de la <code>SparkSession</code><a class="headerlink" href="#23-configuracion-de-la-sparksession" title="Permanent link">&para;</a></h3>
+<p>Toda esta sesión trabaja sobre una única <code>SparkSession</code> — el punto de entrada a Spark desde PySpark:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparkSession</span>
+
+<span class="n">spark</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span>
+    <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">"sesion2-fundamentos-spark"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">master</span><span class="p">(</span><span class="s2">"local[*]"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">"spark.ui.port"</span><span class="p">,</span> <span class="s2">"4040"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<span class="p">)</span>
+</code></pre></div>
+<ul>
+<li><code>.master("...")</code>: define dónde se ejecuta Spark. <code>"local[*]"</code> corre en modo local usando todos los núcleos disponibles en tu máquina; <code>"local[2]"</code> limitaría el trabajo a solo 2 núcleos. En un clúster real, <code>.master()</code> apuntaría a un <em>cluster manager</em> (YARN, Kubernetes, el propio Spark standalone) en vez de <code>"local[...]"</code> — ese cambio no toca ni una línea del resto del código, solo esta configuración.</li>
+<li><code>.appName("...")</code>: el nombre que identifica tu aplicación en Spark UI (<code>localhost:4042</code> en este entorno — ver nota abajo) — útil para distinguir sesiones cuando hay varias corriendo a la vez.</li>
+<li><code>.config("spark.ui.port", "4040")</code>: fija el puerto de Spark UI <em>dentro del contenedor</em>. Por defecto Spark usa el 4040, pero si ese puerto ya está ocupado (por ejemplo, por otro notebook con una <code>SparkSession</code> activa), hay que cambiarlo aquí. En <code>lambda26</code>, <code>compose.yml</code> expone ese 4040 interno en tu máquina como <code>4042</code> (<code>"4042:4040"</code>), para evitar choques con otros servicios locales — por eso accedes por <code>localhost:4042</code>, no <code>:4040</code>.</li>
+<li><code>.getOrCreate()</code>: crea la <code>SparkSession</code> si no existe una, o <strong>reutiliza</strong> la que ya está activa en el proceso — evita el error (y el desperdicio de recursos) de crear varias sesiones de Spark dentro del mismo entorno.</li>
+</ul>
+<h3 id="24-extraccion-y-estructura-de-un-dataframe">2.4 Extracción y estructura de un DataFrame<a class="headerlink" href="#24-extraccion-y-estructura-de-un-dataframe" title="Permanent link">&para;</a></h3>
+<p><code>spark.read.csv()</code> acepta parámetros que cambian cómo Spark interpreta el archivo:</p>
+<p><strong>Tabla 3. Parámetros usados en esta sesión para <code>spark.read.csv()</code></strong></p>
+<table>
+<thead>
+<tr>
+<th>Parámetro</th>
+<th>Qué hace</th>
+<th>Costo/riesgo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>header=True</code></td>
+<td>Usa la primera fila del archivo como nombres de columna.</td>
+<td>Si el header real no calza con el orden de columnas del schema inferido, Spark emite una advertencia en vez de fallar — hay que revisarla, no ignorarla.</td>
+</tr>
+<tr>
+<td><code>inferSchema=True</code></td>
+<td>Spark lee el archivo una vez completa para deducir el tipo de cada columna (<code>int</code>, <code>string</code>, <code>date</code>, etc.). Por defecto es <code>False</code>: sin declararlo, todas las columnas llegan como <code>string</code>.</td>
+<td>Cuesta una pasada extra sobre los datos antes de la real; en un archivo de producción grande, se reemplaza por un <code>StructType</code> explícito para evitar ese costo y cualquier ambigüedad de tipos.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Error frecuente:</strong> un caso muy común en datos reales — una columna de códigos (por ejemplo, un código postal <code>"05001"</code> o un código de producto <code>"00234"</code>) tiene solo dígitos. Si la lees con <code>inferSchema=True</code>, Spark ve solo números y <strong>la infiere como un tipo numérico</strong>, descartando el cero inicial sin avisar: <code>"05001"</code> se convierte silenciosamente en <code>5001</code>. Es exactamente el tipo de inconsistencia de esquema (uno de los tres criterios de calidad de datos que formaliza S3: esquema, nulos, duplicados) que un <code>StructType</code> explícito evita — porque el tipo lo decides tú, no Spark.</p>
+<p>Un <code>StructType</code> explícito resuelve exactamente ese problema: declaras el tipo de cada columna tú mismo, sin que Spark tenga que adivinar nada — no hace falta describir todas las columnas de un archivo ancho, basta con las que te importan:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">StructType</span><span class="p">,</span> <span class="n">StructField</span><span class="p">,</span> <span class="n">StringType</span>
+
+<span class="n">schema</span> <span class="o">=</span> <span class="n">StructType</span><span class="p">([</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">"codigo"</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="c1"># ... el resto de columnas que necesites</span>
+<span class="p">])</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">"ruta/al/archivo.csv"</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">schema</span><span class="p">)</span>
+</code></pre></div>
+<p>Con <code>schema=schema</code> explícito, Spark ya no necesita <code>inferSchema=True</code> (se ahorra la pasada extra de lectura) y <code>codigo</code> conserva el cero inicial porque tú declaraste <code>StringType()</code>, no porque Spark lo haya adivinado bien.</p>
+<p><strong>Nota:</strong> <code>StructType</code> resuelve dos problemas a la vez, desde la lectura — sin él, todas las columnas llegan como <code>string</code> (el valor por defecto de <code>inferSchema</code>, ver Tabla 3); con <code>inferSchema=True</code>, una columna como <code>codigo</code> puede perder su cero inicial. <code>StructType</code> evita ambos: declaras el tipo correcto de cada columna, sin dejar que Spark adivine nada. No es la única forma de resolverlo — en 2.6 lo arreglamos de otra manera, con <code>.cast("string")</code> después de leer con <code>inferSchema=True</code>. <code>StructType</code> conviene cuando ya conoces el esquema de antemano; <code>.cast()</code> después es más rápido de escribir cuando estás explorando un archivo nuevo y todavía no sabes bien qué tipos necesitas. En 3.7 vas a encontrar este mismo problema con datos reales del dataset H&amp;M.</p>
+<p>Antes de transformar nada, conviene explorar lo que acabas de cargar. Ya usaste <code>.printSchema()</code> (esquema: nombres, tipos, nulabilidad) y <code>.show()</code> (muestra filas en formato tabla); sus parámetros más útiles son <code>n</code> (cuántas filas mostrar — 20 por defecto), <code>truncate</code> (si es <code>True</code>, recorta textos largos — conviene <code>truncate=False</code> cuando una columna de texto largo te importa completa) y <code>vertical</code> (si es <code>True</code>, muestra cada fila como una lista de campos en vez de una tabla ancha — útil cuando hay muchas columnas). Un tercer método, <code>.describe()</code>, genera un resumen estadístico (<code>count</code>, <code>mean</code>, <code>stddev</code>, <code>min</code>, <code>max</code>) de las columnas numéricas — por ejemplo, <code>df.describe("una_columna_numerica").show()</code> te da de inmediato su rango, sin escribir ninguna agregación manual. Sobre una tabla con muchas columnas, <code>.describe()</code> sin argumentos produce una tabla ancha genuinamente ilegible (cada valor se corta entre líneas); con decenas de columnas, ni siquiera <code>vertical=True</code> lo deja cómodo — la solución real es <code>.select()</code> primero un puñado de columnas representativas y recién ahí <code>.describe()</code>, en vez de resumir todo el ancho del DataFrame de una vez.</p>
+<h3 id="25-transformaciones-acciones-y-evaluacion-perezosa">2.5 Transformaciones, acciones y evaluación perezosa<a class="headerlink" href="#25-transformaciones-acciones-y-evaluacion-perezosa" title="Permanent link">&para;</a></h3>
+<p>Toda operación sobre un DataFrame es una <strong>transformación</strong> o una <strong>acción</strong>:</p>
+<p><strong>Tabla 4. Transformaciones comunes vs. acciones comunes</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Qué hace</th>
+<th>Ejemplos</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Transformación</td>
+<td>Construye un nuevo plan lógico; no ejecuta nada todavía.</td>
+<td><code>select()</code>, <code>filter()</code>, <code>withColumn()</code>, <code>groupBy()</code>, <code>join()</code></td>
+</tr>
+<tr>
+<td>Acción</td>
+<td>Dispara la ejecución real (las 4 fases de Catalyst, ver 1.6) y devuelve un resultado.</td>
+<td><code>show()</code>, <code>count()</code>, <code>collect()</code>, <code>take()</code>, <code>write()</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>explain(True)</code> expone las 4 fases de Catalyst como planes concretos:</p>
+<p><strong>Tabla 5. Fases del plan de ejecución mostradas por <code>explain(True)</code></strong></p>
+<table>
+<thead>
+<tr>
+<th>Fase (Catalyst)</th>
+<th>Nombre en <code>explain(True)</code></th>
+<th>Qué muestra</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Analysis</td>
+<td><em>Analyzed Logical Plan</em></td>
+<td>Nombres y tipos ya resueltos.</td>
+</tr>
+<tr>
+<td>Logical optimization</td>
+<td><em>Optimized Logical Plan</em></td>
+<td>El plan después de aplicar reglas como <em>predicate pushdown</em> (el <code>filter()</code> bajó antes que el <code>select()</code>, aunque en el código estuviera después).</td>
+</tr>
+<tr>
+<td>Physical planning</td>
+<td><em>Physical Plan</em></td>
+<td>La estrategia física real: qué archivo lee (<code>FileScan csv</code>), qué filtros empuja al propio lector (<code>PushedFilters</code>).</td>
+</tr>
+<tr>
+<td>Code generation</td>
+<td>(no se imprime como texto; ya es bytecode)</td>
+<td>No aparece en <code>explain()</code>, pero es el paso final antes de ejecutar en los workers.</td>
+</tr>
+</tbody>
+</table>
+<p>Ejecuta tú mismo <code>explain(True)</code> sobre un <code>filter()</code> seguido de un <code>select()</code> (lo harás en 3.5, sobre datos reales) y compara el <em>Parsed Logical Plan</em> contra el <em>Optimized Logical Plan</em>: vas a encontrar el <code>Filter</code> movido <strong>antes</strong> del <code>Project</code> en el plan optimizado, aunque en tu código el <code>select()</code> estuviera escrito primero — eso es <em>predicate pushdown</em> en acción, no una casualidad del optimizador.</p>
+<p>Esa misma evaluación perezosa tiene un costo oculto: si llamas a dos acciones distintas (<code>show()</code> y después <code>count()</code>) sobre el mismo DataFrame transformado, Spark <strong>recalcula todo el plan dos veces</strong> — la evaluación perezosa no guarda el resultado, solo el plan. <code>cache()</code> rompe ese recálculo, guardando el resultado en memoria la primera vez que una acción lo dispara:</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_transformado</span> <span class="o">=</span> <span class="n">df_transformado</span><span class="o">.</span><span class="n">cache</span><span class="p">()</span>
+
+<span class="n">df_transformado</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>  <span class="c1"># primera acción: ejecuta el plan completo y lo guarda en memoria</span>
+<span class="n">df_transformado</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>  <span class="c1"># segunda acción: reutiliza el resultado cacheado, no vuelve a leer el archivo</span>
+</code></pre></div>
+<p>Úsalo solo si vas a reutilizar el mismo DataFrame en más de una acción — cachear algo que se usa una sola vez solo gasta memoria sin ahorrar nada. Libera la memoria con <code>df_transformado.unpersist()</code> cuando ya no lo necesites.</p>
+<h3 id="26-funciones-de-pysparksqlfunctions">2.6 Funciones de <code>pyspark.sql.functions</code><a class="headerlink" href="#26-funciones-de-pysparksqlfunctions" title="Permanent link">&para;</a></h3>
+<p>Las transformaciones simples (<code>select()</code>, <code>filter()</code>) alcanzan para casos básicos, pero la mayoría de transformaciones reales necesitan funciones de columna explícitas, importadas de <code>pyspark.sql.functions</code>. <code>withColumn()</code> es la forma de crear o reemplazar una columna aplicando una de esas funciones:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">col</span><span class="p">,</span> <span class="n">when</span><span class="p">,</span> <span class="n">lit</span><span class="p">,</span> <span class="n">current_date</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"codigo"</span><span class="p">,</span> <span class="n">col</span><span class="p">(</span><span class="s2">"codigo"</span><span class="p">)</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">"string"</span><span class="p">))</span>  <span class="c1"># corrige el tipo de una columna existente, sin releer el archivo (ver 2.4)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span>
+    <span class="s2">"categoria"</span><span class="p">,</span>
+    <span class="n">when</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">"valor"</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">"bajo"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">when</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">"valor"</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">50</span><span class="p">,</span> <span class="s2">"medio"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">otherwise</span><span class="p">(</span><span class="s2">"alto"</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"origen"</span><span class="p">,</span> <span class="n">lit</span><span class="p">(</span><span class="s2">"catálogo interno"</span><span class="p">))</span>     <span class="c1"># columna constante</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"fecha_procesado"</span><span class="p">,</span> <span class="n">current_date</span><span class="p">())</span>     <span class="c1"># columna calculada por Spark, no por ti</span>
+</code></pre></div>
+<p><code>col("valor")</code> referencia la columna de forma explícita (necesario para comparaciones y expresiones compuestas); <code>when()/otherwise()</code> es el equivalente de un <code>if/elif/else</code> a nivel de columna, evaluado en cada fila de forma distribuida; <code>lit()</code> inyecta un valor literal como columna (útil para banderas o constantes); <code>.cast()</code> cambia el tipo de una columna sin releer el archivo; <code>current_date()</code> es una función de Spark, no de Python — se evalúa en cada worker al momento de la acción, no una sola vez al escribir el código. Como <code>withColumn()</code> es una transformación, ninguna de estas líneas ejecuta nada todavía — el plan solo se dispara con la acción que sigue. En 3.7 vas a aplicar exactamente este patrón sobre datos reales del dataset H&amp;M.</p>
+<p>Estas mismas funciones se vuelven más útiles encadenadas, corrigiendo varias columnas a la vez después de leer un archivo cuyos tipos no confías al 100% — por ejemplo, una fecha guardada como texto y un identificador que debería ser texto y no número:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_date</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">df</span>
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"fecha"</span><span class="p">,</span> <span class="n">to_date</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">"fecha"</span><span class="p">),</span> <span class="s2">"yyyy-MM-dd"</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"id_relacionado"</span><span class="p">,</span> <span class="n">col</span><span class="p">(</span><span class="s2">"id_relacionado"</span><span class="p">)</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">"string"</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"monto"</span><span class="p">,</span> <span class="n">col</span><span class="p">(</span><span class="s2">"monto"</span><span class="p">)</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">"double"</span><span class="p">))</span>
+<span class="p">)</span>
+</code></pre></div>
+<p><code>to_date(col("fecha"), "yyyy-MM-dd")</code> es una función nueva aquí: convierte una columna de texto (<code>"2020-01-15"</code>) en un tipo <code>date</code> real, según el patrón de formato que le indiques — sin esto, la columna queda como <code>string</code> y no puedes hacer comparaciones ni operaciones de fecha sobre ella. Antes de agregar una columna calculada a partir de otra (como <code>monto</code>), confirma qué representa realmente esa columna — no asumas unidades (moneda, escala) solo porque el nombre te lo sugiere; en 3.9 vas a encontrar un caso real del dataset H&amp;M donde esa suposición sería incorrecta.</p>
+<h3 id="27-agrupaciones-y-agregaciones">2.7 Agrupaciones y agregaciones<a class="headerlink" href="#27-agrupaciones-y-agregaciones" title="Permanent link">&para;</a></h3>
+<p><code>groupBy()</code> agrupa filas por una o más columnas; solo tiene sentido combinado con una función de agregación en <code>.agg()</code> — sin eso, el grupo no produce ningún resumen.</p>
+<p><strong>Tabla 6. Funciones de agregación comunes</strong></p>
+<table>
+<thead>
+<tr>
+<th>Función</th>
+<th>Qué calcula</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>count()</code></td>
+<td>Cantidad de filas por grupo.</td>
+</tr>
+<tr>
+<td><code>sum()</code></td>
+<td>Suma de una columna por grupo.</td>
+</tr>
+<tr>
+<td><code>avg()</code></td>
+<td>Promedio de una columna por grupo.</td>
+</tr>
+<tr>
+<td><code>min()</code> / <code>max()</code></td>
+<td>Valor mínimo/máximo por grupo.</td>
+</tr>
+<tr>
+<td><code>countDistinct()</code></td>
+<td>Cantidad de valores distintos por grupo.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="nb">sum</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">avg</span>
+
+<span class="n">resumen</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s2">"cliente_id"</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+    <span class="nb">sum</span><span class="p">(</span><span class="s2">"monto"</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"total"</span><span class="p">),</span>
+    <span class="n">count</span><span class="p">(</span><span class="s2">"*"</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"num_registros"</span><span class="p">),</span>
+    <span class="n">avg</span><span class="p">(</span><span class="s2">"monto"</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"promedio"</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">resumen</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<p><code>countDistinct()</code> responde una pregunta distinta a <code>count()</code>: no cuántas filas hay, sino cuántos valores <em>distintos</em> aparecen:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">countDistinct</span>
+
+<span class="n">df</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s2">"fecha"</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+    <span class="n">countDistinct</span><span class="p">(</span><span class="s2">"cliente_id"</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"clientes_unicos"</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<p><code>groupBy()</code> también acepta más de una columna a la vez — por ejemplo, <code>df.groupBy("cliente_id", "canal").agg(...)</code> agrupa por la combinación de ambas, no por cada una por separado. En 3.9 vas a aplicar exactamente este patrón sobre transacciones reales del dataset H&amp;M — con una advertencia importante sobre qué significa realmente la columna que vas a sumar.</p>
+<p><code>groupBy().agg()</code> tiene una limitación: <strong>colapsa</strong> las filas de cada grupo en una sola fila de resumen — no es que algo falle, es que varias filas se reducen a una sola, perdiendo el detalle original. Compara el mismo cliente (<code>cliente_id = "101"</code>, 3 compras) con ambas técnicas:</p>
+<p><strong>Tabla 7. Entrada: transacciones de un cliente, antes de agregar</strong></p>
+<table>
+<thead>
+<tr>
+<th>cliente_id</th>
+<th style="text-align: right;">monto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>101</td>
+<td style="text-align: right;">20</td>
+</tr>
+<tr>
+<td>101</td>
+<td style="text-align: right;">30</td>
+</tr>
+<tr>
+<td>101</td>
+<td style="text-align: right;">50</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Tabla 8. Resultado con <code>groupBy().agg()</code></strong> — de 3 filas de entrada, queda <strong>1 sola fila</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>cliente_id</th>
+<th style="text-align: right;">total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>101</td>
+<td style="text-align: right;">100</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Tabla 9. Resultado con <code>Window</code>/<code>.over()</code></strong> — siguen siendo <strong>3 filas</strong>, cada una con el total de su cliente repetido:</p>
+<table>
+<thead>
+<tr>
+<th>cliente_id</th>
+<th style="text-align: right;">monto</th>
+<th style="text-align: right;">total_cliente</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>101</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr>
+<td>101</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">100</td>
+</tr>
+<tr>
+<td>101</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">100</td>
+</tr>
+</tbody>
+</table>
+<p>Una <strong>función ventana</strong> (<code>Window</code>) resuelve esa pérdida de detalle: agrega un valor calculado por grupo <strong>sin perder ninguna fila</strong>, cada fila conserva su identidad y además trae el resumen de su grupo en una columna nueva:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.window</span><span class="w"> </span><span class="kn">import</span> <span class="n">Window</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="nb">sum</span>
+
+<span class="n">ventana</span> <span class="o">=</span> <span class="n">Window</span><span class="o">.</span><span class="n">partitionBy</span><span class="p">(</span><span class="s2">"cliente_id"</span><span class="p">)</span>
+
+<span class="n">df_con_total</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"total_cliente"</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="s2">"monto"</span><span class="p">)</span><span class="o">.</span><span class="n">over</span><span class="p">(</span><span class="n">ventana</span><span class="p">))</span>
+</code></pre></div>
+<p><code>Window.partitionBy("cliente_id")</code> agrupa los datos por esa columna para el cálculo que sigue — como <code>groupBy()</code>, pero sin colapsar filas; <code>.over(ventana)</code> aplica la agregación dentro de cada grupo, fila por fila. Útil cuando necesitas el detalle y el resumen a la vez, algo que <code>groupBy().agg()</code> no te da. En 3.9 vas a aplicar exactamente esto sobre transacciones reales del dataset H&amp;M.</p>
+<h3 id="28-rdd-el-modelo-debajo-de-los-dataframes">2.8 RDD: el modelo debajo de los DataFrames<a class="headerlink" href="#28-rdd-el-modelo-debajo-de-los-dataframes" title="Permanent link">&para;</a></h3>
+<p>Un DataFrame se apoya, por debajo, en un RDD (<em>Resilient Distributed Dataset</em>) — la abstracción original de Spark: una colección distribuida e inmutable, tolerante a fallos, sobre la que se aplican operaciones funcionales (<code>map</code>, <code>filter</code>, <code>flatMap</code>, <code>reduceByKey</code>) en vez de operaciones relacionales (<code>select</code>, <code>groupBy</code>). Se accede al RDD subyacente con <code>df.rdd</code>.</p>
+<p><strong>Tabla 10. DataFrame vs. RDD</strong></p>
+<table>
+<thead>
+<tr>
+<th>Aspecto</th>
+<th>DataFrame</th>
+<th>RDD</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Optimización</td>
+<td>Pasa por Catalyst (predicate pushdown, column pruning, etc.).</td>
+<td>Sin optimización automática: Spark ejecuta las operaciones tal como se escriben.</td>
+</tr>
+<tr>
+<td>Tipado</td>
+<td>Esquema con nombres y tipos de columna.</td>
+<td>Colección de objetos Python sin esquema explícito.</td>
+</tr>
+<tr>
+<td>Caso de uso típico</td>
+<td>Datos estructurados/semi-estructurados (CSV, JSON, Parquet, SQL).</td>
+<td>Procesamiento de texto libre, lógica funcional personalizada que no encaja en operaciones relacionales.</td>
+</tr>
+<tr>
+<td>Ejemplo en esta sesión</td>
+<td><code>groupBy().agg()</code> sobre datos tabulares (aplicado en 3.9 sobre transacciones reales de H&amp;M).</td>
+<td>Conteo de palabras sobre texto libre (aplicado en 3.10 sobre descripciones reales de producto).</td>
+</tr>
+</tbody>
+</table>
+<p>Por eso, cuando el dato ya es estructurado, conviene quedarse en DataFrame y dejar que Catalyst optimice; RDD se reserva para el caso en que la transformación no encaja en operaciones relacionales — como el conteo de palabras de texto libre.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">operator</span><span class="w"> </span><span class="kn">import</span> <span class="n">add</span>
+
+<span class="n">rdd</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">"texto"</span><span class="p">)</span><span class="o">.</span><span class="n">rdd</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">texto</span><span class="p">)</span>
+<span class="n">rdd</span> <span class="o">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">t</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># descarta valores nulos antes de procesar el texto</span>
+
+<span class="n">palabras</span> <span class="o">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">flatMap</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">linea</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">"[^\wáéíóúñüÁÉÍÓÚÑÜ]"</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="n">linea</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+<span class="p">)</span>
+
+<span class="n">pares</span> <span class="o">=</span> <span class="n">palabras</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">p</span> <span class="o">!=</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">palabra</span><span class="p">:</span> <span class="p">(</span><span class="n">palabra</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">conteo</span> <span class="o">=</span> <span class="n">pares</span><span class="o">.</span><span class="n">reduceByKey</span><span class="p">(</span><span class="n">add</span><span class="p">)</span>
+
+<span class="n">conteo</span><span class="o">.</span><span class="n">takeOrdered</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</code></pre></div>
+<p>El <code>filter(lambda t: t is not None)</code> no es opcional cuando trabajas con texto real: es común que algunas filas no tengan valor en una columna de texto libre — sin ese filtro, <code>re.sub()</code> fallaría con un error de tipo apenas encontrara el primer valor nulo. Es un adelanto de lo que S3 formaliza como control de calidad de datos (nulos). En 3.10 vas a aplicar este mismo patrón sobre texto real del dataset H&amp;M.</p>
+<p><code>flatMap</code> aplana el resultado (una línea produce varias palabras, no una lista de listas); <code>map</code> construye pares <code>(palabra, 1)</code>; <code>reduceByKey</code> suma los <code>1</code> de cada palabra repetida — el mismo patrón MapReduce que dio origen a Spark:</p>
+<p><strong>Figura 4. El proceso MapReduce de conteo de palabras: Input, Splitting, Mapping, Shuffling, Reducing, Final result</strong></p>
+<p><img alt="El proceso MapReduce de conteo de palabras" src="../img/s02-2.6-mapreduce-word-count.png" /></p>
+<p>Mapea el diagrama contra el código: <em>Splitting</em> es el <code>flatMap</code> (cada línea de texto se separa en palabras sueltas); <em>Mapping</em> es el <code>.map(lambda palabra: (palabra, 1))</code> (cada palabra se convierte en un par <code>(palabra, 1)</code>); <em>Shuffling</em> es el paso interno de Spark que agrupa todos los pares con la misma clave en el mismo nodo antes de reducir (no hay una línea de código explícita para esto — Spark lo hace por debajo, es la razón por la que <code>reduceByKey</code> es una operación costosa: mueve datos entre particiones); <em>Reducing</em> es el propio <code>reduceByKey(add)</code>, que suma los <code>1</code> de cada palabra repetida. Hadoop MapReduce (el origen de este patrón) implementa exactamente estos mismos pasos sobre disco; Spark los implementa en memoria, lo que evita escribir a disco entre cada etapa — esa es la razón técnica de fondo de por qué Spark es más rápido que Hadoop MapReduce para este tipo de carga de trabajo iterativa.</p>
+<p><em>Nota.</em> Adaptado de <em>¿Qué es MapReduce en Hadoop?</em>, por KeepCoding, 2022, KeepCoding Blog (<a href="https://keepcoding.io/blog/mapreduce-hadoop/">https://keepcoding.io/blog/mapreduce-hadoop/</a>).</p>
+<h2 id="3-aplica-actividad-practica-guiada">3. Aplica: actividad práctica guiada<a class="headerlink" href="#3-aplica-actividad-practica-guiada" title="Permanent link">&para;</a></h2>
+<p>Tiempo: 2h.</p>
+<p><strong>Actividad:</strong> construir el notebook <code>02_fundamentos_practica.ipynb</code> sobre el entorno <code>lambda26</code> (<code>uso-pyspark</code>), aplicando extracción, transformaciones, funciones, agrupaciones/agregaciones, RDD y verificando en cada paso el efecto de la evaluación perezosa — sobre el dataset real H&amp;M (Kaggle).</p>
+<p><strong>Propósito de la actividad:</strong> dejar evidencia ejecutable de que dominas el ciclo completo de transformación distribuida en PySpark — DataFrame y RDD sobre la misma <code>SparkSession</code> — antes de avanzar a formatos analíticos particionados (S3) y ML distribuido (S4).</p>
+<p><strong>Orientaciones metodológicas:</strong> en clase, el docente guía la construcción del notebook paso a paso, alternando explicación breve y ejecución; los estudiantes replican cada celda en su propio entorno, verificando el resultado (incluido el plan de <code>explain()</code>) antes de avanzar al siguiente paso.</p>
+<p><strong>Actividades para realizar:</strong></p>
+<ul>
+<li><strong>3.1</strong> Descargar el dataset H&amp;M y reanudar el entorno <code>lambda26</code> (<code>uso-pyspark</code>).</li>
+<li><strong>3.2</strong> Crear el notebook y la <code>SparkSession</code>.</li>
+<li><strong>3.3</strong> Cargar y explorar <code>articles.csv</code>.</li>
+<li><strong>3.4</strong> Cargar <code>customers.csv</code> con esquema explícito y explorar columnas.</li>
+<li><strong>3.5</strong> Aplicar transformaciones y verificar la evaluación perezosa.</li>
+<li><strong>3.6</strong> Analizar el plan de ejecución con <code>explain()</code>.</li>
+<li><strong>3.7</strong> Aplicar funciones y crear columnas con <code>withColumn()</code>.</li>
+<li><strong>3.8</strong> Cargar <code>transactions.parquet</code> y aplicar funciones.</li>
+<li><strong>3.9</strong> Aplicar agrupaciones y agregaciones (<code>transactions.parquet</code>).</li>
+<li><strong>3.10</strong> Convertir a RDD y procesar texto (<code>detail_desc</code> de <code>articles.csv</code>).</li>
+<li><strong>3.11</strong> Documentar hallazgos y responder preguntas de reflexión.</li>
+</ul>
+<h3 id="31-descargar-el-dataset-hm-y-reanudar-el-entorno-lambda26">3.1 Descargar el dataset H&amp;M y reanudar el entorno <code>lambda26</code><a class="headerlink" href="#31-descargar-el-dataset-hm-y-reanudar-el-entorno-lambda26" title="Permanent link">&para;</a></h3>
+<p><strong>Producto del paso:</strong> dataset H&amp;M disponible en <code>pyspark/sesiones/s02-fundamentos/data/</code>, entorno <code>lambda26</code> funcionando.</p>
+<p>Este dataset (<em>H&amp;M Personalized Fashion Recommendations</em> — fuente original: Kaggle, <a href="https://www.kaggle.com/competitions/h-and-m-personalized-fashion-recommendations/data">https://www.kaggle.com/competitions/h-and-m-personalized-fashion-recommendations/data</a>) pesa 625 MB comprimido, con más de 1.3 millones de registros solo en <code>customers.csv</code> — no se sube al repositorio (<code>pyspark/.gitignore</code> ya excluye <code>s02-fundamentos/data/</code>). El docente ya lo empaquetó y lo comparte por Drive, así que no hace falta crear cuenta en Kaggle ni aceptar las reglas de la competencia. Descárgalo una sola vez, antes de clase:</p>
+<ol>
+<li>Descarga <code>Datos HM.zip</code> desde: <a href="https://drive.google.com/drive/folders/1EhNp6jRzSvT9bFWX_w5fHaSy4fG535aA?usp=sharing">https://drive.google.com/drive/folders/1EhNp6jRzSvT9bFWX_w5fHaSy4fG535aA?usp=sharing</a></li>
+<li>Extráelo dentro de <code>lambda26/pyspark/sesiones/s02-fundamentos/data/</code>, de modo que quede <code>s02-fundamentos/data/articles.csv</code>, <code>s02-fundamentos/data/customers.csv</code> y <code>s02-fundamentos/data/transactions.parquet</code>.</li>
+</ol>
+<p><code>transactions.parquet</code> ya viene convertido a formato columnar; el archivo original de Kaggle es un CSV de varios GB sin comprimir (<code>transactions_train.csv</code>) — la conversión CSV → Parquet es justamente el tipo de tarea que formalizas en S3.</p>
+<p>Estructura esperada:</p>
+<div class="highlight"><pre><span></span><code>lambda26/pyspark/sesiones/s02-fundamentos/data/
+├── articles.csv
+├── customers.csv
+└── transactions.parquet
+</code></pre></div>
+<p>Si el contenedor <code>lambda26</code> sigue corriendo desde S1, continúa directo en 3.2. Si lo detuviste:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd </span><span class="n">lambda26</span><span class="p">/</span><span class="n">pyspark</span>
+<span class="n">docker</span> <span class="n">compose</span> <span class="n">up</span> <span class="n">-d</span>
+</code></pre></div>
+<p>Verifica que responde:</p>
+<div class="highlight"><pre><span></span><code>JupyterLab -&gt; http://localhost:4488/lab?token=sintoken
+</code></pre></div>
+<h3 id="32-crear-el-notebook-y-la-sparksession">3.2 Crear el notebook y la <code>SparkSession</code><a class="headerlink" href="#32-crear-el-notebook-y-la-sparksession" title="Permanent link">&para;</a></h3>
+<p><strong>Producto del paso:</strong> notebook <code>02_fundamentos_practica.ipynb</code> con una <code>SparkSession</code> activa.</p>
+<p>Desde JupyterLab, crea el notebook dentro de la carpeta <code>s02-fundamentos/</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparkSession</span>
+
+<span class="n">spark</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span>
+    <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">"sesion2-fundamentos-spark"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">master</span><span class="p">(</span><span class="s2">"local[*]"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">"spark.ui.port"</span><span class="p">,</span> <span class="s2">"4040"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">"spark.sql.shuffle.partitions"</span><span class="p">,</span> <span class="s2">"8"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">"spark.driver.memory"</span><span class="p">,</span> <span class="s2">"4g"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<span class="p">)</span>
+
+<span class="n">spark</span>
+</code></pre></div>
+<p><code>spark.sql.shuffle.partitions</code> se fija en 8 (en vez del valor por defecto, 200 — pensado para clústeres con muchos nodos) porque seguimos en un único contenedor local: con 200 particiones, el overhead de coordinar cientos de particiones pequeñas sería mayor que el propio cómputo en tu máquina.</p>
+<p><code>spark.driver.memory</code> se fija en <code>"4g"</code> porque en modo <code>local[*]</code> el driver y el executor comparten un mismo proceso JVM, y sin esta configuración Spark usa el default de <strong>1g</strong> — sin importar cuánta RAM tenga tu servidor. Con varias lecturas/escrituras y agrupaciones encadenadas en el mismo notebook (como en 3.9), 1g se queda corto y la JVM puede terminar cayéndose con <code>ConnectionRefusedError</code> del lado de Python (el símbolo de que la JVM detrás de Py4J ya no está viva) — el heap se agota aunque el servidor tenga memoria de sobra sin usar. Si tu servidor tiene bastante RAM disponible, puedes subir este valor más (<code>"8g"</code>, <code>"16g"</code>); si el notebook sigue cayéndose con <code>4g</code>, reinicia el kernel y sube el valor antes de reintentar.</p>
+<p>Declara también la ruta del dataset como variable global, una sola vez:</p>
+<div class="highlight"><pre><span></span><code><span class="n">ORIGEN_DATOS</span> <span class="o">=</span> <span class="s2">"/opt/s02-fundamentos/data"</span>
+<span class="n">ARTIFACTS</span> <span class="o">=</span> <span class="s2">"/opt/s02-fundamentos/artifacts"</span>
+</code></pre></div>
+<p>Úsalas en cada lectura/escritura del resto de la guía (<code>f"{ORIGEN_DATOS}/articles.csv"</code>, <code>f"{ARTIFACTS}/..."</code>, etc.) en vez de repetir la ruta completa — si algún día cambia dónde vive el dataset o las salidas, solo corriges esta línea, no cada celda.</p>
+<h3 id="33-cargar-y-explorar-articlescsv">3.3 Cargar y explorar <code>articles.csv</code><a class="headerlink" href="#33-cargar-y-explorar-articlescsv" title="Permanent link">&para;</a></h3>
+<p><strong>Producto del paso:</strong> DataFrame <code>df_articles</code> cargado (primera forma de lectura), con estructura, filas y estadísticas verificadas paso a paso — no en un solo bloque.</p>
+<p>Primero, la lectura:</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_articles</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">ORIGEN_DATOS</span><span class="si">}</span><span class="s2">/articles.csv"</span><span class="p">,</span>
+    <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<p><code>inferSchema=True</code> deja que Spark decida el tipo de cada columna (ver Tabla 3, 2.4) — incluida <code>article_id</code>, que son solo dígitos y por eso corre el riesgo del cero inicial descrito en el "Error frecuente" de 2.4. Lo confirmas y lo corriges en 3.7.</p>
+<p>Ahora explora lo que acabas de cargar, en celdas separadas — cada método responde una pregunta distinta:</p>
+<p><code>.show()</code> — visualiza filas en formato tabla:</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_articles</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<p><code>.printSchema()</code> — muestra el esquema (nombres, tipos, nulabilidad):</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_articles</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+</code></pre></div>
+<p><code>.describe()</code> — genera un resumen estadístico (<code>count</code>, <code>mean</code>, <code>stddev</code>, <code>min</code>, <code>max</code>). Con las 25 columnas de <code>articles.csv</code>, ni siquiera <code>vertical=True</code> lo deja cómodo de leer (125 líneas de resumen) — mejor selecciona antes un puñado de columnas representativas, mezclando nominales (texto) y numéricas (códigos):</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_articles</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+    <span class="s2">"prod_name"</span><span class="p">,</span> <span class="s2">"product_group_name"</span><span class="p">,</span> <span class="s2">"colour_group_name"</span><span class="p">,</span> <span class="s2">"department_no"</span><span class="p">,</span> <span class="s2">"section_no"</span>
+<span class="p">)</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<p>Prueba también los parámetros de <code>.show()</code> que viste en 2.4:</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_articles</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">vertical</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="34-cargar-customerscsv-con-esquema-explicito-y-explorar-columnas">3.4 Cargar <code>customers.csv</code> con esquema explícito y explorar columnas<a class="headerlink" href="#34-cargar-customerscsv-con-esquema-explicito-y-explorar-columnas" title="Permanent link">&para;</a></h3>
+<p><strong>Producto del paso:</strong> DataFrame <code>df_customers</code> cargado con <code>StructType</code> (segunda forma de lectura), con sus columnas y su tamaño verificados.</p>
+<p>Define el esquema, columna por columna — el mismo patrón de 2.4, ahora completo:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">StructType</span><span class="p">,</span> <span class="n">StructField</span><span class="p">,</span> <span class="n">StringType</span><span class="p">,</span> <span class="n">DoubleType</span><span class="p">,</span> <span class="n">IntegerType</span>
+
+<span class="n">schema_customers</span> <span class="o">=</span> <span class="n">StructType</span><span class="p">([</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">"customer_id"</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">"FN"</span><span class="p">,</span> <span class="n">DoubleType</span><span class="p">(),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">"Active"</span><span class="p">,</span> <span class="n">DoubleType</span><span class="p">(),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">"club_member_status"</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">"fashion_news_frequency"</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">"age"</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">(),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">"postal_code"</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+<span class="p">])</span>
+</code></pre></div>
+<p>Lee el CSV con ese esquema:</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_customers</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">ORIGEN_DATOS</span><span class="si">}</span><span class="s2">/customers.csv"</span><span class="p">,</span>
+    <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">schema</span><span class="o">=</span><span class="n">schema_customers</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>Genera el resumen estadístico:</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_customers</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<p>Fíjate en la fila <code>count</code> de cada columna: en una corrida real, <code>customer_id</code> da 1 371 980 (todas las filas), pero <code>FN</code> y <code>Active</code> dan bastante menos — cerca de dos tercios de los valores son nulos en esas dos columnas. No es un error de lectura: así llega el dato real de Kaggle. Profundizar en por qué y qué hacer con esos nulos es justamente lo que S3 formaliza como control de calidad de datos — acá basta con que lo notes.</p>
+<p>Consulta los nombres de columna:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">df_customers</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+</code></pre></div>
+<p>Consulta la cantidad de filas y de columnas:</p>
+<div class="highlight"><pre><span></span><code><span class="n">num_rows</span><span class="p">,</span> <span class="n">num_cols</span> <span class="o">=</span> <span class="n">df_customers</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_customers</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Filas: </span><span class="si">{</span><span class="n">num_rows</span><span class="si">}</span><span class="s2">, Columnas: </span><span class="si">{</span><span class="n">num_cols</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Muestra aleatoria</strong> (<code>.sample()</code>): con un dataset real de este tamaño (1 371 980 filas — confírmalo tú mismo con <code>.count()</code> arriba), trabajar con todo el dataset en una laptop se vuelve pesado — para explorar y validar tu lógica alcanza con una muestra aleatoria. La carga del dataset completo queda para cuando el procesamiento corra en un servidor con más recursos, no en tu equipo local.</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_customers_muestra</span> <span class="o">=</span> <span class="n">df_customers</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span>
+    <span class="n">withReplacement</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># sin reemplazo: cada fila se elige como máximo una vez</span>
+    <span class="n">fraction</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>          <span class="c1"># ~1% del dataset</span>
+    <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>              <span class="c1"># sin semilla fija: cada corrida da una muestra distinta</span>
+<span class="p">)</span>
+</code></pre></div>
+<p><strong>Registros iniciales</strong> (<code>.head()</code>) — trae las primeras filas como lista de objetos <code>Row</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_customers_muestra</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Registros finales</strong> (<code>.tail()</code>) — trae las últimas filas. A diferencia de <code>.head()</code>, es más costoso en un DataFrame distribuido: "las últimas filas" no es barato de determinar cuando los datos están repartidos en particiones sin orden garantizado.</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_customers_muestra</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Guardar la muestra en CSV y Parquet:</strong> un adelanto de lo que S3 formaliza a fondo (particionamiento, calidad de datos antes de guardar) — por ahora, solo la mecánica básica de escribir un resultado a disco:</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_customers_muestra</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s2">"overwrite"</span><span class="p">)</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">ARTIFACTS</span><span class="si">}</span><span class="s2">/customers_muestra_csv"</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df_customers_muestra</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s2">"overwrite"</span><span class="p">)</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">ARTIFACTS</span><span class="si">}</span><span class="s2">/customers_muestra_parquet"</span><span class="p">)</span>
+</code></pre></div>
+<p>Spark no escribe un solo archivo — escribe una <strong>carpeta</strong>, con un archivo por partición adentro (por eso los nombres <code>customers_muestra_csv</code>/<code>customers_muestra_parquet</code> son carpetas, no archivos). <code>mode("overwrite")</code> reemplaza la carpeta si ya existe, en vez de fallar por que ya está ahí — útil mientras estás probando y corres la celda varias veces.</p>
+<p><strong>¿Cuántos archivos quedaron?</strong> <code>.rdd.getNumPartitions()</code> te dice cuántas particiones tiene el DataFrame — y por lo tanto, cuántos <code>part-0000X-...</code> va a escribir:</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_customers_muestra</span><span class="o">.</span><span class="n">rdd</span><span class="o">.</span><span class="n">getNumPartitions</span><span class="p">()</span>
+</code></pre></div>
+<p><strong>¿Por qué salen tantos archivos <code>part-0000X-...</code> si la muestra es pequeña?</strong> <code>df_customers_muestra</code> hereda el número de particiones de la lectura original de <code>customers.csv</code> (no se reduce solo porque <code>.sample()</code> deje menos filas), y cada partición se escribe en paralelo como su propio archivo — así es como Spark escala a datasets reales, sin depender de un solo nodo para juntar todo antes de guardar. En una corrida real sobre este dataset, <code>.rdd.getNumPartitions()</code> dio <strong>50</strong> — confirma el número exacto en tu propia corrida, puede variar según la configuración del clúster.</p>
+<p><strong>Para compartir un solo archivo</strong> (por ejemplo con estudiantes cuya laptop tiene pocos recursos, en vez de una carpeta con ~20 partes): junta las particiones en una sola antes de escribir con <code>.coalesce(1)</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_customers_muestra</span><span class="o">.</span><span class="n">coalesce</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s2">"overwrite"</span><span class="p">)</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">ARTIFACTS</span><span class="si">}</span><span class="s2">/customers_muestra_csv_unico"</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df_customers_muestra</span><span class="o">.</span><span class="n">coalesce</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s2">"overwrite"</span><span class="p">)</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">ARTIFACTS</span><span class="si">}</span><span class="s2">/customers_muestra_parquet_unico"</span><span class="p">)</span>
+</code></pre></div>
+<p>Esto sigue creando una carpeta (con un único <code>part-00000-...</code> adentro, más <code>_SUCCESS</code>) — el archivo real a compartir es ese <code>part-00000-...</code> de dentro; puedes renombrarlo o descargarlo directo desde el explorador de archivos de Jupyter.</p>
+<p><strong>¿Y si quiero un <code>.csv</code> de verdad, con nombre exacto, sin carpeta?</strong> Spark no lo hace — su API de escritura está pensada para carpetas, ni siquiera <code>.coalesce(1)</code> cambia eso (sigue generando <code>part-00000-...</code> dentro de una carpeta, no un archivo suelto con el nombre que tú elijas). Para eso hay que salir de Spark: como la muestra ya es chica (~1%, cabe cómoda en memoria), conviértela a pandas y usa su <code>.to_csv()</code>, que sí escribe un único archivo con el nombre exacto:</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_customers_muestra</span><span class="o">.</span><span class="n">toPandas</span><span class="p">()</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">ARTIFACTS</span><span class="si">}</span><span class="s2">/customers_muestra.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<p><code>index=False</code> evita que pandas agregue una columna extra con el número de fila. Esta ruta solo es segura para datos que caben en la memoria del driver — para el dataset completo (millones de filas) seguiría siendo <code>.coalesce(1)</code> + <code>.write.csv()</code> de Spark, no <code>.toPandas()</code>.</p>
+<p><strong>Leer de vuelta, tenga uno o varios archivos:</strong> Spark lee la carpeta completa como un solo DataFrame — no importa si adentro hay un <code>part-00000</code> o veinte, la lectura es igual de simple:</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_leido_csv</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">ARTIFACTS</span><span class="si">}</span><span class="s2">/customers_muestra_csv"</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df_leido_parquet</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">ARTIFACTS</span><span class="si">}</span><span class="s2">/customers_muestra_parquet"</span><span class="p">)</span>
+
+<span class="n">df_leido_csv</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span> <span class="n">df_leido_parquet</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="35-aplicar-transformaciones-y-verificar-la-evaluacion-perezosa">3.5 Aplicar transformaciones y verificar la evaluación perezosa<a class="headerlink" href="#35-aplicar-transformaciones-y-verificar-la-evaluacion-perezosa" title="Permanent link">&para;</a></h3>
+<p><strong>Producto del paso:</strong> evidencia de que el plan se construye antes de ejecutarse.</p>
+<p>Primero, <code>.select()</code> — elige columnas específicas del DataFrame:</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_seleccionado</span> <span class="o">=</span> <span class="n">df_customers</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">"customer_id"</span><span class="p">,</span> <span class="s2">"age"</span><span class="p">,</span> <span class="s2">"club_member_status"</span><span class="p">,</span> <span class="s2">"fashion_news_frequency"</span><span class="p">)</span>
+</code></pre></div>
+<p>Ahora, <code>.filter()</code> — conserva solo las filas que cumplen una condición (aquí, <code>col("club_member_status") == "ACTIVE"</code> compara el valor real de esa columna):</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">col</span>
+
+<span class="n">df_activos</span> <span class="o">=</span> <span class="n">df_seleccionado</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">"club_member_status"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"ACTIVE"</span><span class="p">)</span>
+</code></pre></div>
+<p>Como práctica: una vez que entiendes cada función por separado, puedes combinarlas en una sola expresión encadenada — así es como normalmente se escribe en código real:</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_activos</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">df_customers</span>
+    <span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">"customer_id"</span><span class="p">,</span> <span class="s2">"age"</span><span class="p">,</span> <span class="s2">"club_member_status"</span><span class="p">,</span> <span class="s2">"fashion_news_frequency"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">"club_member_status"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"ACTIVE"</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Hasta aquí Spark solo construyó el plan: no hay salida, no hubo ejecución</span>
+<span class="n">df_activos</span>
+</code></pre></div>
+<p>Encadenar <code>.select()</code> y <code>.filter()</code> sigue sin ejecutar nada — ambas son transformaciones, y el plan recién se dispara con una acción:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Acción: aquí recién Spark ejecuta</span>
+<span class="n">df_activos</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">df_activos</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+</code></pre></div>
+<p>Confirma que la celda anterior (transformación) no mostró ningún dato, y que esta celda (acción) sí — esa diferencia es la evaluación perezosa en la práctica, no solo en la teoría de 1.6.</p>
+<p>Los resultados de <code>.show()</code>/<code>.count()</code> (y, en 3.6, el texto de <code>explain()</code>) aparecen directamente debajo de la celda que los ejecuta, dentro del propio notebook — no en Spark UI. <code>localhost:4042</code> es una pestaña aparte del navegador que muestra los <strong>jobs</strong> que Spark ejecutó (uno por cada acción), con sus etapas y tareas: sirve para confirmar que la acción realmente disparó trabajo distribuido y para inspeccionar el rendimiento (shuffles, tiempo por etapa), pero no muestra tus datos ni el texto del plan — eso solo aparece en la celda del notebook.</p>
+<h3 id="36-analizar-el-plan-de-ejecucion-con-explain">3.6 Analizar el plan de ejecución con <code>explain()</code><a class="headerlink" href="#36-analizar-el-plan-de-ejecucion-con-explain" title="Permanent link">&para;</a></h3>
+<p><strong>Producto del paso:</strong> plan de ejecución interpretado con al menos una optimización identificada.</p>
+<p>Usamos <code>explain()</code> para observar cómo Spark organiza el procesamiento antes de ejecutarlo — es la base para entender rendimiento y optimización, no solo curiosidad interna: el mismo comando te sirve más adelante para diagnosticar por qué una consulta es lenta o si Catalyst está aplicando las optimizaciones que esperás (predicate pushdown, column pruning).</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_activos</span><span class="o">.</span><span class="n">explain</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Cómo leer esto, plan por plan.</strong> Cada plan se lee de <strong>abajo hacia arriba</strong> (lo de más abajo es lo primero que pasa):</p>
+<ul>
+<li><strong><code>Parsed Logical Plan</code>:</strong> tu código tal cual lo escribiste, sin revisar nada todavía. De abajo hacia arriba: <code>Relation ... csv</code> (lee el archivo) → <code>Project [...]</code> (tu <code>select()</code>) → <code>Filter ...</code> (tu <code>filter()</code>) — el mismo orden en que escribiste <code>.select().filter()</code>. Las comillas simples (<code>'Filter</code>, <code>`club_member_status`</code>) significan "todavía no verificado": Spark ni confirmó que esas columnas existan.</li>
+<li><strong><code>Analyzed Logical Plan</code>:</strong> misma estructura, ninguna línea cambia de lugar. Spark solo confirmó que las columnas existen y les asignó tipo (<code>age: int</code>, <code>club_member_status: string</code>) — es un chequeo, no una optimización.</li>
+<li><strong><code>Optimized Logical Plan</code>:</strong> acá sí cambia algo — compáralo contra el <em>Parsed</em>. <code>Filter</code> y <code>Project</code> <strong>se intercambian de posición</strong>: ahora el filtro va justo después de leer el archivo, y el <code>select()</code> al final. Tu código dice "selecciona, después filtra"; Catalyst ejecuta "filtra primero, selecciona después", porque descartar filas cuanto antes reduce lo que el resto del plan tiene que procesar — es <em>predicate pushdown</em>. Además aparece <code>isnotnull(club_member_status)</code>, que tú nunca escribiste: Catalyst lo agrega solo, porque una igualdad (<code>= ACTIVE</code>) nunca es cierta para un valor nulo, así que de paso descarta los nulos.</li>
+<li><strong><code>Physical Plan</code>:</strong> la receta final de ejecución. <code>PushedFilters</code> confirma que el filtro se empujó hasta el propio lector del CSV; <code>ReadSchema</code> muestra que solo se leen las columnas que realmente usaste (4 de las 7 de <code>customers.csv</code>) — las demás ni se tocan.</li>
+</ul>
+<p><strong>La idea en una frase:</strong> tu código pide "trae estas columnas, después filtra"; Spark ejecuta "filtra (leyendo solo esas columnas) primero, presenta después" — mismo resultado, procesando muchísimo menos dato en el camino.</p>
+<p>Identifica en tu propio resultado: ¿el <code>Filter</code> quedó antes o después del <code>Project</code> en el <em>Optimized Logical Plan</em>? Relaciónalo con la Tabla 5 y el ejemplo de 2.5.</p>
+<h3 id="37-aplicar-funciones-y-crear-columnas-con-withcolumn">3.7 Aplicar funciones y crear columnas con <code>withColumn()</code><a class="headerlink" href="#37-aplicar-funciones-y-crear-columnas-con-withcolumn" title="Permanent link">&para;</a></h3>
+<p><strong>Producto del paso:</strong> <code>df_articles</code> (cargado en 3.3) con al menos tres columnas nuevas o corregidas mediante <code>withColumn()</code>.</p>
+<p>Reutiliza <code>df_articles</code> — aplica el mismo patrón de 2.6, ahora sobre datos reales, en celdas separadas — cada bloque corrige o crea una columna con una función distinta:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">col</span><span class="p">,</span> <span class="n">when</span><span class="p">,</span> <span class="n">lit</span><span class="p">,</span> <span class="n">current_date</span>
+</code></pre></div>
+<p><strong>Corregir el tipo de una columna</strong> (<code>.cast()</code>, de 2.6): en 3.3 leíste <code>article_id</code> con <code>inferSchema=True</code> — como son solo dígitos, Spark corre el riesgo de quitarle el cero inicial sin avisar (2.4). Verifica y corrige:</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_articles</span> <span class="o">=</span> <span class="n">df_articles</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"article_id"</span><span class="p">,</span> <span class="n">col</span><span class="p">(</span><span class="s2">"article_id"</span><span class="p">)</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">"string"</span><span class="p">))</span>
+</code></pre></div>
+<p><strong>Clasificar con <code>when()</code>/<code>otherwise()</code></strong> (de 2.6, aplicado a la columna real <code>perceived_colour_value_name</code> — valores reales: <code>"Dark"</code>, <code>"Light"</code>, u otros):</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_articles</span> <span class="o">=</span> <span class="n">df_articles</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span>
+    <span class="s2">"rango_percibido"</span><span class="p">,</span>
+    <span class="n">when</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">"perceived_colour_value_name"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"Dark"</span><span class="p">,</span> <span class="s2">"oscuro"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">when</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">"perceived_colour_value_name"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"Light"</span><span class="p">,</span> <span class="s2">"claro"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">otherwise</span><span class="p">(</span><span class="s2">"medio"</span><span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div>
+<p><strong>Agregar una columna constante</strong> (<code>lit()</code>, de 2.6):</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_articles</span> <span class="o">=</span> <span class="n">df_articles</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"fuente"</span><span class="p">,</span> <span class="n">lit</span><span class="p">(</span><span class="s2">"H&amp;M Kaggle"</span><span class="p">))</span>
+</code></pre></div>
+<p><strong>Agregar una columna con fecha actual</strong> (<code>current_date()</code>, de 2.6 — la calcula Spark, no tú):</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_articles</span> <span class="o">=</span> <span class="n">df_articles</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"fecha_procesado"</span><span class="p">,</span> <span class="n">current_date</span><span class="p">())</span>
+</code></pre></div>
+<p>Verifica el resultado:</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_articles</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+    <span class="s2">"article_id"</span><span class="p">,</span> <span class="s2">"prod_name"</span><span class="p">,</span> <span class="s2">"perceived_colour_value_name"</span><span class="p">,</span> <span class="s2">"rango_percibido"</span><span class="p">,</span> <span class="s2">"fuente"</span><span class="p">,</span> <span class="s2">"fecha_procesado"</span>
+<span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<p>Verifica que <code>article_id</code> se muestre con el cero inicial (por ejemplo, <code>0108775015</code>, no <code>108775015</code>) — es la comprobación directa del error frecuente descrito en 2.4.</p>
+<h3 id="38-cargar-transactionsparquet-y-aplicar-funciones">3.8 Cargar <code>transactions.parquet</code> y aplicar funciones<a class="headerlink" href="#38-cargar-transactionsparquet-y-aplicar-funciones" title="Permanent link">&para;</a></h3>
+<p><strong>Producto del paso:</strong> DataFrame <code>df_transactions</code> cargado (tercera forma de lectura: Parquet), con tipos corregidos y columnas clasificadas con <code>when()</code> para poder agrupar en 3.9.</p>
+<p>Primero, la lectura:</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_transactions</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">ORIGEN_DATOS</span><span class="si">}</span><span class="s2">/transactions.parquet"</span><span class="p">)</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">100000</span><span class="p">)</span>
+</code></pre></div>
+<p>Trabajamos solo con un subconjunto (<code>.limit(100000)</code>) del archivo completo (varios millones de filas): incluso con datos reales de Big Data, explorar de forma interactiva casi nunca procesa todo el volumen disponible — se corta un segmento suficiente para validar la lógica de tus transformaciones antes de correrlas sobre el dataset completo. Como <code>.limit()</code> se aplica sin <code>orderBy()</code>, las filas exactas que te tocan pueden variar entre ejecuciones — no busques un resultado numérico único y "correcto", verifica que la lógica de tu código sea correcta.</p>
+<p>Confirma tú mismo las columnas — no asumas el esquema (ver 2.4):</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_transactions</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+</code></pre></div>
+<p>Corrige los tipos con <code>withColumn()</code> — el mismo patrón encadenado de 2.6, aplicado ahora a las 5 columnas reales de <code>transactions.parquet</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">col</span><span class="p">,</span> <span class="n">to_date</span>
+
+<span class="n">df_transactions</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">df_transactions</span>
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"t_dat"</span><span class="p">,</span> <span class="n">to_date</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">"t_dat"</span><span class="p">),</span> <span class="s2">"yyyy-MM-dd"</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"customer_id"</span><span class="p">,</span> <span class="n">col</span><span class="p">(</span><span class="s2">"customer_id"</span><span class="p">)</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">"string"</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"article_id"</span><span class="p">,</span> <span class="n">col</span><span class="p">(</span><span class="s2">"article_id"</span><span class="p">)</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">"string"</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"price"</span><span class="p">,</span> <span class="n">col</span><span class="p">(</span><span class="s2">"price"</span><span class="p">)</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">"double"</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"sales_channel_id"</span><span class="p">,</span> <span class="n">col</span><span class="p">(</span><span class="s2">"sales_channel_id"</span><span class="p">)</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">"int"</span><span class="p">))</span>
+<span class="p">)</span>
+</code></pre></div>
+<ul>
+<li><code>t_dat</code>: <code>to_date()</code> de 2.6 — llega como texto (<code>"2020-01-15"</code>), no como fecha.</li>
+<li><code>customer_id</code>: en este dataset ya suele llegar como texto (es un identificador tipo hash, no dígitos puros) — castearlo de todos modos deja explícito el tipo esperado, sin depender de que la inferencia haya acertado.</li>
+<li><code>article_id</code>: mismo riesgo de cero inicial que en 2.4/3.7 — <code>article_id</code> se repite en esta tabla, porque <code>transactions.parquet</code> referencia el mismo <code>article_id</code> de <code>articles.csv</code>.</li>
+<li><code>price</code>: fuerza <code>double</code>, por si Parquet lo trajo con otro tipo numérico.</li>
+<li><code>sales_channel_id</code>: fuerza <code>int</code>, por la misma razón.</li>
+</ul>
+<p>Ahora aplica expresiones condicionales con <code>when()</code> — el mismo patrón de 2.6/3.7, con varios ejemplos sobre las columnas reales de <code>transactions.parquet</code>:</p>
+<p><strong>Clasificar por canal de venta:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">when</span>
+
+<span class="n">df_transactions</span> <span class="o">=</span> <span class="n">df_transactions</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span>
+    <span class="s2">"canal"</span><span class="p">,</span>
+    <span class="n">when</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">"sales_channel_id"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"Online"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">when</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">"sales_channel_id"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">"Tienda"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">otherwise</span><span class="p">(</span><span class="s2">"Desconocido"</span><span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div>
+<p><strong>Etiquetar transacciones baratas o caras:</strong> recuerda que <code>price</code> está normalizado a [0, 1] (2.7) — los umbrales van en esa escala, no en soles/dólares:</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_transactions</span> <span class="o">=</span> <span class="n">df_transactions</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span>
+    <span class="s2">"categoria_precio"</span><span class="p">,</span>
+    <span class="n">when</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">"price"</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s2">"Barato"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">when</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">"price"</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.3</span><span class="p">,</span> <span class="s2">"Medio"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">otherwise</span><span class="p">(</span><span class="s2">"Caro"</span><span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div>
+<p><strong>Aplicar múltiples condiciones</strong> (con <code>&amp;</code>, combinando dos columnas):</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_transactions</span> <span class="o">=</span> <span class="n">df_transactions</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span>
+    <span class="s2">"tipo_transaccion"</span><span class="p">,</span>
+    <span class="n">when</span><span class="p">((</span><span class="n">col</span><span class="p">(</span><span class="s2">"sales_channel_id"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">"price"</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.3</span><span class="p">),</span> <span class="s2">"Online Premium"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">when</span><span class="p">((</span><span class="n">col</span><span class="p">(</span><span class="s2">"sales_channel_id"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">"price"</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.3</span><span class="p">),</span> <span class="s2">"Tienda Premium"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">otherwise</span><span class="p">(</span><span class="s2">"Regular"</span><span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div>
+<p><strong>Fin de semana vs. laborable</strong> (<code>dayofweek()</code> + <code>.isin()</code>):</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">dayofweek</span>
+
+<span class="n">df_transactions</span> <span class="o">=</span> <span class="n">df_transactions</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"dia_semana"</span><span class="p">,</span> <span class="n">dayofweek</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">"t_dat"</span><span class="p">)))</span>
+<span class="c1"># dayofweek(): 1=domingo ... 7=sábado (convención propia de Spark, no ISO).</span>
+
+<span class="n">df_transactions</span> <span class="o">=</span> <span class="n">df_transactions</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span>
+    <span class="s2">"tipo_dia"</span><span class="p">,</span>
+    <span class="n">when</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">"dia_semana"</span><span class="p">)</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="s2">"Fin de semana"</span><span class="p">)</span><span class="o">.</span><span class="n">otherwise</span><span class="p">(</span><span class="s2">"Laborable"</span><span class="p">)</span>
+<span class="p">)</span>
+</code></pre></div>
+<p><code>dayofweek()</code> necesita una columna de tipo fecha real, no texto — por eso este bloque va después de haber corregido <code>t_dat</code> con <code>to_date()</code> más arriba, no antes. <code>.isin(1, 7)</code> verifica si el valor numérico de la columna está dentro de esa lista — aquí, si el día corresponde a domingo (1) o sábado (7).</p>
+<p><strong>Por qué no <code>date_format(col, "u")</code>:</strong> una versión anterior de esta guía usaba <code>date_format(col("t_dat"), "u")</code> para obtener el día ISO de la semana. Es un patrón de texto, y desde Spark 3.0 el parser de fechas cambió de <code>java.text.SimpleDateFormat</code> a <code>java.time.format.DateTimeFormatter</code> — en el parser nuevo, la letra <code>"u"</code> significa <strong>año</strong> (numeración astronómica), no día de la semana; en el viejo significaba día de la semana. Como el significado cambió entre versiones, Spark no ejecuta el patrón en silencio: lanza <code>SparkUpgradeException</code> (<code>INCONSISTENT_BEHAVIOR_CROSS_VERSION.DATETIME_PATTERN_RECOGNITION</code>) para forzar una decisión explícita, en vez de arriesgarse a un resultado distinto al esperado. <code>dayofweek()</code> evita el problema de raíz porque no depende de un patrón de texto ambiguo.</p>
+<p><strong>Por qué el error aparece recién en 3.9 y no en esta celda:</strong> por evaluación perezosa. <code>date_format()</code>/<code>dayofweek()</code> son transformaciones — Spark solo arma el plan, no lo ejecuta. El error se dispara recién en la primera acción (<code>.show()</code>, <code>.count()</code>, etc.) que fuerza a evaluar toda la cadena de transformaciones sobre <code>df_transactions</code>, sin importar en qué celda esa acción esté escrita.</p>
+<h3 id="39-aplicar-agrupaciones-y-agregaciones-transactionsparquet">3.9 Aplicar agrupaciones y agregaciones (<code>transactions.parquet</code>)<a class="headerlink" href="#39-aplicar-agrupaciones-y-agregaciones-transactionsparquet" title="Permanent link">&para;</a></h3>
+<p><strong>Producto del paso:</strong> resumen agregado por cliente, con la advertencia de dominio sobre <code>price</code> aplicada.</p>
+<p>Reutiliza <code>df_transactions</code> (preparado en 3.8) para las siguientes agregaciones, cada una en su propia celda. Antes, la distinción entre las dos funciones que se combinan en cada bloque:</p>
+<ul>
+<li><strong>Agrupación</strong> — <code>groupBy("customer_id")</code>: junta las filas que comparten el mismo valor en esa columna (todas las transacciones de un mismo cliente quedan en un solo grupo). Por sí sola, no calcula nada — solo define los grupos.</li>
+<li><strong>Agregación</strong> — <code>sum()</code>, <code>avg()</code>, <code>count()</code>, <code>min()</code>, <code>max()</code>, <code>countDistinct()</code> (Tabla 6, dentro de <code>.agg()</code>): calculan un valor resumen <em>por cada grupo</em> ya formado por <code>groupBy()</code>. Sin un <code>groupBy()</code> antes, no hay "por cada grupo" — <code>.agg()</code> sin <code>groupBy()</code> resumiría todo el DataFrame en una sola fila.</li>
+</ul>
+<p>En cada bloque de abajo, <code>groupBy("customer_id")</code> es la agrupación (siempre la misma); lo que cambia es qué función de agregación va dentro de <code>.agg()</code>. Todos estos <code>.show()</code> usan <code>truncate=False</code>: <code>customer_id</code> es un hash largo, y con el truncado por defecto (20 caracteres) dos clientes distintos pueden lucir idénticos en pantalla — sin <code>truncate=False</code> no podrías confirmar si dos filas son del mismo cliente o de dos distintos.</p>
+<p><strong>Total gastado por cliente</strong> (<code>sum</code>):</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="nb">sum</span>
+
+<span class="n">df_total_por_cliente</span> <span class="o">=</span> <span class="n">df_transactions</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s2">"customer_id"</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+    <span class="nb">sum</span><span class="p">(</span><span class="s2">"price"</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"total_normalizado"</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">df_total_por_cliente</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Promedio de gasto por cliente</strong> (<code>avg</code>):</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">avg</span>
+
+<span class="n">df_avg_por_cliente</span> <span class="o">=</span> <span class="n">df_transactions</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s2">"customer_id"</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+    <span class="n">avg</span><span class="p">(</span><span class="s2">"price"</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"promedio_normalizado"</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">df_avg_por_cliente</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Número de transacciones por cliente</strong> (<code>count</code>):</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">count</span>
+
+<span class="n">df_count_por_cliente</span> <span class="o">=</span> <span class="n">df_transactions</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s2">"customer_id"</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+    <span class="n">count</span><span class="p">(</span><span class="s2">"*"</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"num_transacciones"</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">df_count_por_cliente</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<p><code>count("*")</code> cuenta todas las filas del grupo (incluye valores nulos en otras columnas); <code>count("una_columna")</code> cuenta solo las filas donde esa columna específica no es nula — la diferencia importa cuando una columna tiene datos faltantes.</p>
+<p><strong>Clientes únicos por día</strong> (<code>countDistinct</code>):</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">countDistinct</span>
+
+<span class="n">df_clientes_unicos_por_dia</span> <span class="o">=</span> <span class="n">df_transactions</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s2">"t_dat"</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+    <span class="n">countDistinct</span><span class="p">(</span><span class="s2">"customer_id"</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"clientes_unicos"</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">df_clientes_unicos_por_dia</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Varias agregaciones a la vez</strong> — combina las tres primeras en un solo <code>.agg()</code>, más eficiente que calcularlas por separado (Spark hace un solo pase sobre los datos en vez de tres):</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="nb">sum</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">avg</span>
+
+<span class="n">df_agg_multi</span> <span class="o">=</span> <span class="n">df_transactions</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s2">"customer_id"</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+    <span class="n">count</span><span class="p">(</span><span class="s2">"*"</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"num_transacciones"</span><span class="p">),</span>
+    <span class="nb">sum</span><span class="p">(</span><span class="s2">"price"</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"total_normalizado"</span><span class="p">),</span>
+    <span class="n">avg</span><span class="p">(</span><span class="s2">"price"</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"promedio_normalizado"</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">df_agg_multi</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Agrupar por múltiples columnas</strong> — agrupa por la combinación de ambas, no por cada una por separado:</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_ventas_por_dia_y_canal</span> <span class="o">=</span> <span class="n">df_transactions</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s2">"t_dat"</span><span class="p">,</span> <span class="s2">"sales_channel_id"</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+    <span class="nb">sum</span><span class="p">(</span><span class="s2">"price"</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"total_normalizado"</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">df_ventas_por_dia_y_canal</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Usar <code>agg()</code> con un diccionario</strong> — forma alternativa, sin <code>alias()</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">df_agg_dict</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">df_transactions</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s2">"customer_id"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">"price"</span><span class="p">:</span> <span class="s2">"sum"</span><span class="p">,</span> <span class="s2">"article_id"</span><span class="p">:</span> <span class="s2">"count"</span><span class="p">})</span>
+    <span class="o">.</span><span class="n">withColumnRenamed</span><span class="p">(</span><span class="s2">"sum(price)"</span><span class="p">,</span> <span class="s2">"total_normalizado"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">withColumnRenamed</span><span class="p">(</span><span class="s2">"count(article_id)"</span><span class="p">,</span> <span class="s2">"num_articulos"</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">df_agg_dict</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<p>Con un diccionario, Spark nombra las columnas resultantes automáticamente (<code>sum(price)</code>, <code>count(article_id)</code>) — por eso hace falta <code>withColumnRenamed()</code> después si quieres nombres más claros. Es una sintaxis más compacta, pero menos explícita que encadenar <code>.alias()</code>.</p>
+<p><strong>Total gastado por cliente, sin agrupar</strong> (función ventana — <code>Window</code>, <code>.over()</code>, de 2.7): a diferencia de <code>groupBy().agg()</code>, que colapsa todas las filas de un cliente en una sola fila de resumen, una función ventana agrega el total <strong>sin perder ninguna fila original</strong> — cada transacción conserva su propia fila, con el total de su cliente repetido en una columna nueva.</p>
+<p>Define la ventana:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.window</span><span class="w"> </span><span class="kn">import</span> <span class="n">Window</span>
+
+<span class="n">window_cliente</span> <span class="o">=</span> <span class="n">Window</span><span class="o">.</span><span class="n">partitionBy</span><span class="p">(</span><span class="s2">"customer_id"</span><span class="p">)</span>
+</code></pre></div>
+<p><code>Window.partitionBy("customer_id")</code> agrupa los datos por esa columna para el cálculo que sigue — como <code>groupBy()</code>, pero sin colapsar filas.</p>
+<p>Aplica la agregación sobre la ventana:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql.functions</span><span class="w"> </span><span class="kn">import</span> <span class="nb">sum</span>
+
+<span class="n">df_con_total_cliente</span> <span class="o">=</span> <span class="n">df_transactions</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span>
+    <span class="s2">"total_gastado_cliente"</span><span class="p">,</span>
+    <span class="nb">sum</span><span class="p">(</span><span class="s2">"price"</span><span class="p">)</span><span class="o">.</span><span class="n">over</span><span class="p">(</span><span class="n">window_cliente</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">df_con_total_cliente</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<p>Cada fila de <code>df_con_total_cliente</code> sigue siendo una transacción individual, pero ahora trae una columna extra (<code>total_gastado_cliente</code>) con el total del cliente al que pertenece esa fila — útil cuando necesitas el detalle y el resumen a la vez, algo que <code>groupBy().agg()</code> no te da. <code>truncate=False</code> es clave acá: <code>customer_id</code> es un hash largo, y con el truncado por defecto de <code>.show()</code> (20 caracteres) dos IDs distintos pueden lucir idénticos en pantalla — sin <code>truncate=False</code> no podrías confirmar si dos filas realmente pertenecen al mismo cliente o no, que es justo lo que esta función ventana busca mostrar.</p>
+<p><strong>No es la misma forma de llegar al mismo resultado — el resultado tiene otra forma.</strong> Compara tu propio <code>df_agg_dict</code> (3.9, <code>groupBy().agg()</code>) contra <code>df_con_total_cliente</code>: para un cliente cualquiera, <code>df_agg_dict</code> lo muestra <strong>una sola vez</strong>, con el total ya sumado; <code>df_con_total_cliente</code> muestra a ese mismo cliente <strong>una vez por cada transacción suya</strong>, todas con el mismo <code>total_gastado_cliente</code> repetido — la ventana no colapsó nada, solo le pegó el agregado de su grupo a cada fila individual. Eso habilita cálculos que <code>groupBy().agg()</code> no puede hacer, porque ya perdió el detalle: por ejemplo, <code>price / total_gastado_cliente</code> te diría qué porcentaje del gasto total de ese cliente representó cada compra puntual — necesitás el valor individual y el agregado en la misma fila a la vez.</p>
+<p><strong>Advertencia de dominio:</strong> la columna <code>price</code> de este dataset está <strong>normalizada por Kaggle a un rango [0, 1]</strong> — no representa el precio real en ninguna moneda (H&amp;M anonimizó los montos antes de publicar el dataset). <code>sum("price")</code>/<code>avg("price")</code> son agregaciones técnicamente correctas, pero leerlas como "gasto en soles/dólares/coronas" sería un error de dominio — exactamente el chequeo de <strong>veracidad</strong> (una de las 5V de Big Data, S1) que 2.6 te advirtió que hicieras antes de calcular con una columna cuyo significado no confirmaste.</p>
+<h3 id="310-convertir-a-rdd-y-procesar-texto-detail_desc-de-articlescsv">3.10 Convertir a RDD y procesar texto (<code>detail_desc</code> de <code>articles.csv</code>)<a class="headerlink" href="#310-convertir-a-rdd-y-procesar-texto-detail_desc-de-articlescsv" title="Permanent link">&para;</a></h3>
+<p><strong>Producto del paso:</strong> conteo de palabras distribuido sobre descripciones de producto, con las 10 más frecuentes, más una exploración con <code>filter()</code> y un reto de práctica.</p>
+<p>Reutiliza <code>df_articles</code> (cargado en 3.3) — aplica el patrón RDD de 2.8 sobre <code>detail_desc</code>, las ~105 000 descripciones de producto reales. Se hace por partes, para ver el resultado intermedio de cada operación antes de llegar al conteo completo.</p>
+<p><strong>Paso 1: pasar de DataFrame a RDD.</strong> Toma solo la columna de texto y descarta los valores nulos (no todos los artículos tienen descripción):</p>
+<div class="highlight"><pre><span></span><code><span class="n">rdd</span> <span class="o">=</span> <span class="n">df_articles</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">"detail_desc"</span><span class="p">)</span><span class="o">.</span><span class="n">rdd</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">detail_desc</span><span class="p">)</span>
+<span class="n">rdd</span> <span class="o">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">texto</span><span class="p">:</span> <span class="n">texto</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># algunos artículos no tienen descripción — el mismo filtro de nulos que 2.8 advirtió</span>
+
+<span class="n">rdd</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</code></pre></div>
+<p>No te sorprendas si varias de las 5 descripciones salen <strong>idénticas</strong> (en una corrida real, las primeras 3 fueron la misma línea repetida) — H&amp;M cataloga cada combinación de color/talla como un artículo distinto, pero muchos comparten la misma descripción de producto. No es un bug del filtro ni de <code>.take()</code>, es así el dato real.</p>
+<p><strong>Paso 2: filtrar descripciones por palabra clave.</strong> Antes de ir al conteo completo, una operación más simple sobre el mismo RDD — quedarte solo con las descripciones que mencionan un material real y frecuente en el catálogo, <code>"cotton"</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">textos_algodon</span> <span class="o">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">texto</span><span class="p">:</span> <span class="s2">"cotton"</span> <span class="ow">in</span> <span class="n">texto</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+<span class="n">textos_algodon</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Paso 3: <code>flatMap</code> + <code>map</code> + <code>reduceByKey</code> — conteo distribuido completo:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">operator</span><span class="w"> </span><span class="kn">import</span> <span class="n">add</span>
+
+<span class="n">palabras</span> <span class="o">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">flatMap</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">linea</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">"[^\wáéíóúñüÁÉÍÓÚÑÜ]"</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="n">linea</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+<span class="p">)</span>
+
+<span class="n">pares</span> <span class="o">=</span> <span class="n">palabras</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">p</span> <span class="o">!=</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">palabra</span><span class="p">:</span> <span class="p">(</span><span class="n">palabra</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">conteo</span> <span class="o">=</span> <span class="n">pares</span><span class="o">.</span><span class="n">reduceByKey</span><span class="p">(</span><span class="n">add</span><span class="p">)</span>
+
+<span class="n">conteo</span><span class="o">.</span><span class="n">takeOrdered</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</code></pre></div>
+<p><strong>Lee tu propio resultado, no solo el número:</strong> vas a ver algo como <code>('and', 163384), ('a', 152403), ('with', 150704), ('the', 136096), ('in', 109801), ('at', 80690)</code> dominando el top, y recién a partir de ahí (<code>back</code>, <code>front</code>, <code>soft</code>, <code>waist</code>) aparece vocabulario real del catálogo. Es esperado, no un error: un conteo de palabras sin quitar <em>stopwords</em> (artículos, preposiciones, conjunciones) siempre lo van a dominar palabras funcionales del idioma, sin importar el dominio del texto — recién después aparece el vocabulario que sí describe el negocio (en moda: <code>back</code>/<code>front</code>/<code>waist</code> son partes de la prenda, no personajes ni lugares). Compara esto contra 2.8: en un texto narrativo (la Biblia usada en S1), después de las mismas stopwords aparecerían nombres propios o palabras temáticas distintas — el contraste depende del dominio del texto, no del algoritmo.</p>
+<p><strong>Reto de práctica</strong> (documenta tus respuestas en 3.11, con evidencia real de tu propia corrida):</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 1. ¿Cuántas veces aparece "cotton" en el conteo distribuido?</span>
+<span class="n">conteo</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"cotton"</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+
+<span class="c1"># 2. Extrae 5 descripciones que mencionen "sustainable" (moda sostenible)</span>
+<span class="n">rdd</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">texto</span><span class="p">:</span> <span class="s2">"sustainable"</span> <span class="ow">in</span> <span class="n">texto</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="c1"># 3. De las 10 palabras más frecuentes de tu propia corrida, ¿cuántas son stopwords</span>
+<span class="c1">#    (sin significado de dominio) y en qué posición empieza el vocabulario real del catálogo?</span>
+</code></pre></div>
+<h3 id="311-documentar-hallazgos-y-responder-preguntas-de-reflexion">3.11 Documentar hallazgos y responder preguntas de reflexión<a class="headerlink" href="#311-documentar-hallazgos-y-responder-preguntas-de-reflexion" title="Permanent link">&para;</a></h3>
+<p><strong>Producto del paso:</strong> notebook documentado con celdas markdown explicando cada resultado.</p>
+<p>Agrega celdas markdown breves debajo de cada bloque de código (3.3-3.10) explicando qué hiciste y qué observaste — es la base directa de la evidencia técnica que armarás en 4.3.1.</p>
+<p><strong>Evidencia de aprendizaje:</strong></p>
+<ul>
+<li>Notebook <code>02_fundamentos_practica.ipynb</code> con extracción, transformaciones, funciones, agrupaciones/agregaciones y RDD ejecutados sobre el dataset H&amp;M.</li>
+<li>Plan de ejecución (<code>explain()</code>) interpretado, con al menos una optimización de Catalyst identificada.</li>
+<li>Resultado de agrupación/agregación documentado, con la advertencia de dominio sobre <code>price</code> aplicada.</li>
+<li>Conteo de palabras (RDD) sobre <code>detail_desc</code>, con las 10 más frecuentes documentado.</li>
+</ul>
+<h2 id="4-crea-actividad-autonoma">4. Crea: actividad autónoma<a class="headerlink" href="#4-crea-actividad-autonoma" title="Permanent link">&para;</a></h2>
+<p>Tiempo: 2h fuera del aula.</p>
+<h3 id="41-actividad">4.1 Actividad<a class="headerlink" href="#41-actividad" title="Permanent link">&para;</a></h3>
+<p>Replicación autónoma del flujo de transformación construido en clase (extracción, transformaciones, funciones, agrupaciones/agregaciones, RDD y evaluación perezosa) sobre datos del Proyecto Sello del equipo — reales si el equipo ya los tiene, o una muestra representativa del caso de negocio definido en S1 si todavía no hay datos reales disponibles.</p>
+<p>Completa y evidencia estas tareas:</p>
+<ol>
+<li>Cargar un dataset del Proyecto Sello como DataFrame, verificar esquema y primeras filas (equivalente a 3.3-3.4).</li>
+<li>Aplicar al menos tres transformaciones y una acción, evidenciando que la transformación no ejecuta nada hasta que llega la acción (equivalente a 3.5).</li>
+<li>Analizar el plan de ejecución con <code>explain()</code> e identificar al menos una optimización aplicada por Catalyst (equivalente a 3.6).</li>
+<li>Aplicar al menos una función (<code>withColumn</code>, <code>when</code>, <code>lit</code> o <code>.cast()</code>) sobre una columna del caso del equipo (equivalente a 3.7).</li>
+<li>Aplicar una agrupación con al menos una función de agregación relevante al caso del equipo (equivalente a 3.9).</li>
+<li>Convertir a RDD y aplicar al menos dos operaciones tipo <code>map</code>/<code>flatMap</code>/<code>filter</code>/<code>reduceByKey</code> (equivalente a 3.10).</li>
+</ol>
+<h3 id="42-proposito">4.2 Propósito<a class="headerlink" href="#42-proposito" title="Permanent link">&para;</a></h3>
+<p>Que cada estudiante demuestre, de forma individual y fuera del aula, que puede reproducir el flujo de transformación PySpark construido en clase sin el acompañamiento del docente — aplicándolo al caso real del Proyecto Sello de su equipo, no a un dataset desconectado.</p>
+<h3 id="43-indicaciones">4.3 Indicaciones<a class="headerlink" href="#43-indicaciones" title="Permanent link">&para;</a></h3>
+<p>Entrega un PDF con el siguiente nombre:</p>
+<div class="highlight"><pre><span></span><code>S02_Equipo##_ApellidoNombre.pdf
+</code></pre></div>
+<p>Cada captura de pantalla del informe debe mostrar, sin recortar, el reloj del sistema (fecha y hora) y tu usuario o foto de perfil (Windows, VS Code o navegador) visibles en pantalla — es lo que permite verificar que la evidencia es tuya y que corresponde al momento real de tu trabajo.</p>
+<h4 id="431-estructura-del-informe">4.3.1 Estructura del informe<a class="headerlink" href="#431-estructura-del-informe" title="Permanent link">&para;</a></h4>
+<p><strong>Datos del estudiante</strong></p>
+<ul>
+<li>Nombre:</li>
+<li>Equipo:</li>
+<li>Sesión: S02 - Fundamentos PySpark: transformaciones, funciones, agrupaciones y evaluación perezosa</li>
+<li>Rol o aporte realizado:</li>
+<li>Link de GitHub:</li>
+</ul>
+<p><strong>Evidencia técnica</strong></p>
+<p>Incluye capturas o extractos con una breve explicación debajo de cada uno, organizados en los mismos 4 bloques de la rúbrica (4.6):</p>
+<ol>
+<li><em>Extracción y exploración del DataFrame</em><ul>
+<li>Dataset del Proyecto Sello cargado, esquema y primeras filas (equivalente a 3.3-3.4).</li>
+</ul>
+</li>
+<li><em>Transformaciones, funciones y evaluación perezosa</em><ul>
+<li>Transformaciones y funciones aplicadas, con evidencia de que la ejecución ocurre recién con la acción (equivalente a 3.5 y 3.7).</li>
+</ul>
+</li>
+<li><em>Agrupaciones y agregaciones</em><ul>
+<li>Resumen agregado relevante al caso del equipo (equivalente a 3.9).</li>
+</ul>
+</li>
+<li><em>RDD y plan de ejecución</em><ul>
+<li>Procesamiento RDD y plan de <code>explain()</code> interpretado (equivalente a 3.6 y 3.10).</li>
+</ul>
+</li>
+</ol>
+<p><strong>Error o hallazgo</strong></p>
+<p>Describe al menos un error o comportamiento inesperado que encontraste al procesar tus propios datos:</p>
+<ul>
+<li>Qué ocurrió o qué limitación encontraste.</li>
+<li>Cómo lo identificaste.</li>
+<li>Cómo lo resolviste o qué decisión tomaste.</li>
+</ul>
+<p><strong>Reflexión técnica breve</strong></p>
+<p>Responde en 5 a 8 líneas:</p>
+<div class="highlight"><pre><span></span><code>¿Por qué la evaluación perezosa es útil para procesar datos a escala, y qué
+riesgo tendría si Spark ejecutara cada transformación de inmediato, apenas
+se escribe?
+</code></pre></div>
+<h3 id="44-criterios-minimos-de-aceptacion">4.4 Criterios mínimos de aceptación<a class="headerlink" href="#44-criterios-minimos-de-aceptacion" title="Permanent link">&para;</a></h3>
+<p>La evidencia individual se considera completa si:</p>
+<ul>
+<li>El DataFrame del Proyecto Sello se carga y explora correctamente (esquema, primeras filas).</li>
+<li>Aplica al menos tres transformaciones (incluida al menos una función de columna) y una acción, documentando el efecto de la evaluación perezosa.</li>
+<li>Aplica una agrupación con al menos una función de agregación relevante al caso.</li>
+<li>Convierte a RDD y aplica al menos dos operaciones tipo <code>map</code>/<code>flatMap</code>/<code>filter</code>/<code>reduceByKey</code>.</li>
+<li>Analiza el plan de ejecución con <code>explain()</code> y explica al menos una fase o una optimización.</li>
+<li>Cada captura de la evidencia técnica muestra el reloj del sistema y el usuario/perfil visible, sin recortar.</li>
+<li>Las fechas y horas de las capturas son coherentes con el historial de commits de su repositorio en GitHub.</li>
+<li>Incluye un error o hallazgo técnico diagnosticado.</li>
+<li>Incluye la reflexión técnica breve solicitada.</li>
+</ul>
+<h3 id="45-preguntas-de-defensa">4.5 Preguntas de defensa<a class="headerlink" href="#45-preguntas-de-defensa" title="Permanent link">&para;</a></h3>
+<ol>
+<li>¿Cuál es la diferencia entre una transformación y una acción en Spark? Da un ejemplo de cada una.</li>
+<li>¿Por qué Spark no ejecuta las transformaciones de inmediato? ¿Qué ventaja de rendimiento aporta eso?</li>
+<li>¿Qué información te da <code>explain()</code> sobre cómo Spark va a ejecutar tu código?</li>
+<li>¿Cuándo usarías RDD en vez de DataFrame, y por qué en la mayoría de los casos conviene usar DataFrame?</li>
+<li>¿Qué diferencia hay entre <code>groupBy().count()</code> y <code>groupBy().agg(...)</code>?</li>
+</ol>
+<h3 id="46-rubrica-de-evaluacion">4.6 Rúbrica de evaluación<a class="headerlink" href="#46-rubrica-de-evaluacion" title="Permanent link">&para;</a></h3>
+<p><strong>Tabla 11. Rúbrica de evaluación</strong></p>
+<table>
+<thead>
+<tr>
+<th>Criterio</th>
+<th style="text-align: right;">Peso (%)</th>
+<th>A (20 pts)</th>
+<th>B (15 pts)</th>
+<th>C (10 pts)</th>
+<th>D (5 pts)</th>
+<th style="text-align: right;">Nivel obtenido</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Extracción y exploración del DataFrame*</td>
+<td style="text-align: right;">25</td>
+<td>Carga el dataset del Proyecto Sello, verifica esquema y datos, e identifica cualquier inconsistencia de forma explícita.</td>
+<td>Carga el dataset y verifica esquema y datos correctamente.</td>
+<td>Carga el dataset con verificación incompleta o imprecisa.</td>
+<td>No carga o no explora el dataset.</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr>
+<td>2. Transformaciones, funciones y evaluación perezosa*</td>
+<td style="text-align: right;">25</td>
+<td>Aplica transformaciones y funciones (<code>withColumn</code>, <code>when</code>, <code>lit</code>, <code>.cast()</code>) con evidencia clara de la evaluación perezosa, relacionándola con Catalyst.</td>
+<td>Aplica transformaciones, funciones y acciones correctamente, con evidencia de la evaluación perezosa.</td>
+<td>Aplica transformaciones/funciones con evidencia débil o sin distinguir transformación de acción.</td>
+<td>No aplica transformaciones ni funciones.</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr>
+<td>3. Agrupaciones y agregaciones*</td>
+<td style="text-align: right;">25</td>
+<td>Aplica agrupaciones/agregaciones relevantes al caso, con resultado interpretado correctamente.</td>
+<td>Aplica agrupaciones/agregaciones correctamente.</td>
+<td>Agrupaciones/agregaciones incompletas o poco relevantes al caso.</td>
+<td>No aplica agrupaciones ni agregaciones.</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr>
+<td>4. RDD y plan de ejecución*</td>
+<td style="text-align: right;">25</td>
+<td>Aplica operaciones RDD relevantes e interpreta <code>explain()</code> identificando al menos una optimización real.</td>
+<td>Aplica operaciones RDD y analiza <code>explain()</code> correctamente.</td>
+<td>RDD o <code>explain()</code> aplicado de forma superficial.</td>
+<td>No aplica RDD ni analiza el plan de ejecución.</td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+<p>* Agregado manual.</p>
+<p>Nota final = suma de (<code>Peso</code> / 100 × <code>Puntos del nivel obtenido</code>) = ____ / 20.</p>
+<p>Para usar la rúbrica con IA, solicita:</p>
+<div class="highlight"><pre><span></span><code>Evalúa el PDF usando la rúbrica de la sesión.
+Para cada criterio selecciona el nivel obtenido usando la escala A=20, B=15, C=10, D=5 puntos.
+Justifica brevemente cada nivel asignado.
+Verifica que cada captura muestre reloj del sistema y usuario/perfil visible, y que las fechas sean coherentes con el historial de commits de GitHub. Si falta esta evidencia o hay inconsistencias, indícalo explícitamente antes de calificar.
+Calcula la nota final con la fórmula: suma de (Peso/100 × Puntos del nivel obtenido), directamente sobre 20.
+Indica 2 fortalezas y 2 recomendaciones.
+</code></pre></div>
+<h2 id="5-cierre">5. Cierre<a class="headerlink" href="#5-cierre" title="Permanent link">&para;</a></h2>
+<p>Tiempo: 5 min.</p>
+<p><strong>Resumen breve:</strong> hoy se construyó el flujo de transformación distribuida en PySpark sobre datos reales de Big Data (H&amp;M, Kaggle): extracción con control de esquema, transformaciones y funciones sobre DataFrame, evaluación perezosa verificada con <code>explain()</code>, agrupaciones/agregaciones y el modelo RDD por debajo — cada estudiante aplicó el mismo flujo a los datos del Proyecto Sello de su equipo.</p>
+<p><strong>Dinámica participativa:</strong> en una ronda rápida, cada estudiante comparte una optimización concreta que observó en su propio <code>explain()</code> (por ejemplo, un <code>Filter</code> que Catalyst movió antes que un <code>Project</code>).</p>
+<p><strong>Metacognición:</strong> cada estudiante responde en voz alta o por escrito: ¿qué parte de la sesión te costó más entender, y cómo la resolviste?</p>
+<p><strong>Proyección:</strong> las transformaciones construidas hoy son la entrada directa de S3, donde el resultado se carga particionado en formatos analíticos con validación de calidad de datos — y aplica en cualquier trabajo profesional con Spark, donde entender qué es transformación y qué es acción es la base para no ejecutar cálculos costosos antes de tiempo.</p>
+<h2 id="bibliografia">Bibliografía<a class="headerlink" href="#bibliografia" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Databricks. (2024). <em>What is a Catalyst Optimizer?</em> Databricks Blog. https://www.databricks.com/blog/what-is-catalyst-optimizer</li>
+<li>KeepCoding. (2022). <em>¿Qué es MapReduce en Hadoop?</em> KeepCoding Blog. https://keepcoding.io/blog/mapreduce-hadoop/</li>
+<li>Zaharia, M., Chowdhury, M., Das, T., Dave, A., Ma, J., McCauly, M., Franklin, M. J., Shenker, S., &amp; Stoica, I. (2012). <em>Resilient Distributed Datasets: A Fault-Tolerant Abstraction for In-Memory Cluster Computing</em>. 9th USENIX Symposium on Networked Systems Design and Implementation (NSDI 12).</li>
+<li>Apache Software Foundation. (2024). <em>Apache Spark documentation</em>. https://spark.apache.org/docs/latest/</li>
+<li>Apache Software Foundation. (2024). <em>PySpark API reference: pyspark.sql.functions</em>. https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/functions.html</li>
+<li>H&amp;M Group. (2022). <em>H&amp;M Personalized Fashion Recommendations</em> [Data set]. Kaggle. https://www.kaggle.com/competitions/h-and-m-personalized-fashion-recommendations/data</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

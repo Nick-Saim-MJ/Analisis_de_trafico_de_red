@@ -1,0 +1,2622 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://262bigdata.github.io/lambda26/sesiones/S01_Arquitectura_Big_Data_Lambda_Kappa/">
+      
+      
+        <link rel="prev" href="../../silabo_bigdata_2026_2/">
+      
+      
+        <link rel="next" href="../S02_Fundamentos_PySpark_Transformaciones_Lazy_Evaluation/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+  
+    <title>Big Data - S1 - Arquitectura Big Data: Lambda y Kappa, batch vs. streaming</title>
+  
+
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#s1-arquitectura-big-data-lambda-y-kappa-batch-vs-streaming" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Big Data" class="md-header__button md-logo" aria-label="Big Data" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Big Data
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              S1 - Arquitectura Big Data: Lambda y Kappa, batch vs. streaming
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/262bigdata/lambda26" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    262bigdata/lambda26
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Big Data" class="md-nav__button md-logo" aria-label="Big Data" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Big Data
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/262bigdata/lambda26" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    262bigdata/lambda26
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inicio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guía de Proyecto Sello
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guía de Proyecto Sello
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../proyecto-sello/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guía del proyecto
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../proyecto-sello/brief/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brief técnico-analítico (plantilla)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../proyecto-sello/u1-producto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Producto U1 (plantilla-ejemplo)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../proyecto-sello/u2-producto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Producto U2 (plantilla-ejemplo)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../proyecto-sello/u3-producto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Producto U3 / Producto Final (plantilla-ejemplo)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../proyecto-sello/matriz-competencias/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Matriz de competencias (ICACIT)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Silabos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Silabos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../silabo_bigdata_2026_1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Silabo 2026-1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../silabo_bigdata_2026_2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Silabo 2026-2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. Arquitecturas Big Data y ETL batch distribuido
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    1. Arquitecturas Big Data y ETL batch distribuido
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S1 - Arquitectura Big Data: Lambda y Kappa, batch vs. streaming
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S1 - Arquitectura Big Data: Lambda y Kappa, batch vs. streaming
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-introduccion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Introducción
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Introducción">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-presentacion-de-la-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Presentación de la sesión
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-indice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Índice
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-proposito-de-aprendizaje" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Propósito de aprendizaje
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-producto-de-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 Producto de sesión
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-metodologia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5 Metodología
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-motivacion-de-la-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6 Motivación de la sesión
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.6 Motivación de la sesión">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#161-caso-uber-y-el-almacenamiento-por-niveles-con-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6.1 Caso: Uber y el almacenamiento por niveles con Kafka
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17-ubicacion-en-el-curso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.7 Ubicación en el curso
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-explica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Explica
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Explica">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-arquitectura-de-la-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Arquitectura de la sesión
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-ecosistema-y-arquitectura-big-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Ecosistema y arquitectura Big Data
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-batch-vs-streaming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Batch vs. Streaming
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-arquitectura-lambda" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Arquitectura Lambda
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-arquitectura-kappa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Arquitectura Kappa
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.5 Arquitectura Kappa">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#251-regla-de-decision-y-comparacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5.1 Regla de decisión y comparación
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-aplica-actividad-practica-guiada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Aplica: actividad práctica guiada
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Aplica: actividad práctica guiada">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-configurar-y-verificar-el-entorno-lambda26-uso-pyspark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Configurar y verificar el entorno lambda26 (uso-pyspark)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-verificar-spark-con-un-notebook-minimo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Verificar Spark con un notebook mínimo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-reconocer-el-ecosistema-de-lambda26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Reconocer el ecosistema de lambda26
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-analizar-el-caso-guiado-y-clasificar-batchstreaming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Analizar el caso guiado y clasificar batch/streaming
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-aplicar-la-regla-de-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 Aplicar la regla de decisión
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-proponer-tecnologias-y-diagrama-de-flujo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 Proponer tecnologías y diagrama de flujo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-completar-la-plantilla-de-propuesta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7 Completar la plantilla de propuesta
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-crea-actividad-autonoma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Crea: actividad autónoma
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Crea: actividad autónoma">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-actividad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Actividad
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-proposito" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Propósito
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-indicaciones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Indicaciones
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.3 Indicaciones">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#431-estructura-del-informe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3.1 Estructura del informe
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-criterios-minimos-de-aceptacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Criterios mínimos de aceptación
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-preguntas-de-defensa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Preguntas de defensa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46-rubrica-de-evaluacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6 Rúbrica de evaluación
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-cierre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Cierre
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bibliografia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bibliografía
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S02_Fundamentos_PySpark_Transformaciones_Lazy_Evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S2 - Fundamentos PySpark: transformaciones, funciones, agrupaciones y evaluación perezosa
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S03_Procesamiento_Calidad_Datos_Particionamiento/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S3 - Procesamiento y Calidad de Datos: filtrado, duplicados, nulos y particionamiento analítico
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S04_ML_Distribuido_Regresion_Spark_MLlib/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S4 - ML Distribuido con Spark MLlib (Regresión)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S05_Evaluacion_Unidad_1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S5 - Evaluación de la Unidad I
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Sistema Big Data en tiempo real
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    2. Sistema Big Data en tiempo real
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S06_Ingesta_Eventos_Empresariales_Kafka/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S6 - Ingesta de Eventos Empresariales en Tiempo Real
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S07_Ingesta_Eventos_IoT_Sensores_Tiempo_Real/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S7 - Ingesta de Eventos IoT/Sensores en Tiempo Real
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S12_Evaluacion_Unidad_2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S12 - Evaluación de la Unidad II
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Integración, DataOps y despliegue del sistema final
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    3. Integración, DataOps y despliegue del sistema final
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S15_Evaluacion_Unidad_3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    S15 - Evaluación de la Unidad III
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-introduccion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Introducción
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Introducción">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-presentacion-de-la-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Presentación de la sesión
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-indice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Índice
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-proposito-de-aprendizaje" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Propósito de aprendizaje
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-producto-de-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 Producto de sesión
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-metodologia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5 Metodología
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-motivacion-de-la-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6 Motivación de la sesión
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.6 Motivación de la sesión">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#161-caso-uber-y-el-almacenamiento-por-niveles-con-kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6.1 Caso: Uber y el almacenamiento por niveles con Kafka
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17-ubicacion-en-el-curso" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.7 Ubicación en el curso
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-explica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Explica
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Explica">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-arquitectura-de-la-sesion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Arquitectura de la sesión
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-ecosistema-y-arquitectura-big-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Ecosistema y arquitectura Big Data
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-batch-vs-streaming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Batch vs. Streaming
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-arquitectura-lambda" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Arquitectura Lambda
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-arquitectura-kappa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Arquitectura Kappa
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.5 Arquitectura Kappa">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#251-regla-de-decision-y-comparacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5.1 Regla de decisión y comparación
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-aplica-actividad-practica-guiada" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Aplica: actividad práctica guiada
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Aplica: actividad práctica guiada">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-configurar-y-verificar-el-entorno-lambda26-uso-pyspark" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Configurar y verificar el entorno lambda26 (uso-pyspark)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-verificar-spark-con-un-notebook-minimo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Verificar Spark con un notebook mínimo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-reconocer-el-ecosistema-de-lambda26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Reconocer el ecosistema de lambda26
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-analizar-el-caso-guiado-y-clasificar-batchstreaming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Analizar el caso guiado y clasificar batch/streaming
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-aplicar-la-regla-de-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 Aplicar la regla de decisión
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-proponer-tecnologias-y-diagrama-de-flujo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 Proponer tecnologías y diagrama de flujo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-completar-la-plantilla-de-propuesta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7 Completar la plantilla de propuesta
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-crea-actividad-autonoma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Crea: actividad autónoma
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Crea: actividad autónoma">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-actividad" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Actividad
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-proposito" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Propósito
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-indicaciones" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Indicaciones
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.3 Indicaciones">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#431-estructura-del-informe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3.1 Estructura del informe
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-criterios-minimos-de-aceptacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Criterios mínimos de aceptación
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-preguntas-de-defensa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Preguntas de defensa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46-rubrica-de-evaluacion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6 Rúbrica de evaluación
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-cierre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Cierre
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bibliografia" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bibliografía
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="s1-arquitectura-big-data-lambda-y-kappa-batch-vs-streaming">S1 - Arquitectura Big Data: Lambda y Kappa, batch vs. streaming<a class="headerlink" href="#s1-arquitectura-big-data-lambda-y-kappa-batch-vs-streaming" title="Permanent link">&para;</a></h1>
+<p><em>Por: Angel Sullon Macalupu @asullom - 2026</em></p>
+<h2 id="1-introduccion">1. Introducción<a class="headerlink" href="#1-introduccion" title="Permanent link">&para;</a></h2>
+<p>Tiempo: 20 min.</p>
+<h3 id="11-presentacion-de-la-sesion">1.1 Presentación de la sesión<a class="headerlink" href="#11-presentacion-de-la-sesion" title="Permanent link">&para;</a></h3>
+<p>Esta sesión abre la Unidad 1 del proyecto del curso: se decide la primera arquitectura Big Data (Lambda o Kappa). Con esa decisión queda establecida la regla batch/streaming que ordena el pipeline construido en las sesiones siguientes de la unidad. El porqué de decidir la arquitectura antes de elegir herramientas se desarrolla en 1.6, a partir del caso de Uber — esta sesión resuelve solo esa primera decisión, no el pipeline completo.</p>
+<h3 id="12-indice">1.2 Índice<a class="headerlink" href="#12-indice" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Ecosistema y arquitectura Big Data.</li>
+<li>Batch vs. Streaming.</li>
+<li>Arquitectura Lambda.</li>
+<li>Arquitectura Kappa.</li>
+</ol>
+<h3 id="13-proposito-de-aprendizaje">1.3 Propósito de aprendizaje<a class="headerlink" href="#13-proposito-de-aprendizaje" title="Permanent link">&para;</a></h3>
+<p>Al concluir la clase, estarás en condiciones de:</p>
+<ul>
+<li><strong>Identificar</strong> los componentes del ecosistema Big Data y <strong>decidir</strong> qué arquitectura (Lambda o Kappa) conviene aplicar a un problema real de negocio, justificando la elección entre procesamiento batch y streaming.</li>
+</ul>
+<h3 id="14-producto-de-sesion">1.4 Producto de sesión<a class="headerlink" href="#14-producto-de-sesion" title="Permanent link">&para;</a></h3>
+<p>Diagrama de arquitectura Big Data (Lambda o Kappa) para el Proyecto Sello del equipo, con decisiones técnicas, tecnologías propuestas, supuestos y riesgos.</p>
+<h3 id="15-metodologia">1.5 Metodología<a class="headerlink" href="#15-metodologia" title="Permanent link">&para;</a></h3>
+<p><strong>Tabla 1. Metodología de la sesión</strong></p>
+<table>
+<thead>
+<tr>
+<th>Actividades a Realizar en el Periodo</th>
+<th>Orientaciones generales (Orientaciones Metodológicas)</th>
+<th>Material de estudio recomendado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Revisión previa individual</td>
+<td>Leer el sílabo de la Unidad 1 y el caso de Uber (ver 1.6). Trabajo individual, antes de clase; sin instalación previa requerida para esta sesión.</td>
+<td>Sílabo Big Data U1.</td>
+</tr>
+<tr>
+<td>Clase presencial</td>
+<td>Construcción guiada de la decisión arquitectónica: entorno <code>lambda26</code>, verificación con Spark, ecosistema, batch vs. streaming, regla de decisión, tecnologías y diagrama de flujo. Trabajo individual, siguiendo al docente paso a paso; consulta inmediata ante dudas sobre Lambda, Kappa o el ecosistema.</td>
+<td>Pasos 3.1 a 3.7 de esta guía.</td>
+</tr>
+<tr>
+<td>Evaluación formativa</td>
+<td>Revisión en clase de la arquitectura seleccionada y su justificación. La evidencia se completa y sustenta de forma individual, fuera del aula, según los criterios mínimos de la sección 4.4.</td>
+<td>Indicaciones de entrega (4.3), rúbrica de evaluación (4.6).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="16-motivacion-de-la-sesion">1.6 Motivación de la sesión<a class="headerlink" href="#16-motivacion-de-la-sesion" title="Permanent link">&para;</a></h3>
+<h4 id="161-caso-uber-y-el-almacenamiento-por-niveles-con-kafka">1.6.1 Caso: Uber y el almacenamiento por niveles con Kafka<a class="headerlink" href="#161-caso-uber-y-el-almacenamiento-por-niveles-con-kafka" title="Permanent link">&para;</a></h4>
+<p>Uber usa Apache Kafka como columna vertebral tanto de sus sistemas batch como de sus sistemas en tiempo real: la misma plataforma alimenta el procesamiento histórico y el procesamiento de eventos en vivo, como dos sistemas separados. Para sostener esa escala sin encarecer el clúster, aplica almacenamiento por niveles (<em>tiered storage</em>): los eventos recientes quedan en el disco local de los brokers (horas), mientras el histórico se mueve a almacenamiento remoto más barato (S3/GCS/HDFS) por días o meses, sin perder la capacidad de leerlo directamente desde Kafka. La idea de <code>lambda26</code> es construir un pipeline con ese mismo espíritu: batch y tiempo real como sistemas separados, ambos alimentados por Kafka.</p>
+<p><strong>Figura 1. Arquitectura de Kafka en Uber: productores, pipeline batch y pipeline en tiempo real</strong></p>
+<p><img alt="Arquitectura de Kafka en Uber: productores, pipeline batch y pipeline en tiempo real" src="https://lh7-us.googleusercontent.com/docsz/AD_4nXePSpSp72unfaVqK7tofbbbOpMaZLJ7qYJ2Es-Chg3CHBeZ9kcJDZ9ouvPRYs-CarI8bAqXs2459rJ0_QrsgBaUwqikE5fwYSianNkl1u6Ehbjz_yH6XuWJGn54P5kCaRSaBrCgeVPN4q2QC_RDu9ag1YgU?key=kis14CJAvWJjUiCdmN0jHg" /></p>
+<p><strong>Productores</strong> (generan los eventos hacia Kafka): Rider App, Driver App, API/Servicios, Dispatch, Mapping &amp; Logistics, y las bases de datos operacionales (Schemaless MySQL, Cassandra).</p>
+<p><strong>Consumidores</strong> (leen desde Kafka, ya separados en dos pipelines): el pipeline en tiempo real (Pub/Sub, Flink, ELK) alimenta la app móvil, alertas/dashboards, analítica en tiempo real y debugging; el pipeline batch (Hadoop) alimenta aplicaciones de ciencia de datos, exploración ad-hoc y reportes analíticos. Ambos pipelines leen del mismo Kafka, pero son sistemas separados — por eso es Lambda.</p>
+<p>Fuente: <a href="https://www.uber.com/us/en/blog/kafka-tiered-storage/">Kafka tiered storage at Uber</a>.</p>
+<p><code>lambda26</code> sigue el mismo patrón, con sus propios componentes en vez de los de Uber:</p>
+<p><strong>Figura 2. <code>lambda26</code> con el mismo patrón de Uber: productores, pipeline en tiempo real y pipeline batch</strong></p>
+<pre class="mermaid"><code>flowchart LR
+    subgraph Producers["Productores"]
+        direction TB
+        P1["uso-atmos&lt;br/&gt;ESP32: sensores atmosféricos"]
+        P2["uso-rapido, uso-microserv&lt;br/&gt;(secundario)"]
+        P3["uso-replica-cdc&lt;br/&gt;MySQL"]
+    end
+
+    K[("kafka")]
+
+    subgraph RT["Realtime Pipeline"]
+        direction TB
+        RT1["uso-pyspark&lt;br/&gt;streaming + inferencia ML"]
+    end
+
+    subgraph BP["Batch Pipeline"]
+        direction TB
+        BP1["uso-pyspark&lt;br/&gt;batch, interactivo"]
+        BP2["Data warehouse +&lt;br/&gt;uso-bi-tiempo-real (dbt)"]
+    end
+
+    Grafana["obs&lt;br/&gt;Prometheus + Grafana"]
+
+    Producers --&gt; K
+    K --&gt; RT
+    K -.-&gt; BP
+    RT1 --&gt; Grafana
+    BP2 --&gt; Grafana
+    BP1 -.-&gt;|"modelo entrenado"| RT1</code></pre>
+<p><code>uso-pyspark</code> aparece dos veces en la Figura 2: son dos <strong>contenedores separados de la misma imagen</strong>, no dos tecnologías distintas. El de Batch Pipeline corre Jupyter (notebooks, exploración/entrenamiento), y el de Realtime Pipeline ejecuta <code>spark-submit</code> sobre un script <code>.py</code> como proceso persistente (streaming + inferencia). Se separan porque un notebook no es apto para un job que debe correr sin parar, y un job de producción no debería competir por recursos con el contenedor de exploración — por eso, aunque comparten la misma base tecnológica, Lambda los trata como dos sistemas independientes.</p>
+<p>Es el mismo patrón que usa <strong>Databricks</strong> (la plataforma que suelen usar las certificaciones de ingeniería de datos): <strong>All-Purpose Clusters</strong> para notebooks/exploración (equivalente al contenedor batch/interactivo de la Figura 2) y <strong>Job Clusters</strong> — efímeros, creados solo para correr un Job y destruidos al terminar — para todo proceso productivo, incluido streaming. Databricks incluso recomienda explícitamente correr Structured Streaming como Job sobre Job Compute y no en un cluster interactivo, por las mismas dos razones: no competir por recursos con la exploración, y que un Job reintenta/reinicia automáticamente si el proceso se cae, algo que un notebook "dejado corriendo" no garantiza. <code>lambda26</code> reproduce esa misma separación con Docker, a escala de laboratorio. En la industria, Databricks corre sobre AWS, Azure o GCP (no es una nube en sí misma); su principal competidor, <strong>Snowflake</strong>, no usa Spark — es un data warehouse SQL-first. Muchas empresas usan ambos: Snowflake para BI/reportes, Databricks para ML e ingeniería de datos pesada.</p>
+<p><strong>Preguntas de análisis</strong></p>
+<p><strong>Activación de conocimientos previos</strong></p>
+<ol>
+<li>¿Qué problema resuelve separar el almacenamiento reciente (rápido, en el broker) del histórico (barato, remoto) dentro de la misma plataforma Kafka?</li>
+<li>¿Qué pasaría si Uber tuviera que guardar todo el histórico en el disco local de los brokers, sin niveles de almacenamiento?</li>
+</ol>
+<p><strong>Comprensión de arquitecturas Big Data</strong></p>
+<ol>
+<li>¿Por qué el diseño de Uber (sistemas batch y en tiempo real separados, ambos sobre Kafka) corresponde a Lambda y no a Kappa? Justifica con la regla de decisión que se explica en 2.5.1.</li>
+<li>¿En qué escenario convendría eliminar la capa batch separada y reprocesar todo desde Kafka (Kappa) en vez de mantener ambos sistemas?</li>
+</ol>
+<h3 id="17-ubicacion-en-el-curso">1.7 Ubicación en el curso<a class="headerlink" href="#17-ubicacion-en-el-curso" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Unidad: U1 - Arquitecturas Big Data y ETL batch distribuido.</li>
+<li>Producto del curso: Proyecto Sello: sistema Big Data distribuido end-to-end para procesamiento batch y streaming, analítica/ML, observabilidad y visualización BI para la toma de decisiones.</li>
+<li>Producto de unidad: pipeline batch de ETL distribuido con salidas analíticas en Parquet listas para BI/ML.</li>
+<li>Avance del producto en esta sesión: arquitectura Big Data seleccionada y justificada (Lambda o Kappa) para el Proyecto Sello del equipo.</li>
+</ul>
+<p>Roadmap del producto de unidad:</p>
+<p><strong>Figura 3. Roadmap del producto de la unidad U1</strong></p>
+<pre class="mermaid"><code>flowchart TB
+    Arquitectura["Arquitectura Big Data&lt;br/&gt;Lambda o Kappa&lt;br/&gt;HOY"]
+    PySpark["Fundamentos PySpark&lt;br/&gt;S2"]
+    HDFS["Formatos analíticos y calidad&lt;br/&gt;S3"]
+    ML["ML distribuido&lt;br/&gt;S4"]
+    Evaluacion["Evaluación U1&lt;br/&gt;S5"]
+
+    Arquitectura --&gt; PySpark --&gt; HDFS --&gt; ML --&gt; Evaluacion
+
+    classDef today fill:#ffe08a,stroke:#9a6b00,stroke-width:2px,color:#111;
+    class Arquitectura today;</code></pre>
+<p>Hoy se decide el primer componente real de la U1: la arquitectura Big Data. En las siguientes sesiones se construye el pipeline batch con PySpark, se cargan formatos analíticos en HDFS y se entrena un primer modelo distribuido. La evaluación U1 valida el pipeline batch completo construido sobre esa arquitectura.</p>
+<h2 id="2-explica">2. Explica<a class="headerlink" href="#2-explica" title="Permanent link">&para;</a></h2>
+<p>Tiempo: 25 min.</p>
+<h3 id="21-arquitectura-de-la-sesion">2.1 Arquitectura de la sesión<a class="headerlink" href="#21-arquitectura-de-la-sesion" title="Permanent link">&para;</a></h3>
+<p><strong>Figura 4. Arquitectura de la sesión: entorno <code>lambda26</code> (<code>uso-pyspark</code>)</strong></p>
+<pre class="mermaid"><code>flowchart LR
+    subgraph BP["Batch Pipeline"]
+        subgraph BP1["uso-pyspark&lt;br/&gt;batch, interactivo"]
+            direction LR
+            E["Extracción o captura&lt;br/&gt;spark.read.csv()"] --&gt; L["Load / almacenamiento&lt;br/&gt;DataFrame distribuido en memoria"]
+            L --&gt; T["Transformación / procesamiento&lt;br/&gt;select() — análisis/ML desde S4"]
+            T --&gt; V["Visualización&lt;br/&gt;show() + Spark UI"]
+        end
+    end</code></pre>
+<p>A diferencia de una solución BI o Big Data típica (Figuras 6 y 7), donde cada etapa del ciclo de vida del dato suele ser una herramienta distinta, en <code>lambda26</code> el módulo <code>uso-pyspark</code> cubre las 4 etapas dentro de un solo componente, sobre una <code>SparkSession</code> común (<code>local[*]</code>) corriendo en el contenedor <code>lambda26-pyspark</code>. Hoy (S1) solo verificas que ese ciclo completo funciona de punta a punta con un caso mínimo — leer un CSV y mostrarlo, con el job visible en Spark UI (localhost:4042); la transformación real y el análisis ML se profundizan desde S2 y S4.</p>
+<p>Estos son los componentes que instalas y verificas en 3.1-3.2, antes de pasar al análisis conceptual (ecosistema, batch/streaming, Lambda o Kappa) que desarrolla el resto de esta sección.</p>
+<h3 id="22-ecosistema-y-arquitectura-big-data">2.2 Ecosistema y arquitectura Big Data<a class="headerlink" href="#22-ecosistema-y-arquitectura-big-data" title="Permanent link">&para;</a></h3>
+<p>Big Data se refiere al procesamiento de grandes volúmenes de datos que no pueden manejarse eficientemente con herramientas tradicionales. Se resume con las <strong>5V</strong>:</p>
+<p><strong>Tabla 2. Las 5V del Big Data</strong></p>
+<table>
+<thead>
+<tr>
+<th>V</th>
+<th>Significa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Volumen</td>
+<td>Cantidad de datos generados.</td>
+</tr>
+<tr>
+<td>Variedad</td>
+<td>Diversidad de formatos y fuentes.</td>
+</tr>
+<tr>
+<td>Velocidad</td>
+<td>Rapidez con la que se generan y deben procesarse.</td>
+</tr>
+<tr>
+<td>Veracidad</td>
+<td>Confiabilidad y calidad del dato.</td>
+</tr>
+<tr>
+<td>Valor</td>
+<td>Utilidad real que aporta a una decisión.</td>
+</tr>
+</tbody>
+</table>
+<p>Una solución Big Data es un flujo de trabajo con 5 etapas:</p>
+<div class="highlight"><pre><span></span><code>Fuente de datos -&gt; Ingesta / extracción -&gt; Almacenamiento -&gt; Procesamiento -&gt; Visualización / consumo
+</code></pre></div>
+<p>BI y Big Data comparten ese mismo flujo ETL de base (extracción, transformación/procesamiento, carga/almacenamiento, visualización); lo que cambia es la escala y las herramientas:</p>
+<p><strong>Figura 5. Ciclo de vida de los datos: BI vs. Big Data</strong></p>
+<p><img alt="Ciclo de vida de los datos: BI vs. Big Data" src="../img/s01-2.2-ciclo-vida-datos-bi-bigdata.png" /></p>
+<p>En BI, el almacenamiento y el procesamiento no son distribuidos; en Big Data sí — con etapas explícitas de preparación de datos, modelado y evaluación (típicas de un flujo de Machine Learning) sobre almacenamiento y procesamiento distribuidos.</p>
+<p><strong>Figura 6. Arquitectura base de una solución BI</strong></p>
+<p><img alt="Arquitectura base de una solución BI" src="../img/s01-2.2-arquitectura-bi.png" /></p>
+<p>Una solución BI típica resuelve esas 4 etapas con herramientas de un solo nodo: extracción con ETL como Pentaho, procesamiento con SQL, almacenamiento en PostgreSQL/MySQL y visualización en Power BI.</p>
+<p><strong>Figura 7. Arquitectura de una solución BI &amp; Big Data</strong></p>
+<p><img alt="Arquitectura de una solución BI &amp; Big Data" src="../img/s01-2.2-arquitectura-bigdata.png" /></p>
+<p>Al escalar a Big Data, el almacenamiento pasa por un Data Lake antes del Data Warehouse, y el procesamiento se distribuye entre un nodo master y varios workers, cada uno con su RDD (<em>Resilient Distributed Dataset</em>) — así es como Spark paraleliza el trabajo. <code>lambda26</code> implementa ese mismo patrón con sus propios componentes: PySpark en el procesamiento distribuido, casos de uso que publican y consumen eventos, Kafka como columna vertebral de ingesta y observabilidad con Prometheus/Grafana — el mismo patrón productores / pipeline en tiempo real / pipeline batch ya presentado en la <strong>Figura 2</strong> (ver 1.6), aplicado al laboratorio del curso.</p>
+<p>Hoy usamos solo el módulo <code>uso-pyspark</code> para reconocer el ecosistema; <code>uso-atmos</code>, <code>uso-replica-cdc</code>, <code>uso-bi-tiempo-real</code> y los casos secundarios <code>uso-rapido</code>/<code>uso-microserv</code> quedan pendientes como extensión progresiva del laboratorio a partir de S6. El detalle de contenedores, puertos y volúmenes de cada módulo está en el índice del curso.</p>
+<h3 id="23-batch-vs-streaming">2.3 Batch vs. Streaming<a class="headerlink" href="#23-batch-vs-streaming" title="Permanent link">&para;</a></h3>
+<p><strong>Tabla 3. Batch vs. streaming</strong></p>
+<table>
+<thead>
+<tr>
+<th>Enfoque</th>
+<th>Cómo trabaja</th>
+<th>Ejemplos</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Batch</td>
+<td>Trabaja con datos acumulados y se procesa periódicamente.</td>
+<td>Reportes diarios, logs históricos, entrenamiento de modelos.</td>
+</tr>
+<tr>
+<td>Streaming</td>
+<td>Procesa los datos conforme llegan al sistema.</td>
+<td>Detección de fraude, recomendaciones en tiempo real, monitoreo.</td>
+</tr>
+</tbody>
+</table>
+<p>Esta distinción es la base de la decisión arquitectónica de la sesión: no se elige Lambda o Kappa por preferencia técnica, sino según si el problema necesita batch, streaming o ambos.</p>
+<h3 id="24-arquitectura-lambda">2.4 Arquitectura Lambda<a class="headerlink" href="#24-arquitectura-lambda" title="Permanent link">&para;</a></h3>
+<p>Lambda combina tres capas:</p>
+<ul>
+<li><strong>Batch layer</strong>: procesamiento histórico.</li>
+<li><strong>Speed layer</strong>: procesamiento en tiempo real.</li>
+<li><strong>Serving layer</strong>: consulta de resultados combinados.</li>
+</ul>
+<p><strong>Figura 8. Arquitectura Lambda - Spark &amp; Hadoop</strong></p>
+<p><img alt="Arquitectura Lambda - Spark &amp; Hadoop" src="https://cazton.com/images/consulting/lambda-architecture/lambda-architecture-spark-hadoop-cazton.webp" /></p>
+<p>El nombre "Lambda" viene de la letra griega λ: la fuente de datos se bifurca hacia la batch layer (histórico, Hadoop/MapReduce) y la speed layer (tiempo real, Spark) en paralelo, y ambos resultados convergen en la serving layer, que es lo que consultan las aplicaciones — esa bifurcación y reconvergencia es la que dibuja la forma de la lambda.</p>
+<p>Fuente: <a href="https://cazton.com/consulting/enterprise/lambda-architecture">Lambda Architecture - Cazton</a>.</p>
+<p><strong>Ventaja:</strong> alta precisión al combinar histórico y tiempo real.</p>
+<p><strong>Desventaja:</strong> mayor complejidad (tres capas que mantener).</p>
+<h3 id="25-arquitectura-kappa">2.5 Arquitectura Kappa<a class="headerlink" href="#25-arquitectura-kappa" title="Permanent link">&para;</a></h3>
+<p>Kappa procesa todo como streaming, incluido el reprocesamiento histórico (reproduciendo el stream desde el origen).</p>
+<p><strong>Ventaja:</strong> arquitectura más simple, una sola capa.</p>
+<p><strong>Desventaja:</strong> menos optimizada para consultas puramente históricas.</p>
+<h4 id="251-regla-de-decision-y-comparacion">2.5.1 Regla de decisión y comparación<a class="headerlink" href="#251-regla-de-decision-y-comparacion" title="Permanent link">&para;</a></h4>
+<p>Regla de decisión:</p>
+<ul>
+<li>Si el caso necesita histórico + tiempo real -&gt; <strong>Lambda</strong>.</li>
+<li>Si todo el caso son eventos en tiempo real -&gt; <strong>Kappa</strong>.</li>
+</ul>
+<p><strong>Tabla 4. Comparación entre arquitectura Lambda y Kappa</strong></p>
+<table>
+<thead>
+<tr>
+<th>Aspecto</th>
+<th>Lambda</th>
+<th>Kappa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Histórico</td>
+<td>Sí (batch layer)</td>
+<td>No como capa separada</td>
+</tr>
+<tr>
+<td>Tiempo real</td>
+<td>Sí (speed layer)</td>
+<td>Sí</td>
+</tr>
+<tr>
+<td>Complejidad</td>
+<td>Alta</td>
+<td>Menor</td>
+</tr>
+<tr>
+<td>Capas</td>
+<td>Batch + Speed + Serving</td>
+<td>Solo streaming</td>
+</tr>
+<tr>
+<td>Reprocesamiento</td>
+<td>Desde la capa batch</td>
+<td>Reproduciendo el stream</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Figura 9. Comparación de pipelines: Lambda (capas en paralelo) vs. Kappa (una sola capa de streaming)</strong></p>
+<pre class="mermaid"><code>flowchart LR
+    subgraph Lambda["Arquitectura Lambda"]
+        direction TB
+        DS1["Fuente de datos"]
+        Batch["Batch layer&lt;br/&gt;procesamiento histórico"]
+        Speed["Speed layer&lt;br/&gt;procesamiento en tiempo real"]
+        Serving1["Serving layer&lt;br/&gt;consulta de resultados combinados"]
+        Risk1["⚠ Drift risk"]
+        DS1 --&gt; Batch --&gt; Serving1
+        DS1 --&gt; Speed --&gt; Serving1
+        Serving1 -.- Risk1
+    end
+
+    subgraph Kappa["Arquitectura Kappa"]
+        direction TB
+        DS2["Fuente de datos&lt;br/&gt;(topic de Kafka)"]
+        Stream["Stream processing layer&lt;br/&gt;un solo codebase"]
+        Serving2["Serving layer&lt;br/&gt;vistas calculadas"]
+        Consistent2["✔ Consistente"]
+        DS2 --&gt; Stream --&gt; Serving2
+        DS2 -. "reprocesar: replay desde&lt;br/&gt;el inicio del topic" .-&gt; Stream
+        Serving2 -.- Consistent2
+    end
+
+    style Risk1 fill:transparent,stroke:transparent,color:#9a6b00
+    style Consistent2 fill:transparent,stroke:transparent,color:#1a7a3c</code></pre>
+<p>En Lambda, la fuente alimenta dos capas en paralelo (batch y speed) que convergen en la serving layer; al ser dos codebases separados que se combinan, existe <strong>riesgo de deriva</strong> (<em>drift risk</em>) entre lo que calcula cada capa. En Kappa, todo pasa por una sola capa de streaming (un solo codebase, una sola fuente de verdad: <strong>consistente</strong>); para recalcular resultados no hay una capa batch aparte, se reproduce (<em>replay</em>) el topic de Kafka desde el origen sobre un nuevo procesador. El trade-off no es gratis: Lambda ofrece capas flexibles (se puede optimizar cada una por separado), pero Kappa exige mayor expertise en streaming — todo el equipo, incluido el reprocesamiento histórico, corre sobre la misma tecnología de streaming. Diagrama propio, basado en la comparación conceptual de <a href="https://systemdr.systemdrd.com/p/kappa-vs-lambda-architecture-evolution">System Design Roadmap: Kappa vs Lambda Architecture Evolution</a>.</p>
+<h2 id="3-aplica-actividad-practica-guiada">3. Aplica: actividad práctica guiada<a class="headerlink" href="#3-aplica-actividad-practica-guiada" title="Permanent link">&para;</a></h2>
+<p>Tiempo: 2h.</p>
+<p><strong>Actividad:</strong> instalar y verificar <code>uso-pyspark</code>, y con el entorno funcionando, analizar <code>lambda26</code> y decidir entre arquitectura Lambda o Kappa, justificando batch vs. streaming para un caso de negocio (sílabo).</p>
+<p><strong>Propósito de la actividad:</strong> confirmar que el entorno del laboratorio funciona de punta a punta (Docker, Jupyter, Spark), y aplicar la regla de decisión batch/streaming a los casos de uso reales de <code>lambda26</code> (<code>orden-eventos</code>, <code>pago-eventos</code>) para seleccionar y justificar una arquitectura Big Data, proponiendo las tecnologías coherentes con esa elección.</p>
+<p><strong>Orientaciones metodológicas:</strong> en clase, el docente guía primero la instalación y verificación de <code>uso-pyspark</code>, y luego el análisis de los casos de uso propios de <code>lambda26</code> y la aplicación de la regla de decisión, paso a paso frente a la clase; los estudiantes replican cada paso en su propio equipo, verificando el entorno, su clasificación batch/streaming y su elección de arquitectura antes de proponer tecnologías y el diagrama de flujo.</p>
+<p><strong>Actividades para realizar:</strong></p>
+<ul>
+<li><strong>3.1</strong> Configurar y verificar el entorno <code>lambda26</code> (<code>uso-pyspark</code>).</li>
+<li><strong>3.2</strong> Verificar Spark con un notebook mínimo.</li>
+<li><strong>3.3</strong> Reconocer el ecosistema de <code>lambda26</code>.</li>
+<li><strong>3.4</strong> Analizar el caso guiado y clasificar batch/streaming.</li>
+<li><strong>3.5</strong> Aplicar la regla de decisión.</li>
+<li><strong>3.6</strong> Proponer tecnologías y diagrama de flujo.</li>
+<li><strong>3.7</strong> Completar la plantilla de propuesta.</li>
+</ul>
+<h3 id="31-configurar-y-verificar-el-entorno-lambda26-uso-pyspark">3.1 Configurar y verificar el entorno <code>lambda26</code> (<code>uso-pyspark</code>)<a class="headerlink" href="#31-configurar-y-verificar-el-entorno-lambda26-uso-pyspark" title="Permanent link">&para;</a></h3>
+<p><strong>Producto del paso:</strong> entorno <code>lambda26</code> funcionando y verificado (Jupyter + Spark).</p>
+<p>Requisito previo: Docker Desktop instalado y corriendo. Clona el repositorio <code>lambda26</code> en tu equipo:</p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/262bigdata/lambda26.git
+<span class="nb">cd</span><span class="w"> </span>lambda26/pyspark
+</code></pre></div>
+<p>Esto es lo que vas a levantar y verificar en este paso:</p>
+<p><strong>Figura 10. Componentes del entorno <code>lambda26</code> (<code>uso-pyspark</code>) y sus dependencias</strong></p>
+<pre class="mermaid"><code>flowchart LR
+    subgraph BP["Batch Pipeline"]
+        subgraph BP1["uso-pyspark&lt;br/&gt;batch, interactivo"]
+            direction TB
+            Notebook["Notebook&lt;br/&gt;s01-arquitectura/"] --&gt; Jupyter["JupyterLab&lt;br/&gt;localhost:4488"]
+            Jupyter --&gt; Container["Contenedor lambda26-pyspark&lt;br/&gt;Jupyter + Spark"]
+            Container --&gt; Compose["docker compose&lt;br/&gt;pyspark/compose.yml"]
+            Notebook --&gt; Session["SparkSession&lt;br/&gt;local[*]"]
+            DF["DataFrame&lt;br/&gt;printSchema / show"] --&gt; Session
+            DF --&gt; Data["s01-arquitectura/data/*.csv&lt;br/&gt;(volumen -&gt; /opt/s01-arquitectura/data)"]
+            UI["Spark UI&lt;br/&gt;localhost:4042"] --&gt; Session
+        end
+    end</code></pre>
+<p>Lectura del diagrama (las flechas indican dependencia: A → B significa "A depende de B", igual que en LP2/DIST):</p>
+<ul>
+<li>El notebook depende de JupyterLab para ejecutarse, y JupyterLab depende del contenedor <code>lambda26-pyspark</code> (levantado por el <code>docker compose</code> de <code>pyspark/compose.yml</code>) — no son piezas sueltas que haya que conectar.</li>
+<li>El notebook depende de una <code>SparkSession</code> activa para poder procesar datos: sin ella, el código Spark no tiene motor sobre el cual correr.</li>
+<li>El DataFrame depende de dos cosas a la vez: la <code>SparkSession</code> (el motor que lo construye) y el archivo <code>s01-arquitectura/data/*.csv</code> (montado como volumen en <code>/opt/s01-arquitectura/data</code>, no copiado dentro de la imagen — cambiarlo no exige reconstruir el contenedor).</li>
+<li>Spark UI depende de que exista una <code>SparkSession</code> activa: no es un servicio aparte, se levanta junto con la sesión en el puerto 4040 dentro del contenedor (expuesto en tu máquina como <code>localhost:4042</code>) — por eso sirve para verificar que el motor realmente corrió, no solo que Jupyter respondió.</li>
+</ul>
+<p>Este paso (3.1) levanta el contenedor y JupyterLab; el paso 3.2 crea el notebook, la <code>SparkSession</code>, el <code>DataFrame</code> y verifica Spark UI — completando así todas las dependencias de este diagrama.</p>
+<p>A partir de aquí trabajamos con el contenedor <code>lambda26-pyspark</code> (la imagen personalizada de este repositorio) durante todo el curso — es el entorno de referencia que usa el resto de esta guía. La alternativa con la imagen oficial (al final de este paso) solo es necesaria si tu equipo no puede correr <code>lambda26-pyspark</code>.</p>
+<p>Desde <code>lambda26/pyspark</code>, copia las variables de entorno (una sola vez) y levanta el laboratorio:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cp </span><span class="p">.</span><span class="n">env</span><span class="p">.</span><span class="n">example</span> <span class="p">.</span><span class="n">env</span>
+<span class="n">docker</span> <span class="n">compose</span> <span class="n">up</span> <span class="n">-d</span>
+</code></pre></div>
+<p>Verifica que responde:</p>
+<div class="highlight"><pre><span></span><code>JupyterLab -&gt; http://localhost:4488/lab?token=sintoken
+</code></pre></div>
+<p><strong>Nota:</strong> el contenedor arranca con <code>jupyter notebook</code>, no <code>jupyter lab</code> — igual puedes entrar a <code>/lab</code> porque <code>notebook</code> 7.x viene construido sobre el mismo servidor de JupyterLab y sirve ambas interfaces (<code>/lab</code> y <code>/tree</code>) desde el mismo proceso. No hace falta cambiar ningún comando para usar <code>/lab</code>.</p>
+<p>Spark UI (<code>http://localhost:4042</code>) todavía no responde en este punto: solo se levanta cuando creas una <code>SparkSession</code> activa, en 3.2 — no al levantar el contenedor. Spark usa el puerto 4040 por defecto dentro del contenedor; <code>compose.yml</code> lo expone en tu máquina como <code>4042</code> (<code>"4042:4040"</code>) para evitar choques con otros servicios que puedan estar usando el 4040 en tu equipo.</p>
+<p><strong>Alternativa con imagen oficial de PySpark + Jupyter:</strong> si tu equipo tiene buenos recursos de cómputo, puedes usar directamente la imagen oficial <a href="https://hub.docker.com/r/jupyter/pyspark-notebook"><code>jupyter/pyspark-notebook</code></a>, que trae Spark completo sin depender de la imagen personalizada de <code>lambda26</code>. Diferencia de peso a tener en cuenta: la imagen personalizada de <code>lambda26</code> pesa <strong>~1.9 GB</strong>, mientras que <code>jupyter/pyspark-notebook</code> pesa <strong>~6.9 GB</strong> — considera tu espacio en disco y velocidad de conexión antes de elegir esta alternativa:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># compose.yml</span>
+<span class="nt">services</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">pyspark</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jupyter/pyspark-notebook</span>
+<span class="w">        </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4489:8888</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4041:4040</span>
+<span class="w">        </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">JUPYTER_TOKEN=sintoken</span>
+<span class="w">        </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./:/home/jovyan</span>
+</code></pre></div>
+<p>Puertos distintos a los de <code>pyspark/compose.yml</code> (4488/4042) para no chocar si ambos entornos quedan levantados a la vez.</p>
+<div class="highlight"><pre><span></span><code><span class="n">docker</span> <span class="n">compose</span> <span class="n">up</span> <span class="n">-d</span>
+</code></pre></div>
+<p>Accede igual por <code>http://localhost:4489/lab?token=sintoken</code> (JupyterLab) o <code>http://localhost:4489/?token=sintoken</code> (Jupyter Notebook).</p>
+<p>Este es el único entorno que se instala en la Unidad 1: <code>pyspark/compose.yml</code> corre PySpark y Jupyter solos, sin Kafka. El módulo <code>kafka</code> y el override <code>pyspark/compose.kafka.yml</code> (que conecta PySpark a la red de Kafka) se instalan recién en la Unidad 2 (S6), cuando el curso pasa de batch a streaming — no hace falta levantarlos ahora. Este entorno queda corriendo durante toda la unidad: hoy solo lo verificas con un notebook mínimo (3.2), en S2 lo usas a fondo, sin perder tiempo de clase configurando nada.</p>
+<h3 id="32-verificar-spark-con-un-notebook-minimo">3.2 Verificar Spark con un notebook mínimo<a class="headerlink" href="#32-verificar-spark-con-un-notebook-minimo" title="Permanent link">&para;</a></h3>
+<p><strong>Producto del paso:</strong> notebook con una SparkSession activa, un dataset cargado y visible en Spark UI.</p>
+<p>Desde JupyterLab (3.1), crea el notebook <code>01_arquitectura_practica.ipynb</code> dentro de la carpeta <code>s01-arquitectura/</code> y ejecuta estos pasos mínimos — el detalle completo (DataFrames, lazy evaluation, RDD) se retoma en S2, hoy solo confirmas que el entorno funciona de punta a punta:</p>
+<ol>
+<li>Crear la SparkSession:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.sql</span><span class="w"> </span><span class="kn">import</span> <span class="n">SparkSession</span>
+
+<span class="n">spark</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span>
+    <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">"s1-verificacion"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">master</span><span class="p">(</span><span class="s2">"local[*]"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">"spark.ui.port"</span><span class="p">,</span> <span class="s2">"4040"</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<span class="p">)</span>
+
+<span class="n">spark</span>
+</code></pre></div>
+<ol>
+<li>Cargar un dataset como DataFrame. Descargar <code>biblia_ntv_.csv</code> desde <a href="https://www.kaggle.com/datasets/camesruiz/biblia-ntv-spanish-bible-ntv?resource=download">Kaggle: Biblia NTV (Spanish Bible NTV)</a> y copiarlo a <code>lambda26/pyspark/sesiones/s01-arquitectura/data/</code> (montado como <code>/opt/s01-arquitectura/data/</code> en el contenedor):</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">"/opt/s01-arquitectura/data/biblia_ntv_.csv"</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df</span>
+</code></pre></div>
+<ol>
+<li>Ver la estructura y las primeras filas:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="n">df</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+<span class="n">df</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<ol>
+<li>(Hasta aquí, opcional) una transformación simple:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">"libro"</span><span class="p">,</span> <span class="s2">"capitulo"</span><span class="p">,</span> <span class="s2">"verso"</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</code></pre></div>
+<p>Verifica que:</p>
+<div class="highlight"><pre><span></span><code>Spark UI -&gt; http://localhost:4042
+</code></pre></div>
+<p>muestra el job que se acaba de ejecutar (la lectura del CSV y el <code>show()</code>).</p>
+<h3 id="33-reconocer-el-ecosistema-de-lambda26">3.3 Reconocer el ecosistema de <code>lambda26</code><a class="headerlink" href="#33-reconocer-el-ecosistema-de-lambda26" title="Permanent link">&para;</a></h3>
+<p><strong>Producto del paso:</strong> mapa del flujo tecnológico del laboratorio.</p>
+<p>Registra el flujo base del ecosistema:</p>
+<div class="highlight"><pre><span></span><code>Usuarios -&gt; Kafka -&gt; Spark Processing -&gt; Data Lake / Base de datos -&gt; Dashboard / Aplicaciones
+</code></pre></div>
+<p>Responde:</p>
+<ol>
+<li>¿Dónde nacen los eventos?</li>
+<li>¿Qué componente ingesta los eventos?</li>
+<li>¿Qué componente procesa los datos a escala?</li>
+<li>¿Dónde se consumen los resultados?</li>
+</ol>
+<h3 id="34-analizar-el-caso-guiado-y-clasificar-batchstreaming">3.4 Analizar el caso guiado y clasificar batch/streaming<a class="headerlink" href="#34-analizar-el-caso-guiado-y-clasificar-batchstreaming" title="Permanent link">&para;</a></h3>
+<p><strong>Producto del paso:</strong> clasificación justificada del caso.</p>
+<p>Retoma los casos de uso propios de <code>lambda26</code> (los analizas por su documentación, no los ejecutas hoy — <code>uso-rapido</code> y <code>uso-microserv</code> necesitan Kafka, que recién se instala en la Unidad 2):</p>
+<ul>
+<li><code>uso-rapido</code>: <code>ec-eventos-py</code> publica y consume <code>orden-eventos</code> por Kafka.</li>
+<li><code>uso-microserv</code>: <code>ec-orden-ms</code> publica <code>orden-eventos</code>; <code>ec-pago-ms</code> consume <code>orden-eventos</code> y publica <code>pago-eventos</code>; cada microservicio guarda su propio histórico en su base Postgres.</li>
+</ul>
+<p>El laboratorio necesita decidir cómo construir su capa analítica sobre esos eventos: ¿guarda el histórico en un almacenamiento separado (batch), reprocesa todo directamente desde Kafka (streaming), o necesita ambos?</p>
+<p>Responde: ¿el caso requiere batch, streaming o ambos? Justifica con al menos dos razones tomadas del caso.</p>
+<h3 id="35-aplicar-la-regla-de-decision">3.5 Aplicar la regla de decisión<a class="headerlink" href="#35-aplicar-la-regla-de-decision" title="Permanent link">&para;</a></h3>
+<p><strong>Producto del paso:</strong> arquitectura seleccionada y justificada.</p>
+<p>Aplicando la regla de decisión de 2.5.1 al caso de 3.4, selecciona Lambda o Kappa y justifica tu elección en 2-3 líneas.</p>
+<h3 id="36-proponer-tecnologias-y-diagrama-de-flujo">3.6 Proponer tecnologías y diagrama de flujo<a class="headerlink" href="#36-proponer-tecnologias-y-diagrama-de-flujo" title="Permanent link">&para;</a></h3>
+<p><strong>Producto del paso:</strong> lista de tecnologías y diagrama de flujo simple.</p>
+<p>Propón tecnologías del ecosistema (Kafka, Spark Streaming, Spark Batch, Data Lake, Grafana para BI en tiempo real, etc.) y construye el diagrama:</p>
+<div class="highlight"><pre><span></span><code>Usuarios -&gt; Kafka -&gt; Spark Streaming + Batch -&gt; Data Lake / DW -&gt; Grafana
+</code></pre></div>
+<h3 id="37-completar-la-plantilla-de-propuesta">3.7 Completar la plantilla de propuesta<a class="headerlink" href="#37-completar-la-plantilla-de-propuesta" title="Permanent link">&para;</a></h3>
+<p><strong>Producto del paso:</strong> ficha de propuesta arquitectónica completa.</p>
+<p>Completa la ficha de arquitectura Big Data:</p>
+<p><strong>Tabla 5. Ficha de propuesta arquitectónica</strong></p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Completa</th>
+<th>Ejemplo de referencia</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Caso analizado</strong></td>
+<td>Breve descripción del sistema: qué genera los datos y con qué frecuencia.</td>
+<td>Plataforma de streaming: cada segundo llegan eventos de reproducciones, búsquedas y recomendaciones de los usuarios.</td>
+</tr>
+<tr>
+<td><strong>Tipo de procesamiento</strong></td>
+<td>Marca uno — Batch / Streaming / Ambos — y justifica.</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Arquitectura seleccionada</strong></td>
+<td>Marca una — Lambda / Kappa — y justifica.</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Diagrama de arquitectura</strong></td>
+<td><code>Fuente de datos -&gt; Ingesta / extracción -&gt; Almacenamiento -&gt; Procesamiento -&gt; Visualización / consumo</code></td>
+<td><code>Usuarios -&gt; Kafka -&gt; Spark Processing -&gt; Data Lake / BD -&gt; Dashboard / Aplicaciones</code></td>
+</tr>
+<tr>
+<td><strong>Tecnologías propuestas</strong></td>
+<td>Ingesta / Procesamiento / Almacenamiento / Visualización.</td>
+<td>Kafka (ingesta) → Data Lake / RAW (almacenamiento) → Spark (procesamiento) → Grafana (visualización).</td>
+</tr>
+<tr>
+<td><strong>Supuestos y riesgos</strong></td>
+<td>Supuestos / Riesgos o limitaciones.</td>
+<td>Supuestos: gran volumen de datos, eventos generados continuamente, necesidad de análisis en tiempo real. Riesgos: alta complejidad de la arquitectura, costo de infraestructura, latencia en el procesamiento.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Evidencia de aprendizaje:</strong></p>
+<ul>
+<li>Entorno <code>lambda26</code> (<code>uso-pyspark</code>) funcionando y verificado, con un notebook que muestra Spark UI activo.</li>
+<li>Clasificación batch/streaming y arquitectura (Lambda o Kappa) seleccionada, con justificación.</li>
+<li>Ficha de propuesta arquitectónica completa (tecnologías, diagrama de flujo, supuestos y riesgos).</li>
+</ul>
+<h2 id="4-crea-actividad-autonoma">4. Crea: actividad autónoma<a class="headerlink" href="#4-crea-actividad-autonoma" title="Permanent link">&para;</a></h2>
+<p>Tiempo: 2h fuera del aula.</p>
+<h3 id="41-actividad">4.1 Actividad<a class="headerlink" href="#41-actividad" title="Permanent link">&para;</a></h3>
+<p>Replicación autónoma de la decisión arquitectónica Big Data (clasificación batch/streaming, regla de decisión, arquitectura Lambda o Kappa) sobre el caso de negocio real del Proyecto Sello del equipo, documentada en evidencia individual. El diagrama resultante no es un ejercicio desechable: es el entorno de desarrollo que el equipo va a configurar y usar durante el resto del curso.</p>
+<p>Completa y evidencia estas tareas:</p>
+<ol>
+<li>Definir el caso de negocio del Proyecto Sello de tu equipo: el problema real que el sistema Big Data del semestre va a resolver.</li>
+<li>Describir qué datos genera ese caso y clasificarlo como batch, streaming o ambos, con justificación (equivalente a 3.4).</li>
+<li>Aplicar la regla de decisión y seleccionar la arquitectura (Lambda o Kappa) para el proyecto del equipo, justificando la elección (equivalente a 3.5).</li>
+<li>Proponer las tecnologías que el equipo va a configurar (Kafka, Spark y, si aplica, otras herramientas adicionales al ecosistema de <code>lambda26</code>) y construir el diagrama de flujo — este diagrama es el que el equipo configurará en las siguientes sesiones (equivalente a 3.6).</li>
+<li>Completar la plantilla de propuesta arquitectónica, incluyendo riesgos y supuestos observados (equivalente a 3.7).</li>
+</ol>
+<h3 id="42-proposito">4.2 Propósito<a class="headerlink" href="#42-proposito" title="Permanent link">&para;</a></h3>
+<p>Que cada estudiante demuestre, de forma individual y fuera del aula, que puede reproducir el patrón de decisión arquitectónica construido en clase sin el acompañamiento del docente — aplicándolo directamente al Proyecto Sello real de su equipo, no a un caso desconectado.</p>
+<p>Cada estudiante aplica la clasificación batch/streaming y la regla de decisión Lambda/Kappa al caso de negocio del Proyecto Sello de su equipo — la arquitectura y las tecnologías que resulten de este análisis son las que el equipo configurará realmente, no una elección hipotética.</p>
+<h3 id="43-indicaciones">4.3 Indicaciones<a class="headerlink" href="#43-indicaciones" title="Permanent link">&para;</a></h3>
+<p>Entrega un PDF con el siguiente nombre:</p>
+<div class="highlight"><pre><span></span><code>S01_Equipo##_ApellidoNombre.pdf
+</code></pre></div>
+<p>Cada captura de pantalla del informe debe mostrar, sin recortar, el reloj del sistema (fecha y hora) y tu usuario o foto de perfil (Windows, VS Code o navegador) visibles en pantalla — es lo que permite verificar que la evidencia es tuya y que corresponde al momento real de tu trabajo.</p>
+<h4 id="431-estructura-del-informe">4.3.1 Estructura del informe<a class="headerlink" href="#431-estructura-del-informe" title="Permanent link">&para;</a></h4>
+<p><strong>Datos del estudiante</strong></p>
+<ul>
+<li>Nombre:</li>
+<li>Equipo:</li>
+<li>Sesión: S01 - Arquitectura Big Data: Lambda y Kappa, batch vs. streaming</li>
+<li>Rol o aporte realizado:</li>
+<li>Link de GitHub:</li>
+</ul>
+<p><strong>Evidencia técnica</strong></p>
+<p>Incluye capturas o extractos con una breve explicación debajo de cada uno, organizados en los mismos 4 bloques de la rúbrica (4.6) — así queda claro qué evidencia corresponde a cada criterio evaluado:</p>
+<ol>
+<li><em>Clasificación batch/streaming</em><ul>
+<li>Clasificación batch/streaming del caso del Proyecto Sello, con justificación (equivalente a 3.4).</li>
+</ul>
+</li>
+<li><em>Arquitectura seleccionada y regla de decisión aplicada</em><ul>
+<li>Arquitectura seleccionada (Lambda o Kappa) y regla de decisión aplicada, con justificación (equivalente a 3.5).</li>
+</ul>
+</li>
+<li><em>Tecnologías propuestas y diagrama de flujo</em><ul>
+<li>Tecnologías propuestas y diagrama de flujo simple (equivalente a 3.6).</li>
+</ul>
+</li>
+<li><em>Plantilla de propuesta completa</em><ul>
+<li>Plantilla de propuesta arquitectónica completa, incluyendo riesgos y supuestos (equivalente a 3.7).</li>
+</ul>
+</li>
+</ol>
+<p><strong>Error o hallazgo</strong></p>
+<p>Describe al menos un riesgo o supuesto que identificaste al analizar tu caso:</p>
+<ul>
+<li>Qué ocurrió o qué limitación encontraste.</li>
+<li>Cómo lo identificaste.</li>
+<li>Cómo lo documentaste o qué supuesto tomaste.</li>
+</ul>
+<p><strong>Reflexión técnica breve</strong></p>
+<p>Responde en 5 a 8 líneas:</p>
+<div class="highlight"><pre><span></span><code>¿Qué arquitectura usarías para un sistema de sensores IoT y por qué?
+</code></pre></div>
+<h3 id="44-criterios-minimos-de-aceptacion">4.4 Criterios mínimos de aceptación<a class="headerlink" href="#44-criterios-minimos-de-aceptacion" title="Permanent link">&para;</a></h3>
+<p>La evidencia individual se considera completa si:</p>
+<ul>
+<li>El caso de negocio del Proyecto Sello está delimitado y descrito con claridad.</li>
+<li>La clasificación batch/streaming está justificada con datos del caso.</li>
+<li>La arquitectura seleccionada aplica correctamente la regla de decisión.</li>
+<li>Las tecnologías propuestas son coherentes con la arquitectura elegida.</li>
+<li>Cada captura de la evidencia técnica muestra el reloj del sistema y el usuario/perfil visible, sin recortar.</li>
+<li>Las fechas y horas de las capturas son coherentes con el historial de commits de su repositorio en GitHub.</li>
+<li>Incluye un error o hallazgo técnico diagnosticado.</li>
+<li>Incluye la reflexión técnica breve solicitada.</li>
+</ul>
+<h3 id="45-preguntas-de-defensa">4.5 Preguntas de defensa<a class="headerlink" href="#45-preguntas-de-defensa" title="Permanent link">&para;</a></h3>
+<ol>
+<li>¿En qué casos una empresa necesitaría procesamiento en tiempo real?</li>
+<li>¿Qué ventajas tiene combinar batch y streaming?</li>
+<li>¿Qué arquitectura usarías para un sistema de sensores IoT y por qué?</li>
+<li>¿Qué desventaja tiene Lambda frente a Kappa?</li>
+<li>¿Qué tecnología usarías para la ingesta de eventos y por qué?</li>
+</ol>
+<h3 id="46-rubrica-de-evaluacion">4.6 Rúbrica de evaluación<a class="headerlink" href="#46-rubrica-de-evaluacion" title="Permanent link">&para;</a></h3>
+<p><strong>Tabla 6. Rúbrica de evaluación</strong></p>
+<table>
+<thead>
+<tr>
+<th>Criterio</th>
+<th style="text-align: right;">Peso (%)</th>
+<th>A (20 pts)</th>
+<th>B (15 pts)</th>
+<th>C (10 pts)</th>
+<th>D (5 pts)</th>
+<th style="text-align: right;">Nivel obtenido</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Clasificación batch/streaming*</td>
+<td style="text-align: right;">25</td>
+<td>Clasifica el caso del Proyecto Sello (batch, streaming o ambos) con justificación clara y basada en los datos reales que genera.</td>
+<td>Clasifica correctamente el caso del Proyecto Sello, con justificación breve.</td>
+<td>Clasificación imprecisa o sin justificar.</td>
+<td>No clasifica el caso del Proyecto Sello.</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr>
+<td>2. Arquitectura seleccionada y regla de decisión aplicada*</td>
+<td style="text-align: right;">25</td>
+<td>Aplica la regla de decisión con solidez técnica y selecciona y justifica Lambda o Kappa para el Proyecto Sello.</td>
+<td>Aplica la regla de decisión correctamente y selecciona una arquitectura para el Proyecto Sello.</td>
+<td>Aplica la regla de decisión con justificación débil.</td>
+<td>No aplica la regla de decisión ni selecciona arquitectura.</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr>
+<td>3. Tecnologías propuestas y diagrama de flujo*</td>
+<td style="text-align: right;">25</td>
+<td>Propone tecnologías coherentes con la arquitectura elegida y un diagrama de flujo claro y completo del Proyecto Sello.</td>
+<td>Propone tecnologías coherentes y un diagrama de flujo comprensible.</td>
+<td>Tecnologías o diagrama incompletos o poco coherentes.</td>
+<td>No propone tecnologías ni diagrama.</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr>
+<td>4. Plantilla de propuesta completa*</td>
+<td style="text-align: right;">25</td>
+<td>Completa todos los campos de la plantilla (caso, tipo de procesamiento, arquitectura, justificación, tecnologías, diagrama, riesgos y supuestos), coherentes entre sí.</td>
+<td>Completa la plantilla con campos suficientes, con detalles menores pendientes.</td>
+<td>Plantilla incompleta o con campos relevantes vacíos.</td>
+<td>No presenta la plantilla.</td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+<p>* Agregado manual.</p>
+<p>Nota final = suma de (<code>Peso</code> / 100 × <code>Puntos del nivel obtenido</code>) = ____ / 20.</p>
+<p>Para usar la rúbrica con IA, solicita:</p>
+<div class="highlight"><pre><span></span><code>Evalúa el PDF usando la rúbrica de la sesión.
+Para cada criterio selecciona el nivel obtenido usando la escala A=20, B=15, C=10, D=5 puntos.
+Justifica brevemente cada nivel asignado.
+Verifica que cada captura muestre reloj del sistema y usuario/perfil visible, y que las fechas sean coherentes con el historial de commits de GitHub. Si falta esta evidencia o hay inconsistencias, indícalo explícitamente antes de calificar.
+Calcula la nota final con la fórmula: suma de (Peso/100 × Puntos del nivel obtenido), directamente sobre 20.
+Indica 2 fortalezas y 2 recomendaciones.
+</code></pre></div>
+<h2 id="5-cierre">5. Cierre<a class="headerlink" href="#5-cierre" title="Permanent link">&para;</a></h2>
+<p>Tiempo: 5 min.</p>
+<p><strong>Resumen breve:</strong> hoy se construyó la primera decisión arquitectónica real del laboratorio <code>lambda26</code>: clasificación batch/streaming de los casos de uso propios (<code>uso-rapido</code>, <code>uso-microserv</code>), aplicación de la regla de decisión, selección justificada de Lambda o Kappa, tecnologías propuestas y diagrama de flujo — cada equipo aplicó el mismo análisis a su propio Proyecto Sello.</p>
+<p><strong>Dinámica participativa:</strong> en una ronda rápida (o con una herramienta digital tipo formulario o encuesta en vivo), cada estudiante comparte en una frase qué arquitectura (Lambda o Kappa) eligió para el caso guiado y por qué.</p>
+<p><strong>Metacognición:</strong> cada estudiante responde en voz alta o por escrito: ¿qué parte de la sesión te costó más entender, y cómo la resolviste?</p>
+<p><strong>Proyección:</strong> la arquitectura seleccionada hoy se retoma en S2, cuando se construye el pipeline batch con PySpark sobre esa decisión, y aplica en cualquier proyecto profesional donde primero hay que decidir qué arquitectura resuelve el problema real antes de elegir herramientas.</p>
+<h2 id="bibliografia">Bibliografía<a class="headerlink" href="#bibliografia" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Marz, N., &amp; Warren, J. (2015). <em>Big Data: Principles and best practices of scalable real-time data systems</em>. Manning Publications.</li>
+<li>Kreps, J. (2014, July 2). <em>Questioning the Lambda architecture</em>. O'Reilly Radar. https://www.oreilly.com/radar/questioning-the-lambda-architecture/</li>
+<li>Apache Software Foundation. (2024). <em>Apache Kafka documentation</em>. https://kafka.apache.org/documentation/</li>
+<li>Apache Software Foundation. (2024). <em>Apache Spark documentation</em>. https://spark.apache.org/docs/latest/</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

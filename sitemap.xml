@@ -1,39 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://Nick-Saim-MJ.github.io/Analisis_de_trafico_de_red/</loc>
-         <lastmod>2026-09-11</lastmod>
+         <loc>https://262bigdata.github.io/lambda26/</loc>
+         <lastmod>2026-09-25</lastmod>
     </url>
     <url>
-         <loc>https://Nick-Saim-MJ.github.io/Analisis_de_trafico_de_red/contribuidores/u1_producto_david/</loc>
-         <lastmod>2026-09-11</lastmod>
+         <loc>https://262bigdata.github.io/lambda26/silabo_bigdata_2026_1/</loc>
+         <lastmod>2026-09-25</lastmod>
     </url>
     <url>
-         <loc>https://Nick-Saim-MJ.github.io/Analisis_de_trafico_de_red/contribuidores/u1_producto_henyelrey/</loc>
-         <lastmod>2026-09-11</lastmod>
+         <loc>https://262bigdata.github.io/lambda26/silabo_bigdata_2026_2/</loc>
+         <lastmod>2026-09-25</lastmod>
     </url>
     <url>
-         <loc>https://Nick-Saim-MJ.github.io/Analisis_de_trafico_de_red/contribuidores/u1_producto_jhan/</loc>
-         <lastmod>2026-09-11</lastmod>
+         <loc>https://262bigdata.github.io/lambda26/silabo_bigdata_2027_1/</loc>
+         <lastmod>2026-09-25</lastmod>
     </url>
     <url>
-         <loc>https://Nick-Saim-MJ.github.io/Analisis_de_trafico_de_red/contribuidores/u1_producto_nick/</loc>
-         <lastmod>2026-09-11</lastmod>
+         <loc>https://262bigdata.github.io/lambda26/proyecto-sello/</loc>
+         <lastmod>2026-09-25</lastmod>
     </url>
     <url>
-         <loc>https://Nick-Saim-MJ.github.io/Analisis_de_trafico_de_red/productos/Aplicacion_de_CRISPDM_al_Proyecto/</loc>
-         <lastmod>2026-09-11</lastmod>
+         <loc>https://262bigdata.github.io/lambda26/proyecto-sello/brief/</loc>
+         <lastmod>2026-09-25</lastmod>
     </url>
     <url>
-         <loc>https://Nick-Saim-MJ.github.io/Analisis_de_trafico_de_red/productos/Informe_Unidad_1/</loc>
-         <lastmod>2026-09-11</lastmod>
+         <loc>https://262bigdata.github.io/lambda26/proyecto-sello/matriz-competencias/</loc>
+         <lastmod>2026-09-25</lastmod>
     </url>
     <url>
-         <loc>https://Nick-Saim-MJ.github.io/Analisis_de_trafico_de_red/productos/u1-producto/</loc>
-         <lastmod>2026-09-11</lastmod>
+         <loc>https://262bigdata.github.io/lambda26/proyecto-sello/u1-producto/</loc>
+         <lastmod>2026-09-25</lastmod>
     </url>
     <url>
-         <loc>https://Nick-Saim-MJ.github.io/Analisis_de_trafico_de_red/proyecto-sello/brief/</loc>
-         <lastmod>2026-09-11</lastmod>
+         <loc>https://262bigdata.github.io/lambda26/proyecto-sello/u2-producto/</loc>
+         <lastmod>2026-09-25</lastmod>
+    </url>
+    <url>
+         <loc>https://262bigdata.github.io/lambda26/proyecto-sello/u3-producto/</loc>
+         <lastmod>2026-09-25</lastmod>
+    </url>
+    <url>
+         <loc>https://262bigdata.github.io/lambda26/sesiones/S01_Arquitectura_Big_Data_Lambda_Kappa/</loc>
+         <lastmod>2026-09-25</lastmod>
+    </url>
+    <url>
+         <loc>https://262bigdata.github.io/lambda26/sesiones/S02_Fundamentos_PySpark_Transformaciones_Lazy_Evaluation/</loc>
+         <lastmod>2026-09-25</lastmod>
+    </url>
+    <url>
+         <loc>https://262bigdata.github.io/lambda26/sesiones/S03_Procesamiento_Calidad_Datos_Particionamiento/</loc>
+         <lastmod>2026-09-25</lastmod>
+    </url>
+    <url>
+         <loc>https://262bigdata.github.io/lambda26/sesiones/S04_ML_Distribuido_Regresion_Spark_MLlib/</loc>
+         <lastmod>2026-09-25</lastmod>
+    </url>
+    <url>
+         <loc>https://262bigdata.github.io/lambda26/sesiones/S05_Evaluacion_Unidad_1/</loc>
+         <lastmod>2026-09-25</lastmod>
+    </url>
+    <url>
+         <loc>https://262bigdata.github.io/lambda26/sesiones/S06_Ingesta_Eventos_Empresariales_Kafka/</loc>
+         <lastmod>2026-09-25</lastmod>
+    </url>
+    <url>
+         <loc>https://262bigdata.github.io/lambda26/sesiones/S07_Ingesta_Eventos_IoT_Sensores_Tiempo_Real/</loc>
+         <lastmod>2026-09-25</lastmod>
+    </url>
+    <url>
+         <loc>https://262bigdata.github.io/lambda26/sesiones/S12_Evaluacion_Unidad_2/</loc>
+         <lastmod>2026-09-25</lastmod>
+    </url>
+    <url>
+         <loc>https://262bigdata.github.io/lambda26/sesiones/S15_Evaluacion_Unidad_3/</loc>
+         <lastmod>2026-09-25</lastmod>
     </url>
 </urlset>
