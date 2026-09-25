@@ -1,0 +1,5 @@
+
+GROUP               TOPIC           PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID                                             HOST            CLIENT-ID
+flujos-red-py-group flujo-eventos   0          181             181             0               kafka-python-2.0.2-d7eed682-ffb3-49e3-a7d2-56c2736f7ec9 /172.18.0.7     kafka-python-2.0.2
+flujos-red-py-group flujo-eventos   1          180             180             0               kafka-python-2.0.2-d7eed682-ffb3-49e3-a7d2-56c2736f7ec9 /172.18.0.7     kafka-python-2.0.2
+flujos-red-py-group flujo-eventos   2          170             170             0               kafka-python-2.0.2-d7eed682-ffb3-49e3-a7d2-56c2736f7ec9 /172.18.0.7     kafka-python-2.0.2

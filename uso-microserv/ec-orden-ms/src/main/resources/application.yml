@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: ec-orden-ms
+  profiles:
+    active: dev
+
+app:
+  kafka:
+    topic:
+      ordenes: orden-eventos

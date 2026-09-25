@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: ec-pago-ms
+  profiles:
+    active: dev
+
+app:
+  kafka:
+    topic:
+      ordenes: orden-eventos
+      pagos: pago-eventos
+    group-id:
+      pagos: ec-pago-ms-group

@@ -1,0 +1,26 @@
+server:
+    port: 49021
+
+spring:
+    devtools:
+        restart:
+            enabled: true
+        livereload:
+            enabled: true
+    kafka:
+        bootstrap-servers: localhost:49092
+    datasource:
+        url: jdbc:postgresql://localhost:49020/db_ec_orden_ms
+        username: ecom
+        password: ecom
+        driver-class-name: org.postgresql.Driver
+    flyway:
+        enabled: false
+
+    jpa:
+        hibernate:
+            ddl-auto: update
+        show-sql: true
+        properties:
+            hibernate:
+                format_sql: true

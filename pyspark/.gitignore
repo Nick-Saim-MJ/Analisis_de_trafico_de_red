@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# VS Code
+.vscode/
+
+# Variables de entorno (contiene el token real; .env.example sí se versiona)
+.env
+
+# Entornos virtuales
+.env/
+.venv/
+venv/
+ENV/
+
+# Datasets reales por sesión: demasiado grandes para git (algunos superan el
+# límite duro de GitHub de 100MB). Se descargan/copian manualmente, ver la
+# guía de cada sesión (S2, S3, ...) — aplica a cualquier sesión futura.
+sesiones/*/data/
+
+# Docker
+*.log
+
+# Otros
+.DS_Store
+Thumbs.db

@@ -1,0 +1,2 @@
+2026-09-25T13:39:34.792Z  INFO 1 --- [ec-orden-ms] [n-ms-producer-1] p.e.u.ec.orden.service.ProductorOrden    : service=ec-orden-ms component=producer topic=orden-eventos partition=0 offset=0 eventType=orden.creada ordenId=1 timestamp=1790343574313 status=published
+2026-09-25T13:39:34.795Z  INFO 1 --- [ec-orden-ms] [n-ms-producer-1] p.e.u.ec.orden.service.ProductorOrden    : service=ec-orden-ms component=producer topic=orden-eventos partition=0 offset=1 eventType=orden.creada ordenId=2 timestamp=1790343574782 status=published

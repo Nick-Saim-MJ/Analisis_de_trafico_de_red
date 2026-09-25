@@ -1,0 +1,7 @@
+
+Consumer group 'flujos-red-py-group' has no active members.
+
+GROUP               TOPIC           PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID     HOST            CLIENT-ID
+flujos-red-py-group flujo-eventos   0          13              13              0               -               -               -
+flujos-red-py-group flujo-eventos   1          14              14              0               -               -               -
+flujos-red-py-group flujo-eventos   2          4               4               0               -               -               -

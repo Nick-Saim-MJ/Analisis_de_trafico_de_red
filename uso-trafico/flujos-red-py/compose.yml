@@ -1,0 +1,18 @@
+name: lambda26-flujos-red-py
+
+services:
+  flujos-red-py:
+    build: .
+    container_name: lambda26-flujos-red-py
+    volumes:
+      - ./app:/app
+      - ./data:/data:ro
+    working_dir: /app
+    command: sleep infinity
+    networks:
+      - lambda26-kafka-net
+
+networks:
+  lambda26-kafka-net:
+    external: true
+    name: lambda26-kafka-net

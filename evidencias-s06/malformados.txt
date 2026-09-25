@@ -1,0 +1,4 @@
+hola kafka, esto no es json
+{"tipoEvento":"flujo.cerrado","srcAddr":"192.168.132.79","srcPort":53448,"dstAddr":"216.239.34.223","dstPort":443,"protocolo":6,"inicioFlujoUs":1782935978448779,"duracionUs":262586,"bytesPorSeg":31966.67,"paquetesFwd":12,"paquetesBwd":10,"origen":"prueba-manual","timestamp":1790343900000}
+{"tipoEvento":"flujo.cerrado","flujoId":"prueba-tipo","srcAddr":"192.168.132.79","srcPort":53448,"dstAddr":"216.239.34.223","dstPort":443,"protocolo":6,"inicioFlujoUs":1782935978448779,"duracionUs":262586,"bytesPorSeg":"muchos","paquetesFwd":12,"paquetesBwd":10,"timestamp":1790343900000}
+42

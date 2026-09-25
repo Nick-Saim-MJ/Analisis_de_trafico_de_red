@@ -1,0 +1,18 @@
+name: lambda26-ec-pago-dev
+
+services:
+  postgres-ec-pago-dev:
+    image: postgres:16-alpine
+    container_name: lambda26-postgres-ec-pago-dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: db_ec_pago_ms
+      POSTGRES_USER: ecom
+      POSTGRES_PASSWORD: ecom
+    ports:
+      - "49030:5432"
+    volumes:
+      - lambda26_postgres_ec_pago_dev_data:/var/lib/postgresql/data
+
+volumes:
+  lambda26_postgres_ec_pago_dev_data:

@@ -1,0 +1,18 @@
+name: lambda26-ec-orden-dev
+
+services:
+  postgres-ec-orden-dev:
+    image: postgres:16-alpine
+    container_name: lambda26-postgres-ec-orden-dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: db_ec_orden_ms
+      POSTGRES_USER: ecom
+      POSTGRES_PASSWORD: ecom
+    ports:
+      - "49020:5432"
+    volumes:
+      - lambda26_postgres_ec_orden_dev_data:/var/lib/postgresql/data
+
+volumes:
+  lambda26_postgres_ec_orden_dev_data:

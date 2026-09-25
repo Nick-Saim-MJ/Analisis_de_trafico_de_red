@@ -1,0 +1,28 @@
+server:
+    port: 49031
+
+spring:
+    application:
+        name: ec-pago-ms
+    devtools:
+        restart:
+            enabled: true
+        livereload:
+            enabled: true
+    kafka:
+        bootstrap-servers: localhost:49092
+    datasource:
+        url: jdbc:postgresql://localhost:49030/db_ec_pago_ms
+        username: ecom
+        password: ecom
+        driver-class-name: org.postgresql.Driver
+    flyway:
+        enabled: false
+
+    jpa:
+        hibernate:
+            ddl-auto: update
+        show-sql: true
+        properties:
+            hibernate:
+                format_sql: true

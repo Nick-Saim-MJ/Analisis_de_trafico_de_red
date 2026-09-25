@@ -1,0 +1,9 @@
+NAMES                        IMAGE                                  STATUS                    PORTS
+lambda26-flujos-red-py       lambda26-flujos-red-py-flujos-red-py   Up 7 minutes              
+lambda26-ec-pago             lambda26-ec-pago-prod-ec-pago-ms       Up 9 minutes              0.0.0.0:49031->8080/tcp
+lambda26-postgres-ec-pago    postgres:16-alpine                     Up 9 minutes (healthy)    0.0.0.0:49030->5432/tcp
+lambda26-ec-orden            lambda26-ec-orden-prod-ec-orden-ms     Up 12 minutes             0.0.0.0:49021->8080/tcp
+lambda26-postgres-ec-orden   postgres:16-alpine                     Up 12 minutes (healthy)   0.0.0.0:49020->5432/tcp
+lambda26-kafka-exporter      danielqsj/kafka-exporter:v1.10.0       Up 18 minutes             0.0.0.0:49308->9308/tcp
+lambda26-kafka-ui            ghcr.io/kafbat/kafka-ui:v1.5.0         Up 18 minutes             0.0.0.0:48085->8080/tcp
+lambda26-kafka               apache/kafka:4.3.1                     Up 18 minutes             0.0.0.0:49092->49092/tcp

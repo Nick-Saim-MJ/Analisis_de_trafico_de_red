@@ -1,0 +1,6 @@
+ id |  estado   | monto | orden_id 
+----+-----------+-------+----------
+  1 | APROBADO  |   150 |        1
+  2 | RECHAZADO |  1500 |        2
+(2 rows)
+
