@@ -1,0 +1,6 @@
+﻿NAMES                     IMAGE                              STATUS
+lambda26-uso-red          lambda26-uso-red-uso-red           Up 5 minutes
+lambda26-mosquitto        eclipse-mosquitto:2.0.18           Up 5 minutes
+lambda26-kafka-exporter   danielqsj/kafka-exporter:v1.10.0   Up 5 minutes
+lambda26-kafka-ui         ghcr.io/kafbat/kafka-ui:v1.5.0     Up 5 minutes
+lambda26-kafka            apache/kafka:4.3.1                 Up 5 minutes

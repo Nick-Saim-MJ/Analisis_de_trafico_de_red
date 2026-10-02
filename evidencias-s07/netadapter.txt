@@ -1,0 +1,7 @@
+﻿Name                               InterfaceDescription                    Status       LinkSpeed HardwareInterface
+----                               --------------------                    ------       --------- -----------------
+Wi-Fi                              Intel(R) Wi-Fi 6E AX211 160MHz          Disconnected 0 bps                  True
+vEthernet (WSL (Hyper-V firewall)) Hyper-V Virtual Ethernet Adapter        Up           10 Gbps               False
+Ethernet                           Realtek Gaming 2.5GbE Family Controller Up           100 Mbps               True
+Tailscale                          Tailscale Tunnel                        Up           100 Gbps              False
+Ethernet 2                         VirtualBox Host-Only Ethernet Adapter   Up           1 Gbps                False

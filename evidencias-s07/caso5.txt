@@ -1,0 +1,1 @@
+{"tipoEvento": "red.lectura", "sensorId": "nsmj-ethernet", "host": "nsmj", "interfaz": "Ethernet", "tipoInterfaz": "fisica", "velocidadEnlaceMbps": 100, "intervaloMs": 1000, "bytesRxPorSeg": 50000000.0, "bytesTxPorSeg": 1303.4, "paquetesRxPorSeg": 9.0, "paquetesTxPorSeg": 8.0, "erroresPorSeg": 0.0, "descartesPorSeg": 0.0, "origen": "prueba-manual", "timestamp": 1790899408389}
