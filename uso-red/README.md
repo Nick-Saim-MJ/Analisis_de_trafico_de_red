@@ -60,5 +60,19 @@ python -u uso-red/agente/agente_red.py
 | `KAFKA_TOPIC_RED` | `red-telemetria` | bridge y consumer |
 | `KAFKA_GROUP_ID` | `uso-red-group` | consumer |
 | `UMBRAL_SATURACION_PCT` | `70` | consumer |
+| `METRICS_PORT` | `9200` | consumer — endpoint `/metrics` para Prometheus (S9) |
+
+## Métricas para Prometheus (S9)
+
+`consumer_red.py` expone `/metrics` en el puerto 9200 (`prometheus-client`), y `obs/prometheus/prometheus.yml` lo raspa como el job `uso-red`:
+
+| Métrica | Tipo | Qué mide |
+|---|---|---|
+| `uso_red_eventos_total{status}` | counter | Lecturas procesadas por status (`consumed`, `invalid`, `alerta`, `saturacion`). |
+| `uso_red_bytes_rx_por_seg{sensorId}` | gauge | Último `bytesRxPorSeg` válido de cada sensor. |
+| `uso_red_uso_enlace_pct{sensorId}` | gauge | Último uso del enlace (%) de cada sensor. |
+| `uso_red_latencia_ms` | histogram | Latencia sensor → consumer, en ms. |
+
+El tablero de Grafana que las usa está en `obs/grafana/dashboards/s09-red-telemetria.json`.
 
 El contrato completo de `red.lectura` está en el informe S07 (Tablas 1 y 2).

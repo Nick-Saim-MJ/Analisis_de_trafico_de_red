@@ -1,0 +1,14 @@
+20:13:54 detener consumer
+20:16:55 reanudar consumer
+
+Consumer group 'uso-red-group' has no active members.
+
+GROUP           TOPIC           PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID     HOST            CLIENT-ID
+uso-red-group   red-telemetria  0          2628            2986            358             -               -               -
+uso-red-group   red-telemetria  1          1309            1488            179             -               -               -
+uso-red-group   red-telemetria  2          1309            1488            179             -               -               -
+
+GROUP           TOPIC           PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID                                             HOST            CLIENT-ID
+uso-red-group   red-telemetria  0          3046            3048            2               kafka-python-2.0.2-06eb5592-65e2-4dd1-b30b-b86d17b5cba4 /172.18.0.6     kafka-python-2.0.2
+uso-red-group   red-telemetria  1          1518            1519            1               kafka-python-2.0.2-06eb5592-65e2-4dd1-b30b-b86d17b5cba4 /172.18.0.6     kafka-python-2.0.2
+uso-red-group   red-telemetria  2          1518            1519            1               kafka-python-2.0.2-06eb5592-65e2-4dd1-b30b-b86d17b5cba4 /172.18.0.6     kafka-python-2.0.2

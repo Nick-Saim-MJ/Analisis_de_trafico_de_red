@@ -1,0 +1,4 @@
+[2026-10-16 01:11:52,354] INFO [UnifiedLog partition=red-telemetria-1, dir=/tmp/kafka-logs] Incremented log start offset to 1249 due to segment deletion (org.apache.kafka.storage.internals.log.UnifiedLog)
+[2026-10-16 01:11:52,356] INFO [UnifiedLog partition=red-telemetria-1, dir=/tmp/kafka-logs] Deleting segment LogSegment(baseOffset=0, size=569544, lastModifiedTime=1791498040967, largestRecordTimestamp=1791498040971) due to log re
+[2026-10-16 01:11:52,358] INFO [UnifiedLog partition=red-telemetria-0, dir=/tmp/kafka-logs] Incremented log start offset to 2508 due to segment deletion (org.apache.kafka.storage.internals.log.UnifiedLog)
+[2026-10-16 01:11:52,358] INFO [UnifiedLog partition=red-telemetria-0, dir=/tmp/kafka-logs] Deleting segment LogSegment(baseOffset=0, size=1139144, lastModifiedTime=1791498040967, largestRecordTimestamp=1791498040972) due to log r

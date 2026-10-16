@@ -1,0 +1,16 @@
+# Primera corrida del notebook (15/10/2026, 20:17-20:25): a_consola() solo hacía toPandas() en los 4 primeros micro-lotes
+    hora  batchId  numInputRows  inputRowsPerSecond  processedRowsPerSecond  batchDurationMs avgOffsetsBehindLatest maxOffsetsBehindLatest status
+20:18:14        6             0                 0.0                     0.0              249                    0.0                      0   idle
+20:18:45       13             0                 0.0                     0.0              238                    0.0                      0   idle
+20:19:16       19             0                 0.0                     0.0              210                    0.0                      0   idle
+20:19:47       25             0                 0.0                     0.0              209                    0.0                      0   idle
+20:20:18       31             0                 0.0                     0.0              199                    0.0                      0   idle
+   ...  (14 muestras, todas idle)
+20:25:05       89             0                 0.0                     0.0              259                    0.0                      0   idle
+
+# Mismo lapso, consulta Parquet en paralelo: 1712 filas guardadas (sí llegaban datos)
+
+# Prueba aislada con una acción en cada micro-lote (foreachBatch -> d.count()):
+lastProgress: (2, 20) | recent: [(0, 0), (1, 16), (2, 20)]
+lastProgress: (3, 20) | recent: [(0, 0), (1, 16), (2, 20), (3, 20)]
+lastProgress: (6, 20) | recent: [(3, 20), (4, 16), (5, 20), (6, 20)]

@@ -3,6 +3,7 @@ import os
 import time
 
 from kafka import KafkaConsumer
+from prometheus_client import Counter, Gauge, Histogram, start_http_server
 
 
 TOPIC_RED = os.getenv("KAFKA_TOPIC_RED", "red-telemetria")
@@ -17,6 +18,15 @@ UMBRAL_SATURACION_PCT = float(os.getenv("UMBRAL_SATURACION_PCT", "70"))
 # Margen sobre la capacidad nominal: el contador del SO incluye cabeceras y la
 # ventana de muestreo no es perfecta, así que un 5% por encima todavía es físico.
 TOLERANCIA_CAPACIDAD = 1.05
+# Puerto de /metrics para Prometheus (S9): métricas de aplicación que
+# kafka-exporter no puede ver, porque dependen del contenido de cada lectura.
+METRICS_PORT = int(os.getenv("METRICS_PORT", "9200"))
+
+EVENTOS = Counter("uso_red_eventos_total", "Lecturas procesadas por el consumer, por status", ["status"])
+BYTES_RX = Gauge("uso_red_bytes_rx_por_seg", "Último bytesRxPorSeg válido de cada sensor", ["sensorId"])
+USO_ENLACE = Gauge("uso_red_uso_enlace_pct", "Último uso del enlace (%) de cada sensor", ["sensorId"])
+LATENCIA = Histogram("uso_red_latencia_ms", "Latencia sensor -> consumer, en ms",
+                     buckets=(5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000))
 
 CAMPOS_REQUERIDOS = {
     "tipoEvento": (str,),
@@ -94,9 +104,12 @@ consumer = KafkaConsumer(
     key_deserializer=lambda key: key.decode("utf-8", errors="replace") if key is not None else None,
 )
 
+start_http_server(METRICS_PORT)
+
 print(json.dumps({
     "service": "uso-red",
     "component": "consumer",
+    "metricsPort": METRICS_PORT,
     "topic": TOPIC_RED,
     "groupId": GROUP_ID,
     "umbralSaturacionPct": UMBRAL_SATURACION_PCT,
@@ -144,5 +157,12 @@ for msg in consumer:
     }
     if not is_valid:
         log["rawPayload"] = decoded["raw"]
+
+    EVENTOS.labels(status=status).inc()
+    if is_valid and error_rango is None:
+        BYTES_RX.labels(sensorId=event["sensorId"]).set(event["bytesRxPorSeg"])
+        if uso is not None:
+            USO_ENLACE.labels(sensorId=event["sensorId"]).set(uso)
+        LATENCIA.observe(processed_at - timestamp)
 
     print(json.dumps(log, ensure_ascii=False))
