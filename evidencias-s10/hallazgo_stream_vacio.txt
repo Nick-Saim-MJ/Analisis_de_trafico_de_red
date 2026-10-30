@@ -1,0 +1,15 @@
+# Primera ejecución completa del notebook (21/10/2026, 22:35-22:40): el productor no se lanzó a tiempo
+Celda Fase 7 (consulta en streaming, trigger 3 s, 300 s):
+  Micro-lote 0: sin filas
+  Micro-lote 1: sin filas
+  ...  (todos los micro-lotes sin filas: el topic trafico-ventanas seguía vacío)
+  kafka-get-offsets.sh --topic trafico-ventanas  ->  trafico-ventanas:0:0
+
+Celda siguiente (lectura de las predicciones):
+  AnalysisException: [PATH_NOT_FOUND] Path does not exist: file:/opt/s10-series-tiempo-red/artifacts/predicciones_stream. SQLSTATE: 42K03
+  nbconvert -> CellExecutionError, nb exit 1
+
+# Ejecución corregida: el productor se lanza al aparecer artifacts/models/modelo_trafico_5min/metadata/_SUCCESS
+modelo guardado 22:53:43
+productor terminó 22:57:45   (120 ventanas, una cada 2 s)
+Micro-lote 0: 1 predicciones ... Micro-lote 80: 1 predicciones  -> 120 predicciones, nb exit 0

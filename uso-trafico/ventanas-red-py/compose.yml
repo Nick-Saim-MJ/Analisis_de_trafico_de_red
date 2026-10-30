@@ -1,0 +1,19 @@
+name: lambda26-ventanas-red-py
+
+services:
+  ventanas-red-py:
+    build: .
+    container_name: lambda26-ventanas-red-py
+    volumes:
+      - ./app:/app
+      # Mismo TRCU.csv que entrena el modelo de S10 (no se versiona: pyspark/sesiones/*/data/)
+      - ../../pyspark/sesiones/s10-series-tiempo-red/data:/data:ro
+    working_dir: /app
+    command: sleep infinity
+    networks:
+      - lambda26-kafka-net
+
+networks:
+  lambda26-kafka-net:
+    external: true
+    name: lambda26-kafka-net

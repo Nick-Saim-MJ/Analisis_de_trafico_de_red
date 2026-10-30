@@ -13,6 +13,16 @@ services:
     networks:
       - lambda26-kafka-net
 
+  # S11: intermediario para jobs que empujan métricas (KPI batch y predicción en vivo)
+  pushgateway:
+    image: prom/pushgateway:v1.11.1
+    container_name: lambda26-pushgateway
+    restart: unless-stopped
+    ports:
+      - "49091:9091"
+    networks:
+      - lambda26-kafka-net
+
   grafana:
     image: grafana/grafana:11.4.0
     container_name: lambda26-grafana

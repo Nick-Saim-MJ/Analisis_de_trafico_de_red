@@ -1,0 +1,3 @@
+stream listo 19:33:57
+captura grafana 19:38:47
+productor terminó 19:39:59
